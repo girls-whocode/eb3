@@ -29,9 +29,9 @@ eb3ThemesPath=themes
 # VAR HIERARCHY
 eb3VarPath=var
 eb3LogsPath=logs
-
 eb3BackupPath=backup
 eb3DirJumpPath=dirjump
+
 eb3InstallationPath=eb3
 
 # Default Files
