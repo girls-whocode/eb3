@@ -9,24 +9,35 @@ prompt_theme=pureblack
 # Folders
 dirSeparator=/
 
+# BIN HIERARCHY
 eb3BinPath=bin
 eb3CachePath=cache
 eb3TempPath=tmp
+eb3LibPath=libraries
+eb3ModPath=modules
 
-etcPath=etc
-confPath=${etcPath}${dirSeparator}conf
-modSubPath=modules
+# ETC HIERARCHY
+eb3EtcPath=etc
+eb3ConfPath=conf
+eb3OptPath=opt
 
-logsSubPath=logs
-overrideSubPath=overrides
-themeSubPath=themes
-archiveSubPath=.backup
-dirJumpPath=dirjump
-installationSubPath=eb3
+# USR HIERARCHY
+eb3UsrPath=usr
+eb3OverRidePath=overrides
+eb3ThemesPath=themes
+
+# VAR HIERARCHY
+eb3VarPath=var
+eb3LogsPath=logs
+
+eb3BackupPath=backup
+eb3DirJumpPath=dirjump
+eb3InstallationPath=eb3
 
 # Default Files
 startupLogFile=startup.log
 commandLogFile=history.log
+errorLogFile=error.log
 dirListFile=directory_list.log
 dirLastRemoveFile=last_dir_remove.log
 
