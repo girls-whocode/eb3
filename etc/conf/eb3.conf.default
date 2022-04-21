@@ -1,0 +1,61 @@
+# Default configuration for EB3 created: 04/21/2022
+
+# Editor
+editor=/usr/bin/nano
+
+# Themes
+prompt_theme=pureblack
+
+# Folders
+dirSeparator=/
+
+eb3BinPath=bin
+eb3CachePath=cache
+eb3TempPath=tmp
+
+etcPath=etc
+confPath=${etcPath}${dirSeparator}conf
+modSubPath=modules
+
+logsSubPath=logs
+overrideSubPath=overrides
+themeSubPath=themes
+archiveSubPath=.backup
+dirJumpPath=dirjump
+installationSubPath=eb3
+
+# Default Files
+startupLogFile=startup.log
+commandLogFile=history.log
+dirListFile=directory_list.log
+dirLastRemoveFile=last_dir_remove.log
+
+# History Settings
+historyControl=ignoreboth
+historyAppend=histappend
+historySize=10000
+historyFileSize=200000
+directoryHistorySize=15
+
+# Keyboard Shortcuts
+# Alt-C clears screen
+kbClear=\ec
+# Alt-D directory history list
+kbDirJump=\ed
+# Alt-R reloads environment
+kbReload=\er
+# Alt-V show Distro and version information
+kbVersion=\ev
+# Alt-W show who information
+kbWhoIs=\ew
+# F1 will display help system
+kbHelpFKey=\eOP
+# Alternitive (Alt-H) for help if F1 is not available
+kbHelp=\eh
+# F2 will display the spashscreen
+kbSpashscreenFKey=\eOQ
+# Alternitive (Alt-S) for splashscreen if F2 is not available
+kbSpashscreen=\es
+
+# Alias Shortcuts
+dirjumpCommand=d
