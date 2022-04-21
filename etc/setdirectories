@@ -22,3 +22,4 @@ export eb3_OverRidesPath=${eb3_UsrPath}$(config_get eb3ConfPath)$(config_get dir
 export eb3_ThemesPath=${eb3_UsrPath}$(config_get eb3OptPath)$(config_get dirSeparator)
 export eb3_VarPath=${scriptLocation}$(config_get dirSeparator)$(config_get eb3VarPath)$(config_get dirSeparator)
 export eb3_LogsPath=${eb3_VarPath}$(config_get eb3LogsPath)$(config_get dirSeparator)
+export eb3_systemFolders=("${eb3_BinPath}" "${eb3_CachePath}" "${eb3_TempPath}" "${eb3_LibPath}" "${eb3_ModPath}" "${eb3_EtcPath}" "${eb3_ConfPath}" "${eb3_OptPath}" "${eb3_UsrPath}" "${eb3_ThemesPath}" "${eb3_VarPath}" "${eb3_LogsPath}" "${eb3_OverRidesPath}")

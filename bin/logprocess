@@ -34,54 +34,49 @@ function _alert() {
 
 function die () {
   local _message="${*} Exiting.";
-  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[ALERT]:[${_message}]" >> ${logsLocation}/startup.log
-  echo "$(_alert emergency)";
+  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[ALERT]:[${_message}]"
+  # echo "$(_alert emergency)";
 }
 
 function error () {
   local _message="${*}";
-  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[ERROR]:[${_message}]" >> ${logsLocation}/startup.log
-  echo "$(_alert error)";
+  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[ERROR]:[${_message}]"
+  # echo "$(_alert error)";
 }
 
 function warning () {
   local _message="${*}";
-  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[WARNING]:[${_message}]" >> ${logsLocation}/startup.log
-  echo "$(_alert warning)";
+  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[WARNING]:[${_message}]"
+  # echo "$(_alert warning)";
 }
 
 function notice () {
   local _message="${*}";
-  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[NOTICE]:[${_message}]" >> ${logsLocation}/startup.log
-  echo "$(_alert notice)";
+  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[NOTICE]:[${_message}]"
+  # echo "$(_alert notice)";
 }
 
 function info () {
-  local _message="${*}";
-  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[INFO]:[${_message}]" >> ${logsLocation}/startup.log
-  echo "$(_alert info)";
+  _message="${*}";
+  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[INFO]:[${_message}]"
+  # echo "$(_alert info)";
 }
 
 function debug () {
-  local _message="${*}";
-  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[DEBUG]:[${_message}]" >> ${logsLocation}/startup.log
-  echo "$(_alert debug)";
+  _message="${*}";
+  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[DEBUG]:[${_message}]"
+  # echo "$(_alert debug)";
 }
 
 function success () {
-  local _message="${*}";
-  # echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[SUCCESS]:[${_message}]"
-  echo "$(_alert success)";
+  _message="${*}";
+  echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[SUCCESS]:[${_message}]"
+  # echo "$(_alert success)";
 }
 
 function input() {
-  local _message="${*}";
-  echo -n "$(_alert input)";
-}
-
-function header() {
-  local _message="========== ${*} ==========  ";
-  echo "$(_alert header)";
+  _message="${*}";
+  # echo "$(_alert input)";
 }
 
 function verbose() {

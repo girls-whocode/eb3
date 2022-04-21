@@ -16,7 +16,16 @@ Cyan='\e[38;5;51m'
 txtReset='\e[0m'
 
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "${scriptLocation}/etc/conf/collector.shlib"
-[ -f "${scriptLocation}/etc/etc_set_directories" ] && source "${scriptLocation}/etc/etc_set_directories" || echo "${scriptLocation}/etc/etc_set_directories"
-[ -f "${eb3_BinPath}bin_log_process" ] && source "${eb3_BinPath}bin_log_process" || echo "${eb3_BinPath}bin_log_process"
-[ -f "${eb3_LibPath}lib_colors" ] && source "${eb3_LibPath}lib_colors" || echo "${eb3_LibPath}lib_colors"
+[ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "${scriptLocation}/etc/setdirectories"
+[ -f "${eb3_BinPath}logprocess" ] && source "${eb3_BinPath}logprocess" || echo "${eb3_BinPath}logprocess"
 
+for folder in "${eb3_systemFolders[@]}"; do
+	if [[ -d ${folder} ]]; then
+		for file in "${folder}"/???_*; do
+			if [[ -f ${file} ]]; then
+				source "${file}"
+				success "[Loading ${file}]" >> "${eb3_LogsPath}install.log"
+			fi
+		done
+	fi
+done
