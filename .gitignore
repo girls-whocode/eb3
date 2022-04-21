@@ -1,0 +1,14 @@
+# Ignore Logs
+/var/logs
+*.log
+*.env
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.sw*
+
+# Ignore everything in this directory
+/etc/conf/eb3.conf
+
+# Except this file
