@@ -26,20 +26,4 @@ eb3_BackupPath=${eb3_VarPath}$(config_get eb3BackupPath)$(config_get dirSeparato
 eb3_LogsPath=${eb3_VarPath}$(config_get eb3LogsPath)$(config_get dirSeparator)
 eb3_systemFolders=("${eb3_BinPath}" "${eb3_CachePath}" "${eb3_TempPath}" "${eb3_LibPath}" "${eb3_ModPath}" "${eb3_EtcPath}" "${eb3_ConfPath}" "${eb3_OptPath}" "${eb3_UsrPath}" "${eb3_ThemesPath}" "${eb3_VarPath}" "${eb3_LogsPath}" "${eb3_OverRidesPath}" "${eb3_DirJumpPath}" "${eb3_BackupPath}" "${eb3_LogsPath}")
 
-export eb3_BinPath
-export eb3_CachePath
-export eb3_TempPath
-export eb3_LibPath
-export eb3_ModPath
-export eb3_EtcPath
-export eb3_ConfPath
-export eb3_OptPath
-export eb3_UsrPath
-export eb3_OverRidesPath
-export eb3_ThemesPath
-export eb3_VarPath
-export eb3_LogsPath
-export eb3_DirJumpPath
-export eb3_BackupPath
-export eb3_LogsPath
-export eb3_systemFolders
+export eb3_BinPath eb3_CachePath eb3_TempPath eb3_LibPath eb3_ModPath eb3_EtcPath eb3_ConfPath eb3_OptPath eb3_UsrPath eb3_OverRidesPath eb3_ThemesPath eb3_VarPath eb3_LogsPath eb3_DirJumpPath eb3_BackupPath eb3_LogsPath eb3_systemFolders

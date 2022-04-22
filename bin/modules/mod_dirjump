@@ -11,15 +11,15 @@
 # ==============================================================================
 # updated       :2020-12-21
 
-dirjumpfolder=${binLocation}${dirSeparator}${dirJumpPath}${dirSeparator}
-directory_list=${binLocation}${dirSeparator}${dirJumpPath}${dirSeparator}${dirListFile}
-last_dir_remove=${binLocation}${dirSeparator}${dirJumpPath}${dirSeparator}${dirLastRemoveFile}
-dirjump_command=${dirjumpCommand}
-history_size=${directoryHistorySize}
+dirjumpfolder=${eb3_DirJumpPath}
+directory_list=${dirjumpfolder}"$(config_get dirListFile)"
+last_dir_remove=${dirjumpfolder}"$(config_get dirLastRemoveFile)"
+dirjump_command="$(config_get dirjumpCommand)"
+dir_hist_size=$(config_get dirHistSize)
 
 # Check to see if the directories and files exist, if they don't create them
-[ ! -d ${dirjumpfolder} ] && mkdir -p ${dirjumpfolder}
-[ ! -f ${directory_list} ] && touch ${directory_list}
+[ ! -d "${dirjumpfolder}" ] && mkdir -p "${dirjumpfolder}"
+[ ! -f "${directory_list}" ] && touch "${directory_list}"
 
 # If you already use the number 0-9 as aliases,
 # feel free to comment out or delete these.
@@ -28,17 +28,17 @@ history_size=${directoryHistorySize}
 # Source: https://unix.stackexchange.com/a/203160/307359
 i=0
 
-alias "${dirjump_command}"="dirjump"
+alias "$(config_get dirjumpCommand)"="dirjump"
 
-while [ ${i} -le ${history_size} ]; do
-	alias $i="${dirjump_command} ${i}"
-	i=`expr ${i} + 1`
+while [ $i -le "${dir_hist_size}" ]; do
+	alias $i="$(config_get dirjumpCommand) ${i}"
+	i=$((1 + i))
 done
 
 function last_del() {
-	time_del=`cat ${last_dir_remove}`
-	curr_time=`date +%s`
-	delta_hour=`echo "(${curr_time}-${time_del})/3600" | bc`
+	time_del=$(cat "${last_dir_remove}")
+	curr_time=$(date +%s)
+	delta_hour=$(echo "(${curr_time}-${time_del})/3600" | bc)
 
 	if [ "${delta_hour}" -ge 1 ]; then
 		if [ "${delta_hour}" -eq 1 ]
@@ -48,7 +48,7 @@ function last_del() {
 			echo "A path was last removed ${delta_hour} hours ago."
 		fi
 	else
-		delta_minute=`echo "(${curr_time}-${time_del})/60" | bc`
+		delta_minute=$(echo "(${curr_time}-${time_del})/60" | bc)
 		if [ "${delta_minute}" -eq 0 ]
 		then
 			echo "A path was last removed just now."
@@ -64,21 +64,21 @@ function last_del() {
 function get_nth_path() {
 	# Get dir path of nth line of directory_list
 	# Source: https://stackoverflow.com/a/27056916/9157799
-	echo $(awk -v line=${1} 'NR==line' "${directory_list}")
+	echo "$(awk -v line=${1} 'NR==line' "${directory_list}")"
 }
 
 function apply_max_limit_to_history() {
 	# delete all directories whose numbers exceed the specified limit
 	# Source: https://stackoverflow.com/q/45125826/9157799
 
-	head -"${history_size}" "${directory_list}" > "${dirjumpfolder}"${dirSeparator}temp;
+	head -"${dir_hist_size}" "${directory_list}" > "${dirjumpfolder}"${dirSeparator}temp;
 	mv -f "${dirjumpfolder}"${dirSeparator}temp "${directory_list}"
 }
 
 function insert_dir_path_to_top() {
 	# Source: https://superuser.com/a/246841/943615
 
-	echo ${1} | cat - "${directory_list}" > "${dirjumpfolder}"/temp && mv -f "${dirjumpfolder}"/temp "${directory_list}"
+	echo "${1}" | cat - "${directory_list}" > "${dirjumpfolder}"/temp && mv -f "${dirjumpfolder}"/temp "${directory_list}"
 }
 
 function number_of_dir_paths() {
@@ -94,14 +94,14 @@ function print_directory_history() {
 		local count
 		((count++))
 		echo -e "${Aqua} ${count} ${Yellow} ${items} ${txtReset}"
-	done < ${directory_list}
+	done < "${directory_list}"
 }
 
 function path_already_listed() {
 	# Check if the given path already listed
 	# Source: https://stackoverflow.com/a/4749368/9157799
 
-	if grep -Fxq "$1" "$directory_list"
+	if grep -Fxq "$1" "${directory_list}"
 	then
 		echo "exist"
 	else
@@ -184,7 +184,7 @@ function propose_dir_path() {
 	fi
 
 	insert_dir_path_to_top "$PWD"
-	if [[ `number_of_dir_paths` -gt "$history_size" ]]; then
+	if [[ $(number_of_dir_paths) -gt "${dir_hist_size}" ]]; then
 		apply_max_limit_to_history
 		date +%s > "$last_dir_remove"
 	fi

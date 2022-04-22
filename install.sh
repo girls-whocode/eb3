@@ -8,7 +8,8 @@
 # notes					:
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
-export scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export scriptLocation
 
 White='\e[38;5;15m'
 Yellow='\e[38;5;11m'

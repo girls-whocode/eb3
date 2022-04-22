@@ -46,7 +46,6 @@ historyControl=ignoreboth
 historyAppend=histappend
 historySize=10000
 historyFileSize=200000
-directoryHistorySize=15
 
 # Keyboard Shortcuts
 # Alt-C clears screen
@@ -70,3 +69,4 @@ kbSpashscreen=\es
 
 # Alias Shortcuts
 dirjumpCommand=d
+dirHistSize=15
