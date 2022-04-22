@@ -21,10 +21,6 @@ dir_hist_size=$(config_get dirHistSize)
 [ ! -d "${dirjumpfolder}" ] && mkdir -p "${dirjumpfolder}"
 [ ! -f "${directory_list}" ] && touch "${directory_list}"
 
-# If you already use the number 0-9 as aliases,
-# feel free to comment out or delete these.
-# You can still use <dirjump_command> <dir path number>
-# to jump through the dir history
 # Source: https://unix.stackexchange.com/a/203160/307359
 i=0
 
