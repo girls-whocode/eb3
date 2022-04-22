@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # title					:Enhanced BASH v3
-# description			:
+# description		:
 # author				:Jessica Brown
 # date					:2022-04-21
 # version				:3.0.0
@@ -10,12 +10,6 @@
 # ==============================================================================
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export scriptLocation
-
-White='\e[38;5;15m'
-Yellow='\e[38;5;11m'
-txtReset='\e[38;5;8m'
-Cyan='\e[38;5;51m'
-txtReset='\e[0m'
 
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
 [ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
