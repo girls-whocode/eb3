@@ -1,4 +1,4 @@
-# <img src="./documentation/assets/icons/bash-icon-12.jpg" width="60" /> Modular and Library enforced BASH helper system for everyone
+# <img src="./documents/assets/icons/bash-icon-12.jpg" width="60" /> Modular and Library enforced BASH helper system for everyone
 
 ## What is this?
  **Enhanced BASH System**, started in theory and became multiple scripts all over my system and now has been developed over a very long time for ease of use. Although this particular version is still fairly new. Over the past decade I have been collecting, building, customizing and designing scripts to make my terminal experience easier to use by reducing mundane commands and make it as universal between different distributions of Linux.
@@ -15,9 +15,9 @@ I have been borrowing other peoples scripts, building my own script, using diffe
 ## Help Topics Menu
 |   |   |   |
 |---|---|---|
-| [<img src="./documentation/images/icons/browser_help.png">](./documentation/help-arguments.md) [Help arguments](./documentation/help-arguments.md)  |  [<img src="./documentation/images/icons/terminal_utilities.png" />](./documentation/help-screen.md) [Help Screen](./documentation/help-screen.md)  |  [<img src="./documentation/images/icons/system_users.png">](./documentation/contributing.md) [Contributing](./documentation/contributing.md)  |
-| [<img src="./documentation/images/icons/alias.png" />](./documentation/aliases.md) [Aliases](./documentation/aliases.md)                            |  [<img src="./documentation/images/icons/application_executable.png" />](./documentation/modules.md) [Modules](./documentation/modules.md) | [<img src="./documentation/images/icons/applications_other.png" />](./documentation/libraries.md) [Libraries](./documentation/libraries.md)  |
-| [<img src="./documentation/images/icons/applications_system.png" />](./documentation/over-rides.md) [Over Rides](./documentation/over-rides.md)  |  [<img src="./documentation/images/icons/document_properties.png" />](./documents/logs.md) [Logs](./documents/logs.md)  |  [<img src="./documentation/images/icons/generic_package.png" />](./documents/installation.md) [Installation](./documents/installation.md) |
+| [<img src="./documents/assets/icons/browser_help.png">](./documents/help-arguments.md) [Help arguments](./documents/help-arguments.md)  |  [<img src="./documents/assets/icons/terminal_utilities.png" />](./documents/help-screen.md) [Help Screen](./documents/help-screen.md)  |  [<img src="./documents/assets/icons/system_users.png">](./documents/contributing.md) [Contributing](./documents/contributing.md)  |
+| [<img src="./documents/assets/icons/alias.png" />](./documents/aliases.md) [Aliases](./documents/aliases.md)                            |  [<img src="./documents/assets/icons/application_executable.png" />](./documents/modules.md) [Modules](./documents/modules.md) | [<img src="./documents/assets/icons/applications_other.png" />](./documents/libraries.md) [Libraries](./documents/libraries.md)  |
+| [<img src="./documents/assets/icons/applications_system.png" />](./documents/over-rides.md) [Over Rides](./documents/over-rides.md)  |  [<img src="./documents/assets/icons/document_properties.png" />](./documents/logs.md) [Logs](./documents/logs.md)  |  [<img src="./documents/assets/icons/generic_package.png" />](./documents/installation.md) [Installation](./documents/installation.md) |
 
 ___
 >>>
