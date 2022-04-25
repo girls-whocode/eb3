@@ -105,7 +105,7 @@ function draw_border() {
     echo -e "${Grey}x"
 
     # File Cells
-    for ((r=rows-12; r<rows; r++)); do
+    for ((r=0; r<rows-10; r++)); do
         echo -ne "${Grey}x"
         for ((c=0; c<columns-25; c++)); do
             echo -ne "${Grey} "
