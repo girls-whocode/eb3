@@ -163,6 +163,23 @@ function propose_dir_path() {
 	fi
 }
 
+function up() {
+    local d=""
+    limit=$1
+
+	for ((i=1 ; i <= limit ; i++)); do
+		d=$d/..
+	done
+
+	d=$(echo $d | sed 's/^\///')
+
+	if [ -z "$d" ]; then
+		d=..
+	fi
+
+	cd $d
+}
+
 # If using Zsh
 if [ -n "$ZSH_VERSION" ]; then
 	# Source: https://stackoverflow.com/a/3964198/9157799

@@ -8,6 +8,7 @@
 # notes					:
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
+
 eb3_BinPath=${scriptLocation}$(config_get dirSeparator)$(config_get eb3BinPath)$(config_get dirSeparator)
 eb3_CachePath=${eb3_BinPath}$(config_get eb3CachePath)$(config_get dirSeparator)
 eb3_TempPath=${eb3_CachePath}$(config_get eb3TempPath)$(config_get dirSeparator)

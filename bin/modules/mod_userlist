@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# title					:Enhanced BASH v3
+# description	    	:
+# author				:Jessica Brown
+# date					:2022-04-21
+# version				:3.0.0
+# usage					:
+# notes					:
+# bash_version	:5.1.16(1)-release
+# ==============================================================================
+# TODO Fix alignment and create a nice table with all information
+
+function userlist() {
+    divider===============================
+    divider=$divider$divider
+
+    header="\n %-15s %5s %30s\n"
+    format=" %-15s %5s %30s\n"
+
+    width=43
+
+    declare -a normal_users=($(awk -F: '$3 > 999 && $3 < 60001 {print $1}' /etc/passwd))
+    declare -a system_users=($(awk -F: '$3 > 0 && $3 < 1000 {print $1}' /etc/passwd))
+
+    printf "$header" "USER NAME" "USER ID" "GROUP NAME"
+    printf "%$width.${width}s\n" "$divider"
+
+    for user in "${normal_users[@]}"; do
+        userid=$(awk -v pat="${user}" -F ":" '$1~pat{print $3}' /etc/passwd)
+        groups=($(groups ${user} | cut -d':' -f 2))
+        echo -e "${user} - ${userid} - (${groups[@]})"
+        # [[ ! ${userid} == "" ]] && printf "$format" "${user}" "${userid}" "${groups[@]}"
+    done
+
+    for user in "${system_users[@]}"; do
+        userid=$(awk -v pat="${user}" -F ":" '$1~pat{print $3}' /etc/passwd)
+        groups=($(groups ${user} | cut -d':' -f 2))
+        echo -e "${user} - ${userid} - (${groups[@]})"
+        # [[ ! ${userid} == "" ]] && printf "$format" "${user}" "${userid}" "${groups[@]}"
+    done
+}

@@ -17,11 +17,7 @@ export scriptLocation
 [ -f "${eb3_BinPath}logprocess" ] && source "${eb3_BinPath}logprocess" || echo "Error loading ${eb3_BinPath}logprocess"
 [ ! -f "${eb3_LogsPath}startup.log" ] && touch "${eb3_LogsPath}startup.log"
 
-if [ $? -eq 0 ]; then
-	success "Enhanced BASHv3 startup" > "${eb3_LogsPath}startup.log"
-else 
-	error "Enhanced BASHv3 startup" > "${eb3_LogsPath}startup.log"
-fi
+info "Enhanced BASHv3 startup" >> "${eb3_LogsPath}startup.log"
 
 for folder in "${eb3_systemFolders[@]}"; do
 	if [[ -d ${folder} ]]; then
