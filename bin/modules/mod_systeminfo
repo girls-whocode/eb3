@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# title					:Enhanced BASH v3
+# description			:
+# author				:Jessica Brown
+# date					:2022-04-21
+# version				:3.0.0
+# usage					:
+# notes					:
+# bash_version	:5.1.16(1)-release
+# ==============================================================================
+
+function systeminfo() {
+  unset os architecture kernelrelease internalip externalip nameserver loadaverage
+
+  # Check if connected to Internet or not
+  ping -c 1 google.com &> /dev/null && echo -e "${Green}Internet: ${White} Connected" || echo -e "${Green}Internet: ${White} Disconnected"
+
+  # Check OS Type
+  os=$(uname -o)
+  echo -e "${Green}Operating System Type :" ${White} ${os}
+
+  # Check OS Release Version and Name
+  cat /etc/os-release | grep 'NAME\|VERSION' | grep -v 'VERSION_ID' | grep -v 'PRETTY_NAME' > /tmp/osrelease
+  echo -n -e "${Green}OS Name :" ${White}  && cat /tmp/osrelease | grep -v "VERSION" | cut -f2 -d\"
+  echo -n -e "${Green}OS Version :" ${White} && cat /tmp/osrelease | grep -v "NAME" | cut -f2 -d\"
+
+  # Check Architecture
+  architecture=$(uname -m)
+  echo -e "${Green}Architecture :" ${White} $architecture
+
+  # Check Kernel Release
+  kernelrelease=$(uname -r)
+  echo -e "${Green}Kernel Release :" ${White} $kernelrelease
+
+  # Check hostname
+  echo -e "${Green}Hostname :" ${White} $HOSTNAME
+
+  # Check Internal IP
+  internalip=$(hostname -I)
+  echo -e "${Green}Internal IP :" ${White} $internalip
+
+  # Check External IP
+  externalip=$(curl -s ipecho.net/plain;echo)
+  echo -e "${Green}External IP : ${White} "$externalip
+
+  # Check DNS
+  nameservers=$(cat /etc/resolv.conf | sed '1 d' | awk '{print $2}')
+  echo -e "${Green}Name Servers :" ${White} $nameservers 
+
+  # Check Logged In Users
+  who>/tmp/who
+  echo -e "${Green}Logged In users :" ${White} && cat /tmp/who 
+
+  # Check RAM and SWAP Usages
+  free -h | grep -v + > /tmp/ramcache
+  echo -e "${Green}Ram Usages :" ${White}
+  cat /tmp/ramcache | grep -v "Swap"
+  echo -e "${Green}Swap Usages :" ${White}
+  cat /tmp/ramcache | grep -v "Mem"
+
+  # Check Disk Usages
+  df -h| grep 'Filesystem\|/dev/sda*' > /tmp/diskusage
+  echo -e "${Green}Disk Usages :" ${White} 
+  cat /tmp/diskusage
+
+  # Check Load Average
+  loadaverage=$(top -n 1 -b | grep "load average:" | awk '{print $10 $11 $12}')
+  echo -e "${Green}Load Average :" ${White} $loadaverage
+
+  # Check System Uptime
+  tecuptime=$(uptime | awk '{print $3,$4}' | cut -f1 -d,)
+  echo -e "${Green}System Uptime Days/(HH:MM) :" ${White} $tecuptime
+
+  # Unset Variables
+  unset tecreset os architecture kernelrelease internalip externalip nameserver loadaverage
+
+  # Remove Temporary Files
+  rm /tmp/osrelease /tmp/who /tmp/ramcache /tmp/diskusage
+  shift $(($OPTIND -1))
+}

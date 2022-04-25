@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# title					:Enhanced BASH v3
+# description			:
+# author				:Jessica Brown
+# date					:2022-04-21
+# version				:3.0.0
+# usage					:
+# notes					:
+# bash_version	:5.1.16(1)-release
+# ==============================================================================
+
+function backup() {
+    local baktimestamp=$(LC_ALL=C date +%Y%m%d_%H%M%S)
+
+    # Check if it is a directory, if so, then rsync entire directory with timestamp
+    if [ -d ${1} ]; then
+        bakFolder=$(basename "$1")-${baktimestamp}
+        mkdir -p ${eb3_BackupPath}
+        rsync -aqr ${1} ${eb3_BackupPath}${bakFolder}
+
+        echo -e "The folder ${Aqua}${1} ${txtReset}has been backed up at ${Yellow}${eb3_BackupPath}${txtReset}"
+        diff -qr ${1}/ ${eb3_BackupPath}${bakFolder}
+
+    # Check if it is a file, if so, then copy file with timestamp
+    elif [ -f ${1} ]; then
+        cp ${1} ${eb3_BackupPath}`basename $1`-${baktimestamp}.backup
+
+    # File or directory was not found
+    else
+        warning "${1} file or directory was not stat" >> "${eb3_LogsPath}startup.log"
+        echo "${1} was not found, please check the name and try again."
+    fi
+}

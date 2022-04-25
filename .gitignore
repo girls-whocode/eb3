@@ -1,0 +1,5 @@
+# Ignore all logs
+*.log
+*.shellcheckrc
+**/cache/*
+**/tmp/*
