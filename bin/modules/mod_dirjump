@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
-# title			:Directory Jump
-# description	:Creates a list of 30 last directories visited
-# author		:imambungo (https://github.com/imambungo/dirjump/blob/master/dirjump)
-#				:Jessica Kennedy (Rework for enhanced bash)
-# date			:2019-10-15
-# version		:1
-# usage			:d will list recient directories, just enter number to jump to them
-# notes			:This module is a builtin for enhanced bash
-# bash_version	:4.1.5(1)-release
+# title					:Enhanced BASH v3
+# description			:
+# author				:Jessica Brown
+# date					:2022-04-21
+# version				:3.0.0
+# usage					:
+# notes					:
+# bash_version	:5.1.16(1)-release
 # ==============================================================================
-# updated       :2020-12-21
 
 dirjumpfolder=${eb3_DirJumpPath}
-directory_list=${dirjumpfolder}"$(config_get dirListFile)"
-last_dir_remove=${dirjumpfolder}"$(config_get dirLastRemoveFile)"
+directory_list="${dirjumpfolder}$(config_get dirListFile)"
+last_dir_remove="${dirjumpfolder}$(config_get dirLastRemoveFile)"
 dirjump_command="$(config_get dirjumpCommand)"
 dir_hist_size=$(config_get dirHistSize)
 
@@ -24,8 +22,10 @@ dir_hist_size=$(config_get dirHistSize)
 # Source: https://unix.stackexchange.com/a/203160/307359
 i=0
 
-alias "$(config_get dirjumpCommand)"="dirjump"
+alias "$(config_get dirjumpCommand)"="eb3_dirjump"
 
+# Create aliases for the last 15 directories and 0 for home
+alias 0="cd ~"
 while [ $i -le "${dir_hist_size}" ]; do
 	alias $i="$(config_get dirjumpCommand) ${i}"
 	i=$((1 + i))
@@ -73,19 +73,17 @@ function apply_max_limit_to_history() {
 
 function insert_dir_path_to_top() {
 	# Source: https://superuser.com/a/246841/943615
-
-	echo "${1}" | cat - "${directory_list}" > "${dirjumpfolder}"/temp && mv -f "${dirjumpfolder}"/temp "${directory_list}"
+	echo "${1}" | cat - "${directory_list}" > "${dirjumpfolder}/temp" && mv -f "${dirjumpfolder}/temp" "${directory_list}"
 }
 
 function number_of_dir_paths() {
 	# Source: https://stackoverflow.com/a/12022403/9157799
-
 	wc -l < "${directory_list}"
 }
 
 function print_directory_history() {
-	echo ""
-	echo -e "${Aqua} type any listed number to jump to that directory${txtReset}"
+	echo -e "${Aqua}Use the number to jump to that directory${txtReset}\n"
+	echo -e "${Aqua} 0 ${Yellow} ${HOME} ${txtReset}"
 	while read items; do
 		local count
 		((count++))
@@ -97,36 +95,26 @@ function path_already_listed() {
 	# Check if the given path already listed
 	# Source: https://stackoverflow.com/a/4749368/9157799
 
-	if grep -Fxq "$1" "${directory_list}"
-	then
+	if grep -Fxq "$1" "${directory_list}"; then
 		echo "exist"
 	else
 		echo "notexist"
 	fi
 }
 
-function dirjump() {
-	# make sure $directory_list exist
-	if [ ! -f "${directory_list}" ]
-	then
-		touch "${directory_list}"
-	fi
-
+function eb3_dirjump() {
 	# if the number of argument is greater than 1
-	if [ $# -gt 1 ]
-	then
+	if [ $# -gt 1 ]; then
 		echo "usage: ${dirjump_command} [dir path number]"
 		return
 	fi
 
 	# if no argument is given
-	if [ $# -eq 0 ]
-	then
+	if [ $# -eq 0 ]; then
 		delete_paths_that_no_longer_exist
 		print_directory_history
 
-		if [ -f "${last_dir_remove}" ]
-		then
+		if [ -f "${last_dir_remove}" ]; then
 			last_del
 		fi
 
@@ -134,18 +122,8 @@ function dirjump() {
 	fi
 
 	# if the requested path number is not out of range
-	if [[ $1 -le $(number_of_dir_paths) ]] && [[ $1 -ge 1 ]]
-	then
+	if [[ $1 -le $(number_of_dir_paths) ]] && [[ $1 -ge 1 ]]; then
 		cd "$(get_nth_path $1)"
-
-		# PERSONAL PREFERENCE, if you don't want it, just comment it out.
-		# automatically list directory content
-		# if there are 30 or less item in it
-		# Source: https://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x700.html
-		# if [ $(ls -A1 | wc -l) -le 30 ]
-		# then
-		#	ls -A
-		# fi
 	else
 		echo "dirjump: the requested dir path number is out of range"
 	fi
@@ -153,7 +131,6 @@ function dirjump() {
 
 function delete_a_dir_path() {
 	# Source: https://stackoverflow.com/a/5413132/9157799
-
 	grep -Fxv "$1" "$directory_list" > "$dirjumpfolder"/temp; mv -f "$dirjumpfolder"/temp "$directory_list"
 }
 
@@ -186,20 +163,13 @@ function propose_dir_path() {
 	fi
 }
 
-function o() {
-	if [ $# -eq 1 ]
-	then
+# If using Zsh
+if [ -n "$ZSH_VERSION" ]; then
+	# Source: https://stackoverflow.com/a/3964198/9157799
+	chpwd_functions=(${chpwd_functions[@]} propose_dir_path)
+else
+	cd() {
+		builtin cd "$@" || exit # https://unix.stackexchange.com/a/366974/307359
 		propose_dir_path
-	fi
-
-	xdg-open "$@"
-}
-
-function v() {
-	# propose dir path if vim is used to edit existing files
-	if [ $# -gt 0 ]
-	then
-		propose_dir_path
-	fi
-	$assignedEditor "$@"
-}
+	}
+fi
