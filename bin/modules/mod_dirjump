@@ -1,24 +1,21 @@
 #!/usr/bin/env bash
-# title			:Directory Jump
-# description	:Creates a list of 30 last directories visited
-# author		:imambungo (https://github.com/imambungo/dirjump/blob/master/dirjump)
-#				:Jessica Kennedy (Rework for enhanced bash)
-# date			:2019-10-15
-# version		:1
-# usage			:d will list recient directories, just enter number to jump to them
-# notes			:This module is a builtin for enhanced bash
-# bash_version	:4.1.5(1)-release
+# title					:Enhanced BASH v3
+# description		:
+# author				:Jessica Brown
+# date					:2022-04-21
+# version				:3.0.0
+# usage					:
+# notes					:
+# bash_version	:5.1.16(1)-release
 # ==============================================================================
-# updated       :2020-12-21
 
-dirjumpfolder=${eb3_DirJumpPath}
-directory_list=${dirjumpfolder}"$(config_get dirListFile)"
-last_dir_remove=${dirjumpfolder}"$(config_get dirLastRemoveFile)"
+directory_list=${eb3_DirJumpPath}"$(config_get dirListFile)"
+last_dir_remove=${eb3_DirJumpPath}"$(config_get dirLastRemoveFile)"
 dirjump_command="$(config_get dirjumpCommand)"
 dir_hist_size=$(config_get dirHistSize)
 
 # Check to see if the directories and files exist, if they don't create them
-[ ! -d "${dirjumpfolder}" ] && mkdir -p "${dirjumpfolder}"
+[ ! -d "${eb3_DirJumpPath}" ] && mkdir -p "${eb3_DirJumpPath}"
 [ ! -f "${directory_list}" ] && touch "${directory_list}"
 
 # Source: https://unix.stackexchange.com/a/203160/307359
@@ -37,19 +34,16 @@ function last_del() {
 	delta_hour=$(echo "(${curr_time}-${time_del})/3600" | bc)
 
 	if [ "${delta_hour}" -ge 1 ]; then
-		if [ "${delta_hour}" -eq 1 ]
-		then
+		if [ "${delta_hour}" -eq 1 ]; then
 			echo "A path was last removed an hour ago."
 		else
 			echo "A path was last removed ${delta_hour} hours ago."
 		fi
 	else
 		delta_minute=$(echo "(${curr_time}-${time_del})/60" | bc)
-		if [ "${delta_minute}" -eq 0 ]
-		then
+		if [ "${delta_minute}" -eq 0 ]; then
 			echo "A path was last removed just now."
-		elif [ "${delta_minute}" -eq 1 ]
-		then
+		elif [ "${delta_minute}" -eq 1 ]; then
 			echo "A path was last removed a minute ago."
 		else
 			echo "A path was last removed ${delta_minute} minutes ago."
@@ -67,14 +61,14 @@ function apply_max_limit_to_history() {
 	# delete all directories whose numbers exceed the specified limit
 	# Source: https://stackoverflow.com/q/45125826/9157799
 
-	head -"${dir_hist_size}" "${directory_list}" > "${dirjumpfolder}"${dirSeparator}temp;
-	mv -f "${dirjumpfolder}"${dirSeparator}temp "${directory_list}"
+	head -"${dir_hist_size}" "${directory_list}" > "${eb3_DirJumpPath}temp";
+	mv -f "${eb3_DirJumpPath}temp" "${directory_list}"
 }
 
 function insert_dir_path_to_top() {
 	# Source: https://superuser.com/a/246841/943615
 
-	echo "${1}" | cat - "${directory_list}" > "${dirjumpfolder}"/temp && mv -f "${dirjumpfolder}"/temp "${directory_list}"
+	echo "${1}" | cat - "${directory_list}" > "${eb3_DirJumpPath}temp" && mv -f "${eb3_DirJumpPath}temp" "${directory_list}"
 }
 
 function number_of_dir_paths() {
@@ -86,7 +80,7 @@ function number_of_dir_paths() {
 function print_directory_history() {
 	echo ""
 	echo -e "${Aqua} type any listed number to jump to that directory${txtReset}"
-	while read items; do
+	while read -r items; do
 		local count
 		((count++))
 		echo -e "${Aqua} ${count} ${Yellow} ${items} ${txtReset}"
@@ -97,8 +91,7 @@ function path_already_listed() {
 	# Check if the given path already listed
 	# Source: https://stackoverflow.com/a/4749368/9157799
 
-	if grep -Fxq "$1" "${directory_list}"
-	then
+	if grep -Fxq "$1" "${directory_list}"; then
 		echo "exist"
 	else
 		echo "notexist"
@@ -107,26 +100,22 @@ function path_already_listed() {
 
 function dirjump() {
 	# make sure $directory_list exist
-	if [ ! -f "${directory_list}" ]
-	then
+	if [ ! -f "${directory_list}" ]; then
 		touch "${directory_list}"
 	fi
 
 	# if the number of argument is greater than 1
-	if [ $# -gt 1 ]
-	then
+	if [ $# -gt 1 ]; then
 		echo "usage: ${dirjump_command} [dir path number]"
 		return
 	fi
 
 	# if no argument is given
-	if [ $# -eq 0 ]
-	then
+	if [ $# -eq 0 ]; then
 		delete_paths_that_no_longer_exist
 		print_directory_history
 
-		if [ -f "${last_dir_remove}" ]
-		then
+		if [ -f "${last_dir_remove}" ]; then
 			last_del
 		fi
 
@@ -134,8 +123,7 @@ function dirjump() {
 	fi
 
 	# if the requested path number is not out of range
-	if [[ $1 -le $(number_of_dir_paths) ]] && [[ $1 -ge 1 ]]
-	then
+	if [[ $1 -le $(number_of_dir_paths) ]] && [[ $1 -ge 1 ]]; then
 		cd "$(get_nth_path $1)"
 
 		# PERSONAL PREFERENCE, if you don't want it, just comment it out.
@@ -154,19 +142,18 @@ function dirjump() {
 function delete_a_dir_path() {
 	# Source: https://stackoverflow.com/a/5413132/9157799
 
-	grep -Fxv "$1" "$directory_list" > "$dirjumpfolder"/temp; mv -f "$dirjumpfolder"/temp "$directory_list"
+	grep -Fxv "$1" "$directory_list" > "${eb3_DirJumpPath}temp"; mv -f "${eb3_DirJumpPath}temp" "$directory_list"
 }
 
 function delete_paths_that_no_longer_exist() {
 	# iterate $directory_list
-	while IFS="" read -r p || [ -n "$p" ]
-	do
+	while IFS="" read -r p || [ -n "$p" ]; do
 		if [[ ! -d $p ]]; then
 			# if the dir doesn't exists, it's deleted from $directory_list
 			printf '%s\n' "Deleting \"$p\" from directory_list"
-			sed -i "\?^$p\$?d" $directory_list
+			sed -i "\?^$p\$?d" "${directory_list}"
 		fi
-	done < $directory_list
+	done < "${directory_list}"
 }
 
 function propose_dir_path() {
@@ -187,8 +174,7 @@ function propose_dir_path() {
 }
 
 function o() {
-	if [ $# -eq 1 ]
-	then
+	if [ $# -eq 1 ]; then
 		propose_dir_path
 	fi
 
@@ -197,9 +183,9 @@ function o() {
 
 function v() {
 	# propose dir path if vim is used to edit existing files
-	if [ $# -gt 0 ]
-	then
+	if [ $# -gt 0 ]; then
 		propose_dir_path
 	fi
+
 	$assignedEditor "$@"
 }

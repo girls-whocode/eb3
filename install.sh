@@ -9,6 +9,8 @@
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+installLocation="${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)application$(config_get dirSeparator)$(config_get eb3InstallationPath)"
+
 export scriptLocation
 
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
@@ -37,3 +39,8 @@ for folder in "${eb3_systemFolders[@]}"; do
 		done
 	fi
 done
+
+# Check for and create installation path
+if [ ! -d "${installLocation}" ]; then
+	mkdir -p "${installLocation}"
+fi

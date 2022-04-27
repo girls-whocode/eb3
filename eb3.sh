@@ -14,13 +14,13 @@ export scriptLocation
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
 [ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
 [ -f "${eb3_BinPath}logprocess" ] && source "${eb3_BinPath}logprocess" || echo "Error loading ${eb3_BinPath}logprocess"
-[ ! -f "${eb3_LogsPath}install.log" ] && touch "${eb3_LogsPath}install.log"
+[ ! -f "${eb3_LogsPath}startup.log" ] && touch "${eb3_LogsPath}startup.log"
 
-if [ $? -eq 0 ]; then
-	success "Installation startup" > "${eb3_LogsPath}install.log"
-else 
-	error "Installation startup" > "${eb3_LogsPath}install.log"
-fi
+# if [ $? -eq 0 ]; then
+# 	success "Enhanced BASH 3 startup" >> "${eb3_LogsPath}startup.log"
+# else 
+# 	error "Enhanced BASH 3 startup" >> "${eb3_LogsPath}startup.log"
+# fi
 
 for folder in "${eb3_systemFolders[@]}"; do
 	if [[ -d ${folder} ]]; then
@@ -28,9 +28,9 @@ for folder in "${eb3_systemFolders[@]}"; do
 			if [[ -f ${filename} ]]; then
 				source "${filename}"
 				if [ $? -eq 0 ]; then
-					success "Loading ${filename}" >> "${eb3_LogsPath}install.log"
+					success "Loading ${filename}" >> "${eb3_LogsPath}startup.log"
 				else
-					error "Loading ${filename}" >> "${eb3_LogsPath}install.log"
+					error "Loading ${filename}" >> "${eb3_LogsPath}startup.log"
 				fi
 			fi
 		done
