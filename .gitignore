@@ -1,5 +1,5 @@
-# Ignore all logs
+.bashrc
+.shellcheckrc
 *.log
-*.shellcheckrc
 **/cache/*
 **/tmp/*

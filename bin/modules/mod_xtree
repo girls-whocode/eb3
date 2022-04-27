@@ -11,14 +11,62 @@
 
 # This will be my fun activity, let's recreate XTree Gold for Linux with all of
 # its former glory!
+trap 'refresh_screen' WINCH
 
 function create_screen() {
     screen_size
-    echo -e "${PWD}"
+    echo -en "Current Path: ${White}${PWD}${txtReset}"
+    for ((c=(${#PWD}+14); c<columns; c++)); do
+        echo -ne "${Grey} "
+    done
     draw_border
 }
 
-function xtree() {
+function refresh_screen() {
+    civis
+    tput clear
+    xtreerunner
+}
+
+function exit_function() {
+    cnorm
     clear_screen
+    echo "Thank you for using, have a great day :)"
+}
+
+function dir_window() {
+    row=2
+    declare -a dir_list
+    dir_list=(*/)
+    for dir in "${dir_list[@]}"; do
+        ((row++))
+        cursorpos pos "${row}" 2
+        echo -e "${Aqua}${dir}${txtReset}"
+    done
+}
+
+function xtreerunner() {
+    cursorpos pos 0 0
     create_screen
+    dir_window
+
+    while true; do
+        IFS=''
+        read -r -s -N 1 -t .5 input
+
+        case ${input} in
+            $'\e') 
+                exit_function;
+                break;;
+            *) 
+                xtreerunner;
+                break;;
+        esac
+    done
+}
+
+function xtree() {
+    clear
+    civis
+    xtreerunner
 }

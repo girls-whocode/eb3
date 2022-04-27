@@ -10,20 +10,20 @@
 # ==============================================================================
 
 function backup() {
-    local baktimestamp=$(LC_ALL=C date +%Y%m%d_%H%M%S)
+    baktimestamp=$(LC_ALL=C date +%Y%m%d_%H%M%S)
 
     # Check if it is a directory, if so, then rsync entire directory with timestamp
-    if [ -d ${1} ]; then
-        bakFolder=$(basename "$1")-${baktimestamp}
-        mkdir -p ${eb3_BackupPath}
-        rsync -aqr ${1} ${eb3_BackupPath}${bakFolder}
+    if [ -d "${1}" ]; then
+        bakFolder="$(basename "$1")-${baktimestamp}"
+        mkdir -p "${eb3_BackupPath}"
+        rsync -aqr "${1}" "${eb3_BackupPath}${bakFolder}"
 
         echo -e "The folder ${Aqua}${1} ${txtReset}has been backed up at ${Yellow}${eb3_BackupPath}${txtReset}"
-        diff -qr ${1}/ ${eb3_BackupPath}${bakFolder}
+        diff -qr "${1}${dirSeparator}" "${eb3_BackupPath}${bakFolder}"
 
     # Check if it is a file, if so, then copy file with timestamp
-    elif [ -f ${1} ]; then
-        cp ${1} ${eb3_BackupPath}`basename $1`-${baktimestamp}.backup
+    elif [ -f "${1}" ]; then
+        cp "${1}" "${eb3_BackupPath}$(basename "$1")-${baktimestamp}.backup"
 
     # File or directory was not found
     else

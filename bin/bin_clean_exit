@@ -10,5 +10,7 @@
 # ==============================================================================
 
 function eb3_exit() {
-    source ${eb3_EtcPath}etc_unset_directories
+    cnorm
+    source "${eb3_ConfPath}.bashrc"
+    echo -e "Enhanced Bash has been terminated"
 }
