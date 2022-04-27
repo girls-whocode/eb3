@@ -74,3 +74,5 @@ else
 	error "No package manager was found" >> "${eb3_LogsPath}install.log"
 	echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packages_Required">&2; 
 fi
+
+[ -f "${HOME}$(config_get dirSeparator).bashrc" ] && cp "${HOME}$(config_get dirSeparator).bashrc" "${eb3_ConfPath}"

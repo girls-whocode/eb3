@@ -24,3 +24,7 @@ function trap_add() {
             || fatal "unable to add to trap ${trap_add_name}"
     done
 }
+
+function eb3() {
+    [ "${1}" == "shutdown" ] && eb3_exit
+}

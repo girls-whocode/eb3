@@ -14,7 +14,6 @@
 trap 'refresh_screen' WINCH
 
 function create_screen() {
-    # clear_screen
     screen_size
     echo -en "Current Path: ${White}${PWD}${txtReset}"
     for ((c=(${#PWD}+14); c<columns; c++)); do
@@ -24,11 +23,13 @@ function create_screen() {
 }
 
 function refresh_screen() {
-    clear
-    xtree
+    civis
+    tput clear
+    xtreerunner
 }
 
 function exit_function() {
+    cnorm
     clear_screen
     echo "Thank you for using, have a great day :)"
 }
@@ -58,13 +59,14 @@ function xtreerunner() {
                 exit_function;
                 break;;
             *) 
-                xtree;
+                xtreerunner;
                 break;;
         esac
     done
 }
 
-function xtreerunner() {
+function xtree() {
     clear
+    civis
     xtreerunner
 }

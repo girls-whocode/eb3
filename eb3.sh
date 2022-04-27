@@ -9,8 +9,10 @@
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
 eb3_start_time=$(date +%s.%3N)
+org_prompt=$PS1
+
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export scriptLocation
+export scriptLocation org_prompt
 
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
 [ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
