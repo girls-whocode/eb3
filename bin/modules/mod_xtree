@@ -44,7 +44,7 @@ function dir_window() {
     done
 }
 
-function xtree() {
+function xtreerunner() {
     cursorpos pos 0 0
     create_screen
     dir_window
@@ -62,4 +62,9 @@ function xtree() {
                 break;;
         esac
     done
+}
+
+function xtreerunner() {
+    clear
+    xtreerunner
 }
