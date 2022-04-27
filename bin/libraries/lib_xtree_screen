@@ -61,6 +61,10 @@ function write() {
 }
 
 function screen_size() {
+    if [[ "$(tput lines) $(tput cols)" != "$rows $columns" ]]; then
+        draw_border
+    fi
+
     columns=$(tput cols)
     rows=$(tput lines)
 }
@@ -71,51 +75,56 @@ function draw_border() {
 
     # Top of Directory
     echo -ne "${Grey}l"
-    for ((c=0; c<columns-25; c++)); do
+    for ((c=1; c<columns-26; c++)); do
         echo -ne "${Grey}q"
     done
     echo -ne "${Grey}w"
-    for ((c=columns-23; c<columns-1; c++)); do
+    for ((c=columns-26; c<columns-2; c++)); do
         echo -ne "${Grey}q"
     done
     echo -e "${Grey}k"
 
     # Directory Cells
-    for ((r=0; r<rows-10; r++)); do
+    for ((r=2; r<rows-10; r++)); do
+        cursorpos pos ${r} 0
         echo -ne "${Grey}x"
-        for ((c=0; c<columns-25; c++)); do
-            echo -ne "${Grey} "
-        done
+        cursorpos pos ${r} $((columns-26))
         echo -ne "${Grey}x"
-        for ((c=columns-23; c<columns-1; c++)); do
-            echo -ne "${Grey} "
-        done
+        cursorpos pos ${r} $((columns-1))
         echo -e "${Grey}x"
     done
 
     # Bottom of Directory
     echo -ne "${Grey}t"
-    for ((c=0; c<columns-25; c++)); do
+    for ((c=1; c<columns-26; c++)); do
         echo -ne "${Grey}q"
     done
     echo -ne "${Grey}u"
-    for ((c=columns-23; c<columns-1; c++)); do
+    for ((c=columns-26; c<columns-2; c++)); do
         echo -ne "${Grey} "
     done
     echo -e "${Grey}x"
 
     # File Cells
-    for ((r=0; r<rows-10; r++)); do
+    for ((r=rows-11; r<rows-1; r++)); do
+        cursorpos pos ${r} 0
         echo -ne "${Grey}x"
-        for ((c=0; c<columns-25; c++)); do
-            echo -ne "${Grey} "
-        done
+        cursorpos pos ${r} $((columns-26))
         echo -ne "${Grey}x"
-        for ((c=columns-23; c<columns-1; c++)); do
-            echo -ne "${Grey} "
-        done
+        cursorpos pos ${r} $((columns-1))
         echo -e "${Grey}x"
     done
+
+    # Bottom of Files
+    echo -ne "${Grey}m"
+    for ((c=1; c<columns-26; c++)); do
+        echo -ne "${Grey}q"
+    done
+    echo -ne "${Grey}v"
+    for ((c=columns-26; c<columns-2; c++)); do
+        echo -ne "${Grey}q"
+    done
+    echo -en "${Grey}j"
 
     write
     cnorm
