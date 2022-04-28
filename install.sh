@@ -11,7 +11,6 @@
 
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export scriptLocation
-defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)bin$(config_get dirSeparator)$(config_get eb3InstallationPath)$(config_get dirSeparator)
 
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
 [ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
@@ -20,7 +19,7 @@ defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get 
 
 # Check for a user font folder, if not create folder
 [ ! -d "${eb3_fontPath}" ] && mkdir -p "${eb3_fontPath}"
-
+defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)bin$(config_get dirSeparator)$(config_get eb3InstallationPath)$(config_get dirSeparator)
 
 if [ $? -eq 0 ]; then
 	success "Installation startup" > "${eb3_LogsPath}install.log"
