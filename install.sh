@@ -11,6 +11,7 @@
 
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export scriptLocation
+defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)bin$(config_get dirSeparator)$(config_get eb3InstallationPath)$(config_get dirSeparator)
 
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
 [ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
@@ -72,7 +73,13 @@ elif [ -x "$(command -v pkg)" ]; then
 	done
 else
 	error "No package manager was found" >> "${eb3_LogsPath}install.log"
-	echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packages_Required">&2; 
+	echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: ${packages_Required[*]}">&2; 
 fi
 
 [ -f "${HOME}$(config_get dirSeparator).bashrc" ] && cp "${HOME}$(config_get dirSeparator).bashrc" "${eb3_ConfPath}"
+backup "${HOME}.bashrc"
+
+[ ! -d "${defaultInstallBaseDirectory}" ] && mkdir "${defaultInstallBaseDirectory}"
+rsync -aqr "${scriptLocation}" "${defaultInstallBaseDirectory}"
+
+printf "# Created by Enhanced BASH Installer on $(LC_ALL=C date +'%Y-%m-%d %H:%M:%S')\n# Original .bashrc file is located in ${defaultInstallBaseDirectory}$(config_get eb3VarPath)$(config_get dirSeparator)$(config_get eb3BackupPath)\n\ncase \"\$TERM\" in\n\txterm-color|screen|*-256color)\n\t\t. ${defaultInstallBaseDirectory}bash_system.sh;;\nesac\n" > ~/.bashrc
