@@ -92,4 +92,4 @@ eb3_end_time=$(date +%s.%3N)
 eb3_elapsed=$(echo "scale=3; $eb3_end_time - $eb3_start_time" | bc)
 
 success "EBv3 system preload has completed in ${eb3_elapsed} seconds" >> "${eb3_LogsPath}startup.log"
-echo -e "${Aqua} F1${White} -${Silver} Displays available commands and help"
+# echo -e "${Aqua} F1${White} -${Silver} Displays available commands and help"
