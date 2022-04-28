@@ -1,4 +1,4 @@
-.bashrc
+.bashrc*
 .shellcheckrc
 *.log
 **/cache/*

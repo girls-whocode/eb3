@@ -47,27 +47,31 @@ packages_Required=("jq" "git" "curl" "highlight" "most" "wget" "python3" "python
 
 if [ -x "$(command -v apk)" ]; then
 	for package in "${packages_Required[@]}"; do
-		sudo apk add --no-cache ${package}
+		sudo apk add --no-cache "${package}"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v apt-get)" ]; then
 	for package in "${packages_Required[@]}"; do
-		sudo apt-get install ${package} -y
-		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
+		if [ "" = "${pkg_test}" ]; then
+			echo -e "Installing ${package}"
+			sudo apt-get install "${package}" -y
+			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		fi
 	done
 elif [ -x "$(command -v dnf)" ]; then
 	for package in "${packages_Required[@]}"; do
-		sudo dnf install ${package} -y
+		sudo dnf install "${package}" -y
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v zypper)" ]; then
 	for package in "${packages_Required[@]}"; do
-		sudo zypper install ${package}
+		sudo zypper install "${package}"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v pkg)" ]; then
 	for package in "${packages_Required[@]}"; do
-		sudo pkg install ${package}
+		sudo pkg install "${package}"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 else
@@ -76,9 +80,9 @@ else
 fi
 
 [ -f "${HOME}$(config_get dirSeparator).bashrc" ] && cp "${HOME}$(config_get dirSeparator).bashrc" "${eb3_ConfPath}"
-backup "${HOME}.bashrc"
+backup "${HOME}$(config_get dirSeparator).bashrc"
 
 [ ! -d "${defaultInstallBaseDirectory}" ] && mkdir "${defaultInstallBaseDirectory}"
-rsync -aqr "${scriptLocation}" "${defaultInstallBaseDirectory}"
+rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDirectory}$(config_get dirSeparator)"
 
-printf "# Created by Enhanced BASH Installer on $(LC_ALL=C date +'%Y-%m-%d %H:%M:%S')\n# Original .bashrc file is located in ${defaultInstallBaseDirectory}$(config_get eb3VarPath)$(config_get dirSeparator)$(config_get eb3BackupPath)\n\ncase \"\$TERM\" in\n\txterm-color|screen|*-256color)\n\t\t. ${defaultInstallBaseDirectory}bash_system.sh;;\nesac\n" > ~/.bashrc
+printf "# Created by Enhanced BASH Installer on %s\n# Original .bashrc file is located in %s\n\ncase \"\$TERM\" in\n\txterm-color|screen|*-256color)\n\t\t. %s;;\nesac\n" "$(LC_ALL=C date +'%Y-%m-%d %H:%M:%S')" "${defaultInstallBaseDirectory}$(config_get eb3VarPath)$(config_get dirSeparator)$(config_get eb3BackupPath)" "${defaultInstallBaseDirectory}eb3.sh" > ~/.bashrc
