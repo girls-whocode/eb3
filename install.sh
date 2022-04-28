@@ -44,7 +44,7 @@ for folder in "${eb3_systemFolders[@]}"; do
 	fi
 done
 
-packages_Required=("jq" "git" "curl" "highlight" "most" "wget" "python3" "python3-pip" "zip" "7zip" "rar" "gzip" )
+packages_Required=("jq" "git" "curl" "highlight" "wget" "python3" "python3-pip" "zip" "7zip" "rar" "gzip" )
 
 if [ -x "$(command -v apk)" ]; then
 	for package in "${packages_Required[@]}"; do
