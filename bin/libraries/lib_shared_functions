@@ -28,11 +28,11 @@ function _preload() {
     
     # enable color support of ls and also add handy aliases
     if [ -x /usr/bin/dircolors ]; then
-        if [ "$(test -r "${HOME}$(config_get dirSeparator).dircolors")" ]; then
-            eval "$(dircolors -b "${HOME}$(config_get dirSeparator).dircolors")"
-        else
-            eval "$(dircolors -b)"
-        fi
+        # if [ "$(test -r "${HOME}$(config_get dirSeparator).dircolors")" ]; then
+        #     eval "$(dircolors -b "${HOME}$(config_get dirSeparator).dircolors")"
+        # else
+        #     eval "$(dircolors -b)"
+        # fi
         alias ls='ls --color=auto'
         alias ll='ls -alFh --color=auto'
         alias la='ls -A --color=auto'
@@ -50,7 +50,7 @@ function _preload() {
     alias k='kill'
     alias null='/dev/null'
     alias home='cd ~'
-    alias root='cd /'
+    alias root='cd $(config_get dirSeparator)'
     alias resetperms='sudo chmod -R a=r,u+w,a+X'
     alias nano=v
     alias vi=v
