@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# title					:Enhanced BASH v3
+# description			:
+# author				:Jessica Brown
+# date					:2022-04-21
+# version				:3.0.0
+# usage					:
+# notes					:
+# bash_version	:5.1.16(1)-release
+# ==============================================================================
+
+function _preload() {
+    # Check if an assigned editor has been defined in the .bashrc.
+    if [ -z "$(config_get editor)" ]; then
+        assignedEditor=$(which "vim")
+    else
+        if [[ $(which "$(config_get editor)") ]]; then
+            assignedEditor=$(which "$(config_get editor)")
+        else
+            assignedEditor=$(which "vi")
+        fi
+    fi
+    export assignedEditor
+    export EDITOR=${assignedEditor}
+    export LESS="-iMFXR"
+    export PAGER="/usr/bin/most -s"
+    export HISTIGNORE="&:ls:[bf]g:exit"
+    
+    # enable color support of ls and also add handy aliases
+    if [ -x /usr/bin/dircolors ]; then
+        if [ "$(test -r "${HOME}$(config_get dirSeparator).dircolors")" ]; then
+            eval "$(dircolors -b "${HOME}$(config_get dirSeparator).dircolors")"
+        else
+            eval "$(dircolors -b)"
+        fi
+        alias ls='ls --color=auto'
+        alias ll='ls -alFh --color=auto'
+        alias la='ls -A --color=auto'
+        alias l='ls -CF --color=auto'
+        alias dir='dir --color=auto'
+        alias grep='grep --color=auto'
+        alias lt='du -sh --color=auto * | sort -h'
+    fi
+
+    alias q='exit'
+    alias quit='exit'
+    alias cls='clear'
+    alias c='clear'
+    alias h='history'
+    alias k='kill'
+    alias null='/dev/null'
+    alias home='cd ~'
+    alias root='cd /'
+    alias resetperms='sudo chmod -R a=r,u+w,a+X'
+    alias nano=v
+    alias vi=v
+    alias vim=v
+    alias sysstart="systemctl start"
+    alias sysrestart="systemctl restart"
+    alias sysreload="systemctl reload"
+    alias sysstop="systemctl stop"
+    alias sysstatus="systemctl status"
+    alias viewcode="highlight -O ansi --force "
+    alias please='sudo $(history 2| head -n1 | sed "s/^ [0-9]\+ //")'
+}
