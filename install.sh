@@ -41,6 +41,8 @@ for folder in "${eb3_systemFolders[@]}"; do
 				fi
 			fi
 		done
+	else
+		mkdir -p ${folder}
 	fi
 done
 
@@ -52,6 +54,7 @@ if [ -x "$(command -v apk)" ]; then
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v apt-get)" ]; then
+	sudo apt-get update && sudo apt-get upgrade -y
 	for package in "${packages_Required[@]}"; do
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
