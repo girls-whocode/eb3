@@ -9,7 +9,7 @@
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
 eb3_start_time=$(date +%s.%3N)
-org_prompt=$PS1
+org_prompt=${PS1}
 
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export scriptLocation org_prompt
@@ -62,7 +62,7 @@ shopt -s globstar
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
+case "${TERM}" in
 	xterm-color|*-256color)
 		export color_prompt=yes;;
 esac
@@ -82,11 +82,11 @@ fi
 export SESSION_TYPE="LOCAL"
 
 # Check to see if there is an active SSH or TTY connection and set the SESSION TYPE
-[ -z "$SSH_CLIENT" ] || export SESSION_TYPE="SSH"
-[ -z "$SSH_TTY" ] || export SESSION_TYPE="SSH"
+[ -z "${SSH_CLIENT}" ] || export SESSION_TYPE="SSH"
+[ -z "${SSH_TTY}" ] || export SESSION_TYPE="SSH"
 
 eb3_end_time=$(date +%s.%3N)
-eb3_elapsed=$(echo "scale=3; $eb3_end_time - $eb3_start_time" | bc)
+eb3_elapsed=$(echo "scale=3; ${eb3_end_time} - ${eb3_start_time}" | bc)
 
 _preload
 success "EBv3 system preload has completed in ${eb3_elapsed} seconds" >> "${eb3_LogsPath}startup.log"

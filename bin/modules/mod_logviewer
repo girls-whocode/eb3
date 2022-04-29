@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # title					:Enhanced BASH v3
-# description			:
+# description		:
 # author				:Jessica Brown
 # date					:2022-04-21
 # version				:3.0.0
@@ -10,6 +10,7 @@
 # ==============================================================================
 
 function setPattern() {
+  [ "${1}" ] && info "eb3 function setPattern ${1}"
   compName=$(hostname)
   standardPattern='
       s/\[/\e[1;33m$&\e[0;36m/g; 
@@ -52,45 +53,17 @@ function setPattern() {
 }
 
 function taillog() {
-    if [ "$1" = "--help" ] || [ "$1" = "-h" ] || [ "$1" = "" ]; then
-        help_screen 8 4
-        cursorpos up 21; cursorpos col 30; echo -e "${White}TAIL LOG (version 1.0)"
-        cursorpos down 3; cursorpos col 4; echo -e "${Aqua}taillog ${White}- ${Silver}opens a file and colorizes specific predefined words within the"
-        cursorpos down 1; cursorpos col 4; echo -e "${Silver}files contents. Tail Log will also actively stream any new contents that is"
-        cursorpos down 1; cursorpos col 4; echo -e "${Silver}added to the file."
-        cursorpos down 2; cursorpos col 4; echo -e "${Silver}Another feature is additional search strings may be performed."
-        cursorpos down 2; cursorpos col 4; echo -e "${Maroon}NOTICE: ${White}This is similar to tail -f with color."
-        cursorpos down 3; cursorpos col 4; echo -e "${White}EXAMPLE"
-        cursorpos down 3; cursorpos col 4; echo -e "${Silver}$ ${White}taillog kern.log ${Green}# kern.log will now be displayed with color"
-        cursorpos down 1; cursorpos col 4; echo -e "${Silver}$ ${White}taillog kern.log canonical-livepatch ${Green}# kern.log will now be displayed with"
-        cursorpos down 1; cursorpos col 4; echo -e "${Green}color and highlighted canonical-livepatch${txtReset}"
-        cursorpos down 5
-    else
-      setPattern $2
-      tail -f $1 | perl -pe "$searchPattern"
-      searchPattern=$standardPattern
-    fi
+    [ "${1}" ] && info "eb3 function taillog ${1}"
+    setPattern $2
+    tail -f $1 | perl -pe "$searchPattern"
+    searchPattern=$standardPattern
 }
 
 function viewlog() {
-    if [ "$1" = "--help" ] || [ "$1" = "-h" ] || [ "$1" = "" ]; then
-        help_screen 8 4
-        cursorpos up 21; cursorpos col 30; echo -e "${White}VIEW LOG (version 1.0)"
-        cursorpos down 3; cursorpos col 4; echo -e "${Aqua}viewlog ${White}- ${Silver}opens a file and colorizes specific predefined words within the"
-        cursorpos down 1; cursorpos col 4; echo -e "${Silver}files contents. View Log will not actively stream any new contents that is"
-        cursorpos down 1; cursorpos col 4; echo -e "${Silver}added to the file. View Log may be piped to \`less\` or \`more\` to add pagnation."
-        cursorpos down 2; cursorpos col 4; echo -e "${Silver}Another feature is additional search strings may be performed."
-        cursorpos down 2; cursorpos col 4; echo -e "${Maroon}NOTICE: ${White}This is similar to cat with color."
-        cursorpos down 3; cursorpos col 4; echo -e "${White}EXAMPLE"
-        cursorpos down 3; cursorpos col 4; echo -e "${Silver}$ ${White}viewlog kern.log ${Green}# kern.log will now be displayed with color"
-        cursorpos down 1; cursorpos col 4; echo -e "${Silver}$ ${White}viewlog kern.log canonical-livepatch ${Green}# kern.log will now be displayed with"
-        cursorpos down 1; cursorpos col 4; echo -e "${Green}color and highlighted canonical-livepatch${txtReset}"
-        cursorpos down 5
-    else
-      setPattern $2
-      cat $1 | perl -pe "$searchPattern"
-      searchPattern=$standardPattern
-    fi
+    [ "${1}" ] && info "eb3 function viewlog ${1}"
+    setPattern $2
+    cat $1 | perl -pe "$searchPattern"
+    searchPattern=$standardPattern
 }
 
 success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"
