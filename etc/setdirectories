@@ -19,13 +19,13 @@ eb3_ConfPath=${eb3_EtcPath}$(config_get eb3ConfPath)$(config_get dirSeparator)
 eb3_OptPath=${eb3_EtcPath}$(config_get eb3OptPath)$(config_get dirSeparator)
 eb3_UsrPath=${scriptLocation}$(config_get dirSeparator)$(config_get eb3UsrPath)$(config_get dirSeparator)
 eb3_OverRidesPath=${eb3_UsrPath}$(config_get eb3OverRidePath)$(config_get dirSeparator)
-eb3_ThemesPath=${eb3_UsrPath}$(config_get eb3ThemesPath)$(config_get dirSeparator)
 eb3_VarPath=${scriptLocation}$(config_get dirSeparator)$(config_get eb3VarPath)$(config_get dirSeparator)
 eb3_LogsPath=${eb3_VarPath}$(config_get eb3LogsPath)$(config_get dirSeparator)
 eb3_DirJumpPath=${eb3_VarPath}$(config_get eb3DirJumpPath)$(config_get dirSeparator)
 eb3_BackupPath=${eb3_VarPath}$(config_get eb3BackupPath)$(config_get dirSeparator)
 eb3_LogsPath=${eb3_VarPath}$(config_get eb3LogsPath)$(config_get dirSeparator)
 eb3_fontPath="${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)share$(config_get dirSeparator)fonts$(config_get dirSeparator)"
+eb3_ThemesPath=${eb3_UsrPath}$(config_get eb3ThemesPath)$(config_get dirSeparator)
 eb3_systemFolders=("${eb3_BinPath}" "${eb3_CachePath}" "${eb3_TempPath}" "${eb3_LibPath}" "${eb3_ModPath}" "${eb3_EtcPath}" "${eb3_ConfPath}" "${eb3_OptPath}" "${eb3_UsrPath}" "${eb3_ThemesPath}" "${eb3_VarPath}" "${eb3_LogsPath}" "${eb3_OverRidesPath}" "${eb3_DirJumpPath}" "${eb3_BackupPath}" "${eb3_LogsPath}")
 
-export eb3_BinPath eb3_CachePath eb3_TempPath eb3_LibPath eb3_ModPath eb3_EtcPath eb3_ConfPath eb3_OptPath eb3_UsrPath eb3_OverRidesPath eb3_ThemesPath eb3_VarPath eb3_LogsPath eb3_DirJumpPath eb3_BackupPath eb3_LogsPath eb3_systemFolders eb3_fontPath
+export eb3_BinPath eb3_CachePath eb3_TempPath eb3_LibPath eb3_ModPath eb3_EtcPath eb3_ConfPath eb3_OptPath eb3_UsrPath eb3_OverRidesPath eb3_VarPath eb3_LogsPath eb3_DirJumpPath eb3_BackupPath eb3_LogsPath eb3_systemFolders eb3_fontPath eb3_ThemesPath

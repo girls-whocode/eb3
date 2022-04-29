@@ -1,5 +1,3 @@
-.bashrc
+.bashrc*
 .shellcheckrc
 *.log
-**/cache/*
-**/tmp/*

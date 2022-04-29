@@ -25,7 +25,7 @@ for folder in "${eb3_systemFolders[@]}"; do
 	if [[ -d ${folder} ]]; then
 		for filename in "${folder}"???_*; do
 			if [[ -f ${filename} ]]; then
-				source "${filename}"
+				. "${filename}"
 				if [ $? -eq 0 ]; then
 					success "Loading ${filename}" >> "${eb3_LogsPath}startup.log"
 				else
@@ -67,7 +67,8 @@ shopt -s globstar
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-	xterm-color|*-256color) export color_prompt=yes;;
+	xterm-color|*-256color)
+		export color_prompt=yes;;
 esac
 
 # enable programmable completion features (you don't need to enable
@@ -91,5 +92,6 @@ export SESSION_TYPE="LOCAL"
 eb3_end_time=$(date +%s.%3N)
 eb3_elapsed=$(echo "scale=3; $eb3_end_time - $eb3_start_time" | bc)
 
+_preload
 success "EBv3 system preload has completed in ${eb3_elapsed} seconds" >> "${eb3_LogsPath}startup.log"
-echo -e "${Aqua} F1${White} -${Silver} Displays available commands and help"
+# echo -e "${Aqua} F1${White} -${Silver} Displays available commands and help"
