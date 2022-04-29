@@ -17,6 +17,7 @@ export scriptLocation
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
 [ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
 [ -f "${eb3_BinPath}logprocess" ] && source "${eb3_BinPath}logprocess" || echo "Error loading ${eb3_BinPath}logprocess"
+[ ! -d "${eb3_LogsPath}" ] && mkdir -p "${eb3_LogsPath}"
 [ ! -f "${eb3_LogsPath}install.log" ] && touch "${eb3_LogsPath}install.log"
 
 # Check for a user font folder, if not create folder
