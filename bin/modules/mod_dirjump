@@ -190,3 +190,5 @@ else
 		propose_dir_path
 	}
 fi
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

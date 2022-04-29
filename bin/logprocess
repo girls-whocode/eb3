@@ -47,3 +47,5 @@ function success () {
 log() { printf '%s\n' "$*"; }
 error() { log "ERROR: $*" >&2; }
 fatal() { error "$@"; exit 1; }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

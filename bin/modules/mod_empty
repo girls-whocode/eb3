@@ -17,3 +17,5 @@ function empty() { # Empty or create an existing file
 		touch "$file"
 	fi
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

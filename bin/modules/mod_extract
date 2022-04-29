@@ -43,3 +43,5 @@ function extract() {
         *)           echo "'$ARC' cannot be extracted by $SCRIPTNAME" ;;
     esac
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

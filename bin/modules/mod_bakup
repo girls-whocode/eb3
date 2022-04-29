@@ -31,3 +31,4 @@ function backup() {
         echo "${1} was not found, please check the name and try again."
     fi
 }
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

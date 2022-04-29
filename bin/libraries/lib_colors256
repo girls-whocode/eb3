@@ -33,3 +33,5 @@ function colors256() {
     done
     printf "|\n"
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

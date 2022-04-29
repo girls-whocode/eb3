@@ -28,3 +28,5 @@ function trap_add() {
 function eb3() {
     [ "${1}" == "shutdown" ] && eb3_exit
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

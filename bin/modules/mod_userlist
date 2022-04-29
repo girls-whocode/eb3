@@ -42,3 +42,5 @@ function userlist() {
         # [[ ! ${userid} == "" ]] && printf "$format" "${user}" "${userid}" "${groups[@]}"
     done
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

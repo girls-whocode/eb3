@@ -70,3 +70,5 @@ function xtree() {
     civis
     xtreerunner
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

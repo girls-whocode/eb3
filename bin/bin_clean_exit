@@ -14,3 +14,5 @@ function eb3_exit() {
     source "${eb3_ConfPath}.bashrc"
     echo -e "Enhanced Bash has been terminated"
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

@@ -25,12 +25,8 @@ for folder in "${eb3_systemFolders[@]}"; do
 	if [[ -d ${folder} ]]; then
 		for filename in "${folder}"???_*; do
 			if [[ -f ${filename} ]]; then
+				info "Starting ${filename}" >> "${eb3_LogsPath}startup.log"
 				. "${filename}"
-				if [ $? -eq 0 ]; then
-					success "Loading ${filename}" >> "${eb3_LogsPath}startup.log"
-				else
-					error "Loading ${filename}" >> "${eb3_LogsPath}startup.log"
-				fi
 			fi
 		done
 	fi

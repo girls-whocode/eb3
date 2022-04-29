@@ -24,3 +24,5 @@ function system_folders() {
     echo "${eb3_VarPath}"
     echo "${eb3_LogsPath}"
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

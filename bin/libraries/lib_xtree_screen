@@ -129,3 +129,5 @@ function draw_border() {
     write
     cnorm
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

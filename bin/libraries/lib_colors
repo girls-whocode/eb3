@@ -524,3 +524,5 @@ export Yellow3='\e[38;5;148m'
 export Yellow4='\e[38;5;184m'
 export Yellow5='\e[38;5;100m'
 export Yellow6='\e[38;5;106m'
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

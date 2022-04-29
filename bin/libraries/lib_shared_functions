@@ -63,3 +63,5 @@ function _preload() {
     alias viewcode="highlight -O ansi --force "
     alias please='sudo $(history 2| head -n1 | sed "s/^ [0-9]\+ //")'
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"
