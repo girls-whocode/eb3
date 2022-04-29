@@ -90,7 +90,7 @@ printf "# Created by Enhanced BASH Installer on %s\n# Original .bashrc file is l
 success "New .bashrc creation completed" >> "${eb3_LogsPath}install.log"
 
 # Sync this directory with the new installation directory
-[ ! -d "${defaultInstallBaseDirectory}" ] && mkdir "${defaultInstallBaseDirectory}"
+[ ! -d "${defaultInstallBaseDirectory}" ] && mkdir -p "${defaultInstallBaseDirectory}"
 rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDirectory}$(config_get dirSeparator)"
 
 {
@@ -107,7 +107,7 @@ for rm_file in "${rm_files[@]}"; do
 	rm -rf "${defaultInstallBaseDirectory}$(config_get dirSeparator)${rm_file}"
 done
 
-mv "${scriptLocation}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf.default" "${scriptLocation}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf"
+mv "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf.default" "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf"
 eb3_install_end_time=$(date +%s.%3N)
 eb3_elapsed=$(echo "scale=3; $eb3_install_end_time - $eb3_install_start_time" | bc)
 
