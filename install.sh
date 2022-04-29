@@ -13,6 +13,7 @@ eb3_install_start_time=$(date +%s.%3N)
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export scriptLocation
 
+[ ! -d "${eb3_LogsPath}" ] && mkdir "${eb3_LogsPath}"
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
 [ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
 [ -f "${eb3_BinPath}logprocess" ] && source "${eb3_BinPath}logprocess" || echo "Error loading ${eb3_BinPath}logprocess"
