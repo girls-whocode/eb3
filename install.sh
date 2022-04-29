@@ -107,6 +107,7 @@ for rm_file in "${rm_files[@]}"; do
 	rm -rf "${defaultInstallBaseDirectory}$(config_get dirSeparator)${rm_file}"
 done
 
+mv "${scriptLocation}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf.default" "${scriptLocation}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf"
 eb3_install_end_time=$(date +%s.%3N)
 eb3_elapsed=$(echo "scale=3; $eb3_install_end_time - $eb3_install_start_time" | bc)
 
