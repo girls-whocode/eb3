@@ -12,3 +12,7 @@
 function weather() {
   curl wttr.in
 }
+
+function weather_bar() {
+  while true; do curl -s wttr.in?format=1 -o ${eb3_CachePath}weather; sleep 3600; done &
+}
