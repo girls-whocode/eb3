@@ -78,9 +78,6 @@ if ! shopt -oq posix; then
 	fi
 fi
 
-# Define the session type as Local, then test at the end of the _preload
-export SESSION_TYPE="LOCAL"
-
 # Check to see if there is an active SSH or TTY connection and set the SESSION TYPE
 [ -z "${SSH_CLIENT}" ] || export SESSION_TYPE="SSH"
 [ -z "${SSH_TTY}" ] || export SESSION_TYPE="SSH"

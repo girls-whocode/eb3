@@ -14,5 +14,9 @@ function weather() {
 }
 
 function weather_bar() {
-  while true; do curl -s wttr.in?format=1 -o ${eb3_CachePath}weather; sleep 3600; done &
+  while true; do 
+    curl -s wttr.in?format="%c+%t+%m" -o ${eb3_CachePath}weather; 
+    sleep 3600; 
+    info "Updated weather bar" >> "${eb3_LogsPath}startup.log"
+  done &
 }
