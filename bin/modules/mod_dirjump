@@ -60,7 +60,11 @@ function last_del() {
 function get_nth_path() {
 	# Get dir path of nth line of directory_list
 	# Source: https://stackoverflow.com/a/27056916/9157799
-	echo "$(awk -v line=${1} 'NR==line' "${directory_list}")"
+	if [ "${1}" == 0 ]; then
+		echo "${HOME}"
+	else
+		echo "$(awk -v line=${1} 'NR==line' "${directory_list}")"
+	fi
 }
 
 function apply_max_limit_to_history() {
@@ -122,7 +126,7 @@ function eb3_dirjump() {
 	fi
 
 	# if the requested path number is not out of range
-	if [[ $1 -le $(number_of_dir_paths) ]] && [[ $1 -ge 1 ]]; then
+	if [[ $1 -le $(number_of_dir_paths) ]] && [[ $1 -ge 0 ]]; then
 		cd "$(get_nth_path $1)"
 	else
 		echo "dirjump: the requested dir path number is out of range"
