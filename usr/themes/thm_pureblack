@@ -74,9 +74,9 @@ else
         fi
 
         if [ ${UID} -eq 0 ]; then
-            WG_CMD="#"
+            WG_CMD=" # "
         else
-            WG_CMD="\$"
+            WG_CMD=" \$ "
         fi
 
         # WG_ERROR_CODE
