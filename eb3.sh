@@ -47,7 +47,7 @@ fi
 if [[ ${historyControl} == "" ]]; then
 	shopt -s histappend
 else
-	shopt -s ${historyAppend}
+	shopt -s "${historyAppend}"
 fi
 
 # check the window size after each command and, if necessary,
