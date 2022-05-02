@@ -23,7 +23,7 @@ I have been borrowing other peoples scripts, building my own script, using diffe
 | [<img src="./documents/assets/icons/applications_system.png" />](./documents/over-rides.md) [Over Rides](./documents/over-rides.md)  |  [<img src="./documents/assets/icons/document_properties.png" />](./documents/logs.md) [Logs](./documents/logs.md)  |  [<img src="./documents/assets/icons/generic_package.png" />](./documents/installation.md) [Installation](./documents/installation.md) |
 
 ___
->>>
+>
 ## References
 >
 - This document leveraged heavily from the [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
@@ -31,5 +31,5 @@ ___
   at Daring Firebal${historyAppend}l is an excellent resource for a detailed explanation of standard Markdown.
 - The detailed specification for CommonMark can be found in the [CommonMark Spec](https://spec.commonmark.org/current/)
 - The [CommonMark Dingus](http://try.commonmark.org) is a handy tool for testing CommonMark syntax.
->>>
+>
 ___
