@@ -10,10 +10,11 @@
 # ==============================================================================
 
 function _preload() {
-    export EDITOR="$(config_get editor)"
+    EDITOR="$(config_get editor)"
     export LESS="-iMFXR"
     export PAGER="/usr/bin/less"
     export HISTIGNORE="&:ls:[bf]g:exit"
+    export EDITOR
     
     # enable color support of ls and also add handy aliases
     if [ -x /usr/bin/dircolors ]; then

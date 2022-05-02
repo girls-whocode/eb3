@@ -61,7 +61,7 @@ function write() {
 }
 
 function screen_size() {
-    if [[ "$(tput lines) $(tput cols)" != "$rows $columns" ]]; then
+    if [[ "$(tput lines) $(tput cols)" != "${rows} ${columns}" ]]; then
         draw_border
     fi
 
