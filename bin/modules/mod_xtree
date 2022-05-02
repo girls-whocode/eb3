@@ -11,8 +11,6 @@
 
 # This will be my fun activity, let's recreate XTree Gold for Linux with all of
 # its former glory!
-trap 'refresh_screen' WINCH
-
 function create_screen() {
     screen_size
     echo -en "Current Path: ${White}${PWD}${txtReset}"
@@ -66,6 +64,7 @@ function xtreerunner() {
 }
 
 function xtree() {
+    trap 'refresh_screen' WINCH
     clear
     civis
     xtreerunner
