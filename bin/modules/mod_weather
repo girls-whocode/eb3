@@ -20,3 +20,8 @@ function weather_bar() {
     info "Updated weather bar" >> "${eb3_LogsPath}startup.log"
   done &
 }
+
+function weather_update() {
+  curl -s wttr.in?format="%c+%t+%m" -o ${eb3_CachePath}weather;
+  info "Updated weather bar" >> "${eb3_LogsPath}startup.log"
+}
