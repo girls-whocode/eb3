@@ -10,18 +10,7 @@
 # ==============================================================================
 
 function _preload() {
-    # Check if an assigned editor has been defined in the .bashrc.
-    if [ -z "$(config_get editor)" ]; then
-        assignedEditor=$(which "vim")
-    else
-        if [[ $(which "$(config_get editor)") ]]; then
-            assignedEditor=$(which "$(config_get editor)")
-        else
-            assignedEditor=$(which "vi")
-        fi
-    fi
-    export assignedEditor
-    export EDITOR=${assignedEditor}
+    export EDITOR="$(config_get editor)"
     export LESS="-iMFXR"
     export PAGER="/usr/bin/less"
     export HISTIGNORE="&:ls:[bf]g:exit"
@@ -52,9 +41,10 @@ function _preload() {
     alias home='cd ~'
     alias root='cd $(config_get dirSeparator)'
     alias resetperms='sudo chmod -R a=r,u+w,a+X'
-    alias nano=v
-    alias vi=v
-    alias vim=v
+    alias nano="$(config_get editor)"
+    alias v="$(config_get editor)"
+    alias vi="$(config_get editor)"
+    alias vim="$(config_get editor)"
     alias sysstart="systemctl start"
     alias sysrestart="systemctl restart"
     alias sysreload="systemctl reload"
