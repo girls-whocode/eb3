@@ -44,7 +44,7 @@ for folder in "${eb3_systemFolders[@]}"; do
 			fi
 		done
 	else
-		mkdir -p ${folder}
+		mkdir -p "${folder}"
 	fi
 done
 
