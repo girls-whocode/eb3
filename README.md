@@ -24,12 +24,11 @@ I have been borrowing other peoples scripts, building my own script, using diffe
 
 ___
 >
-## References
+>## References
 >
-- This document leveraged heavily from the [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
-- The original [Markdown Syntax Guide](https://daringfireball.net/projects/markdown/syntax)
-  at Daring Firebal${historyAppend}l is an excellent resource for a detailed explanation of standard Markdown.
-- The detailed specification for CommonMark can be found in the [CommonMark Spec](https://spec.commonmark.org/current/)
-- The [CommonMark Dingus](http://try.commonmark.org) is a handy tool for testing CommonMark syntax.
+>- This document leveraged heavily from the [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+>- The original [Markdown Syntax Guide](https://daringfireball.net/projects/markdown/syntax) at Daring Fireball is an excellent resource for a detailed explanation of standard Markdown.
+>- The detailed specification for CommonMark can be found in the [CommonMark Spec](https://spec.commonmark.org/current/)
+>- The [CommonMark Dingus](http://try.commonmark.org) is a handy tool for testing CommonMark syntax.
 >
 ___
