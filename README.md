@@ -16,19 +16,19 @@ I have been borrowing other peoples scripts, building my own script, using diffe
 
 ## Help Topics Menu
 
-|   |   |   |
-|---|---|---|
-| [<img src="./documents/assets/icons/browser_help.png">](./documents/help-arguments.md) [Help arguments](./documents/help-arguments.md)  |  [<img src="./documents/assets/icons/terminal_utilities.png" />](./documents/help-screen.md) [Help Screen](./documents/help-screen.md)  |  [<img src="./documents/assets/icons/system_users.png">](./documents/contributing.md) [Contributing](./documents/contributing.md)  |
-| [<img src="./documents/assets/icons/alias.png" />](./documents/aliases.md) [Aliases](./documents/aliases.md)                            |  [<img src="./documents/assets/icons/application_executable.png" />](./documents/modules.md) [Modules](./documents/modules.md) | [<img src="./documents/assets/icons/applications_other.png" />](./documents/libraries.md) [Libraries](./documents/libraries.md)  |
-| [<img src="./documents/assets/icons/applications_system.png" />](./documents/over-rides.md) [Over Rides](./documents/over-rides.md)  |  [<img src="./documents/assets/icons/document_properties.png" />](./documents/logs.md) [Logs](./documents/logs.md)  |  [<img src="./documents/assets/icons/generic_package.png" />](./documents/installation.md) [Installation](./documents/installation.md) |
+|                                                                                                                                        |                                                                                                                                       |                                                                                                                                       |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| [<img src="./documents/assets/icons/browser_help.png">](./documents/help-arguments.md) [Help arguments](./documents/help-arguments.md) | [<img src="./documents/assets/icons/terminal_utilities.png" />](./documents/help-screen.md) [Help Screen](./documents/help-screen.md) | [<img src="./documents/assets/icons/system_users.png">](./documents/contributing.md) [Contributing](./documents/contributing.md)      |
+| [<img src="./documents/assets/icons/alias.png" />](./documents/aliases.md) [Aliases](./documents/aliases.md)                           | [<img src="./documents/assets/icons/application_executable.png" />](./documents/modules.md) [Modules](./documents/modules.md)         | [<img src="./documents/assets/icons/applications_other.png" />](./documents/libraries.md) [Libraries](./documents/libraries.md)       |
+| [<img src="./documents/assets/icons/applications_system.png" />](./documents/over-rides.md) [Over Rides](./documents/over-rides.md)    | [<img src="./documents/assets/icons/document_properties.png" />](./documents/logs.md) [Logs](./documents/logs.md)                     | [<img src="./documents/assets/icons/generic_package.png" />](./documents/installation.md) [Installation](./documents/installation.md) |
 
-___
+* * *
+
+> ## References
 >
->## References
+> -   This document leveraged heavily from the [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+> -   The original [Markdown Syntax Guide](https://daringfireball.net/projects/markdown/syntax) at Daring Fireball is an excellent resource for a detailed explanation of standard Markdown.
+> -   The detailed specification for CommonMark can be found in the [CommonMark Spec](https://spec.commonmark.org/current/)
+> -   The [CommonMark Dingus](http://try.commonmark.org) is a handy tool for testing CommonMark syntax.
 >
->- This document leveraged heavily from the [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
->- The original [Markdown Syntax Guide](https://daringfireball.net/projects/markdown/syntax) at Daring Fireball is an excellent resource for a detailed explanation of standard Markdown.
->- The detailed specification for CommonMark can be found in the [CommonMark Spec](https://spec.commonmark.org/current/)
->- The [CommonMark Dingus](http://try.commonmark.org) is a handy tool for testing CommonMark syntax.
->
-___
+> * * *
