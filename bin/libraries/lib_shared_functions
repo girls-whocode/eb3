@@ -23,7 +23,7 @@ function _preload() {
     export assignedEditor
     export EDITOR=${assignedEditor}
     export LESS="-iMFXR"
-    export PAGER="/usr/bin/most -s"
+    export PAGER="/usr/bin/less"
     export HISTIGNORE="&:ls:[bf]g:exit"
     
     # enable color support of ls and also add handy aliases
