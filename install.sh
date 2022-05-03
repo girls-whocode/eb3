@@ -127,7 +127,7 @@ rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDi
 }  >> "${eb3_LogsPath}install.log"
 
 # Remove files unneeded in the installation folder
-rm_files=(".git" ".gitignore" ".shellcheckrc" "install.sh" ".github" ".dist")
+rm_files=(".git" ".gitignore" ".shellcheckrc" "install.sh" ".github" ".dist" "${defaultInstallBaseDirectory}bin/cache/.gitkeep" "${defaultInstallBaseDirectory}var/logs/.gitkeep" "${defaultInstallBaseDirectory}usr/overrides/.gitkeep" "${defaultInstallBaseDirectory}var/backup/.gitkeep" "${defaultInstallBaseDirectory}var/dirjump/.gitkeep")
 for rm_file in "${rm_files[@]}"; do
 	success "Cleanup file ${rm_file}" >> "${eb3_LogsPath}install.log"
 	rm -rf "${defaultInstallBaseDirectory}$(config_get dirSeparator)${rm_file}"
