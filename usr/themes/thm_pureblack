@@ -19,17 +19,6 @@ export LESS_TERMCAP_so
 export LESS_TERMCAP_ue
 export LESS_TERMCAP_us
 
-# Install fonts if needed
-if [ ! -f "${eb3_fontPath}PowerlineSymbols.otf" ]; then
-    info "Installing Powerline Font for Theme PureBlack" >> "${eb3_LogsPath}startup.log"
-    wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
-    wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf
-    mv "PowerlineSymbols.otf" "${eb3_fontPath}"
-    mv "10-powerline-symbols.conf" "${eb3_fontPath}"
-    fc-cache -vf ~/.local/share/fonts/
-    pip install --user powerline-status
-fi
-
 # Apply only if terminal supports 8-bit colors
 if [ "${TERM}" != "xterm-256color" ]; then
     if [ ${UID} -eq 0 ]; then

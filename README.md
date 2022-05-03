@@ -18,7 +18,7 @@ I have been borrowing other peoples scripts, building my own script, using diffe
 ```sh
 git clone https://github.com/girls-whocode/eb3.git
 cd eb3
-./install # sudo will be required to install the dependancy files and update the package list
+./install.sh # sudo will be required to install the dependancy files and update the package list
 # close and reopen terminal
 ```
 
