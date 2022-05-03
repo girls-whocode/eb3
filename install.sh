@@ -61,7 +61,7 @@ if [ -x "$(command -v apk)" ]; then
 	done
 elif [ -x "$(command -v apt-get)" ]; then
 	# Make sure the system is up to date
-	sudo apt-get -qqq update
+	sudo apt-get -yqqq update
 
 	# Start the installation of the packages_Required
 	# TODO: I would like to make this quite and put everything in the logs, turn this into a progress bar for a cleaner look
@@ -69,7 +69,7 @@ elif [ -x "$(command -v apt-get)" ]; then
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
 			echo -e "Installing ${package}"
-			sudo apt-get -qqq install "${package}" -y
+			sudo apt-get -yqqq install "${package}"
 			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 		else
 			info "Package ${package} already installed" >> "${eb3_LogsPath}install.log"
