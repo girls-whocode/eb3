@@ -8,22 +8,26 @@
 # notes					:
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
+
+# Start a timer to evaluate for total time to install
 eb3_install_start_time=$(date +%s.%3N)
 
+# Get the currently location of this script
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export scriptLocation
 
-[ ! -d "${eb3_LogsPath}" ] && mkdir "${eb3_LogsPath}"
-[ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
-[ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
-[ -f "${eb3_BinPath}logprocess" ] && source "${eb3_BinPath}logprocess" || echo "Error loading ${eb3_BinPath}logprocess"
+# Make folders and test for files before we begin
 [ ! -d "${eb3_LogsPath}" ] && mkdir -p "${eb3_LogsPath}"
+[ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"; exit 127
+[ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"; exit 127
+[ -f "${eb3_BinPath}logprocess" ] && source "${eb3_BinPath}logprocess" || echo "Error loading ${eb3_BinPath}logprocess"; exit 127
 [ ! -f "${eb3_LogsPath}install.log" ] && touch "${eb3_LogsPath}install.log"
 
 # Check for a user font folder, if not create folder
 [ ! -d "${eb3_fontPath}" ] && mkdir -p "${eb3_fontPath}"
 defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)bin$(config_get dirSeparator)$(config_get eb3InstallationPath)$(config_get dirSeparator)
 
+# Test for error or success then tattle on it
 if [ $? -eq 0 ]; then
 	success "Installation startup" > "${eb3_LogsPath}install.log"
 else 
@@ -56,13 +60,19 @@ if [ -x "$(command -v apk)" ]; then
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v apt-get)" ]; then
-	sudo apt-get update && sudo apt-get upgrade -y
+	# Make sure the system is up to date
+	sudo apt-get update
+
+	# Start the installation of the packages_Required
+	# TODO: I would like to make this quite and put everything in the logs, turn this into a progress bar for a cleaner look
 	for package in "${packages_Required[@]}"; do
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
 			echo -e "Installing ${package}"
 			sudo apt-get install "${package}" -y
 			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		else
+			info "Package ${package} already installed" >> "${eb3_LogsPath}install.log"
 		fi
 	done
 elif [ -x "$(command -v dnf)" ]; then
@@ -81,6 +91,7 @@ elif [ -x "$(command -v pkg)" ]; then
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 else
+	# TODO: I saw somewhere a manual installer, will look into adding that later
 	error "No package manager was found" >> "${eb3_LogsPath}install.log"
 	echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: ${packages_Required[*]}">&2; 
 fi
@@ -106,15 +117,19 @@ rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDi
 }  >> "${eb3_LogsPath}install.log"
 
 # Remove files unneeded in the installation folder
-rm_files=(".git" ".gitignore" ".shellcheckrc" "install.sh")
+rm_files=(".git" ".gitignore" ".shellcheckrc" "install.sh" ".github" ".dist")
 for rm_file in "${rm_files[@]}"; do
 	success "Cleanup file ${rm_file}" >> "${eb3_LogsPath}install.log"
 	rm -rf "${defaultInstallBaseDirectory}$(config_get dirSeparator)${rm_file}"
 done
 
-printf "%s {\n\tsu %s %s\n\tnotifempty\n\tcopytruncate\n\tweekly\n\trotate 52\n\tcompress\n\tmissingok\n}" "${defaultInstallBaseDirectory}var$(config_get dirSeparator)logs$(config_get dirSeparator)startup.log" "${USER}" "${USER}" | sudo tee "$(config_get dirSeparator)etc$(config_get dirSeparator)logrotate.d$(config_get dirSeparator)eb3"
+# Create the logrotate file
+printf "%s {\n\tsu %s %s\n\tnotifempty\n\tcopytruncate\n\tweekly\n\trotate 52\n\tcompress\n\tmissingok\n}\n" "${defaultInstallBaseDirectory}var$(config_get dirSeparator)logs$(config_get dirSeparator)startup.log" "${USER}" "${USER}" | sudo tee "$(config_get dirSeparator)etc$(config_get dirSeparator)logrotate.d$(config_get dirSeparator)eb3"
+
+# Create the basic eb3.conf file
 mv "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf.default" "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf"
 
+# Get the timer end time
 eb3_install_end_time=$(date +%s.%3N)
 eb3_elapsed=$(echo "scale=3; $eb3_install_end_time - $eb3_install_start_time" | bc)
 
