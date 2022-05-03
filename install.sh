@@ -62,6 +62,11 @@ if [ -x "$(command -v apk)" ]; then
 elif [ -x "$(command -v apt-get)" ]; then
 	# Make sure the system is up to date
 	sudo apt-get -yqqq update
+	if [ $? -eq 0 ]; then
+		success "APT-GET Update was successfuly during installation" >> "${eb3_LogsPath}install.log"
+	else
+		error "APT-GET Update failed during installation" >> "${eb3_LogsPath}install.log"
+	fi
 
 	# Start the installation of the packages_Required
 	# TODO: I would like to make this quite and put everything in the logs, turn this into a progress bar for a cleaner look
@@ -69,8 +74,13 @@ elif [ -x "$(command -v apt-get)" ]; then
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
 			echo -e "Installing ${package}"
+			info "Installing ${package}" >> "${eb3_LogsPath}install.log"
 			sudo apt-get -yqqq install "${package}"
-			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+			if [ $? -eq 0 ]; then
+				success "Installed ${package}" >> "${eb3_LogsPath}install.log"
+			else
+				error "Failed installing ${package}" >> "${eb3_LogsPath}install.log"
+			fi
 		else
 			info "Package ${package} already installed" >> "${eb3_LogsPath}install.log"
 		fi
