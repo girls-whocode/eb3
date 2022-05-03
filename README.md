@@ -14,6 +14,14 @@ Something very important to say here, although I have came up with the concept o
 
 I have been borrowing other peoples scripts, building my own script, using different environments for root, development and it seems like my Linux commands would change and then I would forget, and then I feel like a noob scouring the net to find the right argument for this particular distro and version. I wanted to have the ability to have a configuration file that can be easily modified when I change locations or servers I do not have to modify the code in a million different places to match my location. I work in one city and live in another, one of my modules is a nice little weather and calendar function. By changing the city in the config file updates all of my other geo-location information.
 
+## Installation
+```sh
+git clone https://github.com/girls-whocode/eb3.git
+cd eb3
+./install # sudo will be required to install the dependancy files and update the package list
+# close and reopen terminal
+```
+
 ## Help Topics Menu
 
 |                                                                                                                                        |                                                                                                                                       |                                                                                                                                       |
