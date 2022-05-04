@@ -1,6 +1,6 @@
 # Modular and Library enforced BASH Environment
 
-The entire documentation can be found in the [Wiki](wiki/Home.md)
+The entire documentation can be found in the [Wiki](../../wiki/Home)
 
 ## What is this?
 
