@@ -25,9 +25,11 @@ export scriptLocation
 
 # Check for a user font folder, if not create folder
 [ ! -d "${eb3_fontPath}" ] && mkdir -p "${eb3_fontPath}"
+
+# Currently this is a fixed location to install the system
 defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)bin$(config_get dirSeparator)$(config_get eb3InstallationPath)$(config_get dirSeparator)
 
-# Test for error or success then tattle on it
+# Check for any errors and tattle on it
 if [ $? -eq 0 ]; then
 	success "Installation startup" > "${eb3_LogsPath}install.log"
 else 
@@ -133,8 +135,8 @@ for rm_file in "${rm_files[@]}"; do
 	rm -rf "${defaultInstallBaseDirectory}$(config_get dirSeparator)${rm_file}"
 done
 
-# Create the logrotate file
-printf "%s {\n\tsu %s %s\n\tnotifempty\n\tcopytruncate\n\tweekly\n\trotate 52\n\tcompress\n\tmissingok\n}\n" "${defaultInstallBaseDirectory}var$(config_get dirSeparator)logs$(config_get dirSeparator)startup.log" "${USER}" "${USER}" | sudo tee "$(config_get dirSeparator)etc$(config_get dirSeparator)logrotate.d$(config_get dirSeparator)eb3" >/dev/null
+# Create the logrotate file for each user
+printf "%s {\n\tsu %s %s\n\tnotifempty\n\tcopytruncate\n\tweekly\n\trotate 52\n\tcompress\n\tmissingok\n}\n" "${defaultInstallBaseDirectory}var$(config_get dirSeparator)logs$(config_get dirSeparator)startup.log" "${USER}" "${USER}" | sudo tee "$(config_get dirSeparator)etc$(config_get dirSeparator)logrotate.d$(config_get dirSeparator)eb3_${USER}" >/dev/null
 if [ $? -eq 0 ]; then
 	success "LogRotate Config file created during installation" >> "${eb3_LogsPath}install.log"
 else
@@ -148,6 +150,7 @@ mv "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirS
 eb3_install_end_time=$(date +%s.%3N)
 eb3_elapsed=$(echo "scale=3; $eb3_install_end_time - $eb3_install_start_time" | bc)
 
+# Report the completion of the system install
 success "EBv3 system installation has completed in ${eb3_elapsed} seconds" >> "${eb3_LogsPath}install.log"
 echo -e "${Red}EBv3${txtReset} system installation has completed in ${Cyan}${eb3_elapsed}${txtReset} seconds"
 echo -e "You may view the installation log located at: ${eb3_LogsPath}install.log"
