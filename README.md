@@ -1,5 +1,7 @@
 # Modular and Library enforced BASH Environment
 
+The entire documentation can be found in the [[Wiki|WikiPage]]
+
 ## What is this?
 
 **eb3** (Enhanced BASH v3), started in theory and became several mini scripts cluttered throughout my directory structure for easy quick commands to run routine tasks as a system administrator; whereas now **eb3** has evolved over a long period of time for ease of use, manulipation, and portability. Although this particular version is still fairly new, over the past decade I have been collecting, building, customizing and designing scripts to make the terminal experience easier to use by reducing mundane commands with long arguments as well as make it universal between different distributions of Linux as possible.
@@ -30,4 +32,3 @@ cd eb3
 > - The detailed specification for CommonMark can be found in the [CommonMark Spec](https://spec.commonmark.org/current/)
 > - The [CommonMark Dingus](http://try.commonmark.org) is a handy tool for testing CommonMark syntax.
 >
-> * * *
