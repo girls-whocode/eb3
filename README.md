@@ -18,7 +18,7 @@ I have been borrowing other peoples scripts, building my own script, using diffe
 
 ## Installation
 
-[Installation documentation](wiki/Installation)
+[Installation documentation](../../wiki/Installation)
 
 ```sh
 git clone https://github.com/girls-whocode/eb3.git
