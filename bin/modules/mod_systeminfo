@@ -10,13 +10,8 @@
 # ==============================================================================
 
 function systeminfo() {
-  if test -r /etc/os-release; then
-      . /etc/os-release
-  else
-      . /usr/lib/os-release
-  fi
-  # cat /etc/os-release | grep 'NAME\|VERSION' | grep -v 'VERSION_ID' | grep -v 'PRETTY_NAME' > ${eb3_TempPath}osrelease
-  
+  if test -r /etc/os-release; then . /etc/os-release else . /usr/lib/os-release; fi
+
   who>${eb3_TempPath}who
   free -h | grep -v + > ${eb3_TempPath}ramcache
   df -h| grep 'Filesystem\|/dev/sda*' > ${eb3_TempPath}diskusage
@@ -25,6 +20,7 @@ function systeminfo() {
   eb3_connected=$(ping -c 1 google.com &> /dev/null && echo -e "${Green}Connected" || echo -e "${Red}Disconnected")
   
   # Check OS Type, Name, Version, Architecture, Kernel, Hostname, Internal IP, External IP, Nameserver, Swap, Memory, Disk Usage, Load Average, Uptime
+  
   eb3_os=$(uname -o)
   eb3_os_name=${PRETTY_NAME}
   eb3_os_ver=${VERSION_ID}
