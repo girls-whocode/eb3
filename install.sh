@@ -54,7 +54,7 @@ for folder in "${eb3_systemFolders[@]}"; do
 	fi
 done
 
-packages_Required=("jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "whiptail")
+packages_Required=("jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python-is-python3")
 
 if [ -x "$(command -v apk)" ]; then
 	for package in "${packages_Required[@]}"; do
@@ -107,6 +107,8 @@ else
 	error "No package manager was found" >> "${eb3_LogsPath}install.log"
 	echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: ${packages_Required[*]}">&2; 
 fi
+
+python -m pip install pyautogui >> "${eb3_LogsPath}install.log"
 
 # Create the installation directory and backup the original .bashrc file
 [ -f "${HOME}$(config_get dirSeparator).bashrc" ] && cp "${HOME}$(config_get dirSeparator).bashrc" "${eb3_ConfPath}"
