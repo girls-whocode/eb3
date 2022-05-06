@@ -43,8 +43,8 @@ else
     export PROMPT_COMMAND='
         ERR_CODE=$?
 
-        if [ -f ${eb3_CachePath}weather ]; then
-            WG_WEATHER=$(cat ${eb3_CachePath}weather)
+        if [ -f "${eb3_CachePath}weather" ]; then
+            WG_WEATHER="$(cat ${eb3_CachePath}weather)"
         else
             WG_WEATHER="Loading Weather..."
         fi
