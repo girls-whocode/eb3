@@ -53,17 +53,24 @@ function setPattern() {
 }
 
 function taillog() {
-    [ "${1}" ] && info "eb3 function taillog ${1}"
-    setPattern $2
-    tail -f $1 | perl -pe "$searchPattern"
-    searchPattern=$standardPattern
+  [ "${1}" ] && info "eb3 function taillog ${1}" >> "${eb3_LogsPath}startup.log"
+  setPattern $2
+  tail -f $1 | perl -pe "$searchPattern"
+  searchPattern=$standardPattern
 }
 
 function viewlog() {
-    [ "${1}" ] && info "eb3 function viewlog ${1}"
-    setPattern $2
-    cat $1 | perl -pe "$searchPattern"
-    searchPattern=$standardPattern
+  [ "${1}" ] && info "eb3 function viewlog ${1}" >> "${eb3_LogsPath}startup.log"
+  setPattern $2
+  cat $1 | perl -pe "$searchPattern"
+  searchPattern=$standardPattern
+}
+
+function eb3log() {
+  [ "${1}" ] && info "eb3 function eb3logs ${1}" >> "${eb3_LogsPath}startup.log"
+  setPattern $2
+  cat "${eb3_LogsPath}startup.log" | perl -pe "$searchPattern" | more
+  searchPattern=$standardPattern
 }
 
 success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"
