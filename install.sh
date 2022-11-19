@@ -20,6 +20,10 @@ export scriptLocation
 [ ! -d "${scriptLocation}/var/logs" ] && mkdir -p "${scriptLocation}/var/logs"
 [ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
 [ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3f52c6 (Modified install.sh with bug fixes)
 [ -f "${eb3_BinPath}logprocess" ] && source "${eb3_BinPath}logprocess" || echo "Error loading ${eb3_BinPath}logprocess"
 [ ! -f "${eb3_LogsPath}install.log" ] && touch "${eb3_LogsPath}install.log"
 
@@ -54,6 +58,10 @@ for folder in "${eb3_systemFolders[@]}"; do
 	fi
 done
 
+<<<<<<< HEAD
+=======
+# TODO: Some packages are named differently for different distros. This needs corrected
+>>>>>>> f3f52c6 (Modified install.sh with bug fixes)
 packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 
 if [ -x "$(command -v apk)" ]; then
