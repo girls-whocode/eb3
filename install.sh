@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # title					:Enhanced BASH v3
 # description		:
 # author				:Jessica Brown
@@ -16,29 +16,44 @@ eb3_install_start_time=$(date +%s.%3N)
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export scriptLocation
 
-# Make folders and test for files before we begin
-[ ! -d "${scriptLocation}/var/logs" ] && mkdir -p "${scriptLocation}/var/logs"
-[ -f "${scriptLocation}/etc/conf/collector.shlib" ] && source "${scriptLocation}/etc/conf/collector.shlib" || echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
-[ -f "${scriptLocation}/etc/setdirectories" ] && source "${scriptLocation}/etc/setdirectories" || echo "Error loading ${scriptLocation}/etc/setdirectories"
-<<<<<<< HEAD
-=======
+# Make folders, test and load files each step listed below in order
+# Check for logs folder to place the installation log, if not create folder
+# Check for a user font folder, if not create folder
+# if the install.log file does not exist, create it
+# load the collector shlib file to source all conf files
+# set all configured directories
+# load the log process function
 
->>>>>>> f3f52c6 (Modified install.sh with bug fixes)
-[ -f "${eb3_BinPath}logprocess" ] && source "${eb3_BinPath}logprocess" || echo "Error loading ${eb3_BinPath}logprocess"
+[ ! -d "${scriptLocation}/var/logs" ] && mkdir -p "${scriptLocation}/var/logs"
+[ ! -d "${eb3_fontPath}" ] && mkdir -p "${eb3_fontPath}"
 [ ! -f "${eb3_LogsPath}install.log" ] && touch "${eb3_LogsPath}install.log"
 
-# Check for a user font folder, if not create folder
-[ ! -d "${eb3_fontPath}" ] && mkdir -p "${eb3_fontPath}"
+if [ -f "${scriptLocation}/etc/conf/collector.shlib" ]; then 
+	source "${scriptLocation}/etc/conf/collector.shlib"
+else 
+	echo "Error loading ${scriptLocation}/etc/conf/collector.shlib"
+	exit 128
+fi
+
+if [ -f "${scriptLocation}/etc/setdirectories" ]; then
+	source "${scriptLocation}/etc/setdirectories" 
+else 
+	echo "Error loading ${scriptLocation}/etc/setdirectories"
+	exit 128
+fi
+
+if [ -f "${eb3_BinPath}logprocess" ]; then
+	source "${eb3_BinPath}logprocess"
+else 
+	echo "Error loading ${eb3_BinPath}logprocess"
+	exit 128
+fi
 
 # Currently this is a fixed location to install the system
+# TODO: Allow user to decide where to install the eb3 system
 defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)bin$(config_get dirSeparator)$(config_get eb3InstallationPath)$(config_get dirSeparator)
 
-# Check for any errors and tattle on it
-if [ $? -eq 0 ]; then
-	success "Installation startup" > "${eb3_LogsPath}install.log"
-else 
-	error "Installation startup" > "${eb3_LogsPath}install.log"
-fi
+success "Installation startup" > "${eb3_LogsPath}install.log"
 
 # Source load each file for testing with in the current environment being installed
 for folder in "${eb3_systemFolders[@]}"; do
@@ -46,11 +61,8 @@ for folder in "${eb3_systemFolders[@]}"; do
 		for filename in "${folder}"???_*; do
 			if [[ -f ${filename} ]]; then
 				source "${filename}"
-				if [ $? -eq 0 ]; then
-					success "Loading ${filename}" >> "${eb3_LogsPath}install.log"
-				else
-					error "Loading ${filename}" >> "${eb3_LogsPath}install.log"
-				fi
+				# Check for any errors and tattle on it
+				[ $? -eq 0 ] && success "Loading ${filename}" >> "${eb3_LogsPath}install.log" || error "Loading ${filename}" >> "${eb3_LogsPath}install.log"
 			fi
 		done
 	else
@@ -58,18 +70,16 @@ for folder in "${eb3_systemFolders[@]}"; do
 	fi
 done
 
-<<<<<<< HEAD
-=======
-# TODO: Some packages are named differently for different distros. This needs corrected
->>>>>>> f3f52c6 (Modified install.sh with bug fixes)
-packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
-
 if [ -x "$(command -v apk)" ]; then
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
+	success "Installing with $(command -v apk)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo apk add --no-cache "${package}"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v apt-get)" ]; then
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
+	success "Installing with $(command -v apt-get)" >> "${eb3_LogsPath}install.log"
 	# Make sure the system is up to date
 	sudo apt-get -yqqq update
 	if [ $? -eq 0 ]; then
@@ -96,16 +106,22 @@ elif [ -x "$(command -v apt-get)" ]; then
 		fi
 	done
 elif [ -x "$(command -v dnf)" ]; then
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
+	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo dnf install "${package}" -y
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v zypper)" ]; then
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk")
+	success "Installing with $(command -v zypper)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		sudo zypper install "${package}"
+		sudo zypper install "${package}" -y
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v pkg)" ]; then
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
+	success "Installing with $(command -v pkg)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo pkg install "${package}"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
@@ -116,8 +132,8 @@ else
 	echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: ${packages_Required[*]}">&2; 
 fi
 
-python -m pip install pyautogui >> "${eb3_LogsPath}install.log"
-python -m pip install rich >> "${eb3_LogsPath}install.log"
+python3 -m pip install pyautogui >> "${eb3_LogsPath}install.log"
+python3 -m pip install rich >> "${eb3_LogsPath}install.log"
 
 # Create the installation directory and backup the original .bashrc file
 [ -f "${HOME}$(config_get dirSeparator).bashrc" ] && cp "${HOME}$(config_get dirSeparator).bashrc" "${eb3_ConfPath}"

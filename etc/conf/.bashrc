@@ -1,4 +1,4 @@
-# Created by Enhanced BASH Installer on 2022-11-12 10:14:06
+# Created by Enhanced BASH Installer on 2022-11-19 10:02:11
 # Original .bashrc file is located in /home/jessica/.local/bin/eb3/var/backup
 
 case "$TERM" in
