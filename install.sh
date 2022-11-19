@@ -114,13 +114,16 @@ elif [ -x "$(command -v apt-get)" ]; then
 	for package in "${packages_Required[@]}"; do
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
-			info "Installing ${package}" >> "${eb3_LogsPath}install.log"
-			sudo apt-get -yqqq install "${package}"
-			if [ $? -eq 0 ]; then
-				success "Installed ${package}" >> "${eb3_LogsPath}install.log"
-			else
-				error "Failed installing ${package}" >> "${eb3_LogsPath}install.log"
-			fi
+			sudo apt-get -yqqq install "${package}" &
+			PID=$!
+			i=1
+			sp="/-\|"
+			echo -en "\033[2K\r"
+			while [ -d /proc/$PID ]; do
+				printf "\b\b${sp:i++%${#sp}:1}"
+				sleep .1
+			done
+			echo -en "\033[2K\r"
 		else
 			info "Package ${package} already installed" >> "${eb3_LogsPath}install.log"
 		fi
@@ -129,7 +132,16 @@ elif [ -x "$(command -v dnf)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		sudo dnf install "${package}" -y
+		sudo dnf install "${package}" -y &
+		PID=$!
+		i=1
+		sp="/-\|"
+		echo -en "\033[2K\r"
+		while [ -d /proc/$PID ]; do
+			printf "\b\b${sp:i++%${#sp}:1}"
+			sleep .1
+		done
+		echo -en "\033[2K\r"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v zypper)" ]; then
