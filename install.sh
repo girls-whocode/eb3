@@ -49,6 +49,8 @@ else
 	exit 128
 fi
 
+# Because we are installing 3rd party applications, we need to ask for sudo
+# TODO: if sudo isn't available, we do not install and remove functionality from 3rd party apps
 echo -en "${White}To install ${Blue}EBv3${White} files ${Red}sudo${White} is required please enter ${txtReset}"
 if [[ "$EUID" = 0 ]]; then
     success "Running as {root}" > "${eb3_LogsPath}install.log"
@@ -158,6 +160,7 @@ else
 	echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: ${packages_Required[*]}">&2; 
 fi
 
+# Install Python packages
 echo -e "${White}Installing ${Blue}Python packages${txtReset}"
 
 python3 -m pip install pyautogui >> "${eb3_LogsPath}install.log"
