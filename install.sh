@@ -49,13 +49,29 @@ else
 	exit 128
 fi
 
+echo -en "${White}To install ${Blue}EBv3${White} files ${Red}sudo${White} is required please enter ${txtReset}"
+if [[ "$EUID" = 0 ]]; then
+    success "Running as {root}" > "${eb3_LogsPath}install.log"
+else
+    sudo -k # make sure to ask for password on next sudo
+    if sudo true; then
+        success "Sudo password accepted" > "${eb3_LogsPath}install.log"
+    else
+        error "Sudo password failed" > "${eb3_LogsPath}install.log"
+        exit 1
+    fi
+fi
+
 # Currently this is a fixed location to install the system
 # TODO: Allow user to decide where to install the eb3 system
 defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)bin$(config_get dirSeparator)$(config_get eb3InstallationPath)$(config_get dirSeparator)
 
 success "Installation startup" > "${eb3_LogsPath}install.log"
 
+echo -e "${Green}Installation startup successful${txtReset}"
 # Source load each file for testing with in the current environment being installed
+echo -e "${White}Loading system files${txtReset}"
+
 for folder in "${eb3_systemFolders[@]}"; do
 	if [[ -d ${folder} ]]; then
 		for filename in "${folder}"???_*; do
@@ -66,10 +82,12 @@ for folder in "${eb3_systemFolders[@]}"; do
 			fi
 		done
 	else
+		echo -e "${White}Creating folder ${Green}${folder}${txtReset}"
 		mkdir -p "${folder}"
 	fi
 done
 
+echo -e "${White}Installation for ${Blue}EBv3${White} has started${txtReset}"
 if [ -x "$(command -v apk)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v apk)" >> "${eb3_LogsPath}install.log"
@@ -93,7 +111,6 @@ elif [ -x "$(command -v apt-get)" ]; then
 	for package in "${packages_Required[@]}"; do
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
-			echo -e "Installing ${package}"
 			info "Installing ${package}" >> "${eb3_LogsPath}install.log"
 			sudo apt-get -yqqq install "${package}"
 			if [ $? -eq 0 ]; then
@@ -116,7 +133,16 @@ elif [ -x "$(command -v zypper)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk")
 	success "Installing with $(command -v zypper)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		sudo zypper install "${package}" -y
+		sudo zypper -qn install "${package}" &
+		PID=$!
+		i=1
+		sp="/-\|"
+		echo -en "\033[2K\r"
+		while [ -d /proc/$PID ]; do
+			printf "\b\b${sp:i++%${#sp}:1}"
+			sleep .1
+		done
+		echo -en "\033[2K\r"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v pkg)" ]; then
@@ -132,19 +158,24 @@ else
 	echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: ${packages_Required[*]}">&2; 
 fi
 
+echo -e "${White}Installing ${Blue}Python packages${txtReset}"
+
 python3 -m pip install pyautogui >> "${eb3_LogsPath}install.log"
 python3 -m pip install rich >> "${eb3_LogsPath}install.log"
 
 # Create the installation directory and backup the original .bashrc file
 [ -f "${HOME}$(config_get dirSeparator).bashrc" ] && cp "${HOME}$(config_get dirSeparator).bashrc" "${eb3_ConfPath}"
 backup "${HOME}$(config_get dirSeparator).bashrc"
+echo -e "${White}Backed up ${Blue}bashrc${White} file to ${Green}${eb3_BackupPath}.bashrc-${baktimestamp}.backup${txtReset}"
 success "Backup of .bashrc completed" >> "${eb3_LogsPath}install.log"
 
 # Create the new .bashrc file
+echo -e "${White}Creating new ${Blue}bashrc${White} file${txtReset}"
 printf "# Created by Enhanced BASH Installer on %s\n# Original .bashrc file is located in %s\n\ncase \"\$TERM\" in\n\txterm-color|screen|*-256color)\n\t\t. %s;;\nesac\n" "$(LC_ALL=C date +'%Y-%m-%d %H:%M:%S')" "${defaultInstallBaseDirectory}$(config_get eb3VarPath)$(config_get dirSeparator)$(config_get eb3BackupPath)" "${defaultInstallBaseDirectory}eb3.sh" > ~/.bashrc
 success "New .bashrc creation completed" >> "${eb3_LogsPath}install.log"
 
 # Sync this directory with the new installation directory
+echo -e "${White}Installing ${Blue}EBv3 system files${txtReset}"
 [ ! -d "${defaultInstallBaseDirectory}" ] && mkdir -p "${defaultInstallBaseDirectory}"
 rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDirectory}$(config_get dirSeparator)"
 
@@ -180,4 +211,8 @@ eb3_elapsed=$(echo "scale=3; $eb3_install_end_time - $eb3_install_start_time" | 
 # Report the completion of the system install
 success "EBv3 system installation has completed in ${eb3_elapsed} seconds" >> "${eb3_LogsPath}install.log"
 echo -e "${Red}EBv3${txtReset} system installation has completed in ${Cyan}${eb3_elapsed}${txtReset} seconds"
-echo -e "You may view the installation log located at: ${eb3_LogsPath}install.log"
+echo -e "Installation is located at ${Cyan}${defaultInstallBaseDirectory}${txtReset}"
+echo -e ""
+systeminfo
+echo -e ""
+echo -e "You ${Red}MUST${txtReset} close and reopen the terminal. The installation log located at: ${eb3_LogsPath}install.log"

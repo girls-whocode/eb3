@@ -1,0 +1,12 @@
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda3       950G  7.1G  941G   1% /
+/dev/sda3       950G  7.1G  941G   1% /.snapshots
+/dev/sda3       950G  7.1G  941G   1% /boot/grub2/i386-pc
+/dev/sda3       950G  7.1G  941G   1% /boot/grub2/x86_64-efi
+/dev/sda3       950G  7.1G  941G   1% /home
+/dev/sda3       950G  7.1G  941G   1% /opt
+/dev/sda3       950G  7.1G  941G   1% /srv
+/dev/sda3       950G  7.1G  941G   1% /usr/local
+/dev/sda3       950G  7.1G  941G   1% /root
+/dev/sda3       950G  7.1G  941G   1% /var
+/dev/sda1       511M  5.2M  506M   1% /boot/efi
