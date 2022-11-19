@@ -5,7 +5,8 @@
 # date					:2022-11-19
 # version				:3.0.1
 # usage					:./install.sh
-# notes					:Run as user who will be using EBv3. Will prompt for sudo when needed.
+# notes					:Run with the user who will be using EBv3, install will 
+#						:prompt for sudo when needed.
 # bash_version		    :5.1.16(1)-release
 # ==============================================================================
 
