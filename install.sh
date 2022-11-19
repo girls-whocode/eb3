@@ -1,12 +1,12 @@
 #!/bin/bash
 # title					:Enhanced BASH v3
-# description		:
+# description		    :Installation system for EBv3
 # author				:Jessica Brown
-# date					:2022-04-21
-# version				:3.0.0
-# usage					:
-# notes					:
-# bash_version	:5.1.16(1)-release
+# date					:2022-11-19
+# version				:3.0.1
+# usage					:./install.sh
+# notes					:Run as user who will be using EBv3. Will prompt for sudo when needed.
+# bash_version		    :5.1.16(1)-release
 # ==============================================================================
 
 # Start a timer to evaluate for total time to install
