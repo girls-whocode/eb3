@@ -90,40 +90,29 @@ for folder in "${eb3_systemFolders[@]}"; do
 	fi
 done
 
-echo -e "${White}Installation for ${Blue}EBv3${White} has started${txtReset}"
 if [ -x "$(command -v apk)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v apk)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
+		spinner_pid=
+		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo apk add --no-cache "${package}"
+		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v apt-get)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v apt-get)" >> "${eb3_LogsPath}install.log"
-	# Make sure the system is up to date
-	sudo apt-get -yqqq update
-	if [ $? -eq 0 ]; then
-		success "APT-GET Update was successfuly during installation" >> "${eb3_LogsPath}install.log"
-	else
-		error "APT-GET Update failed during installation" >> "${eb3_LogsPath}install.log"
-	fi
 
 	# Start the installation of the packages_Required
 	# TODO: I would like to make this quite and put everything in the logs, turn this into a progress bar for a cleaner look
 	for package in "${packages_Required[@]}"; do
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
-			sudo apt-get -yqqq install "${package}" &
-			PID=$!
-			i=1
-			sp="/-\|"
-			echo -en "\033[2K\r"
-			while [ -d /proc/$PID ]; do
-				printf "\b\b${sp:i++%${#sp}:1}"
-				sleep .1
-			done
-			echo -en "\033[2K\r"
+			spinner_pid=
+			start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
+			sudo apt-get -yqqq install "${package}"
+			stop_spinner
 		else
 			info "Package ${package} already installed" >> "${eb3_LogsPath}install.log"
 		fi
@@ -132,32 +121,20 @@ elif [ -x "$(command -v dnf)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		sudo dnf install "${package}" -y &
-		PID=$!
-		i=1
-		sp="/-\|"
-		echo -en "\033[2K\r"
-		while [ -d /proc/$PID ]; do
-			printf "\b\b${sp:i++%${#sp}:1}"
-			sleep .1
-		done
-		echo -en "\033[2K\r"
+		spinner_pid=
+		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
+		sudo dnf install "${package}" -y
+		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v zypper)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk")
 	success "Installing with $(command -v zypper)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		sudo zypper -qn install "${package}" &
-		PID=$!
-		i=1
-		sp="/-\|"
-		echo -en "\033[2K\r"
-		while [ -d /proc/$PID ]; do
-			printf "\b\b${sp:i++%${#sp}:1}"
-			sleep .1
-		done
-		echo -en "\033[2K\r"
+		spinner_pid=
+		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
+		sudo zypper -qn install "${package}"
+		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v pkg)" ]; then
@@ -176,8 +153,11 @@ fi
 # Install Python packages
 echo -e "${White}Installing ${Blue}Python packages${txtReset}"
 
+spinner_pid=
+start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 python3 -m pip install pyautogui >> "${eb3_LogsPath}install.log"
 python3 -m pip install rich >> "${eb3_LogsPath}install.log"
+stop_spinner
 
 # Create the installation directory and backup the original .bashrc file
 [ -f "${HOME}$(config_get dirSeparator).bashrc" ] && cp "${HOME}$(config_get dirSeparator).bashrc" "${eb3_ConfPath}"
@@ -193,7 +173,10 @@ success "New .bashrc creation completed" >> "${eb3_LogsPath}install.log"
 # Sync this directory with the new installation directory
 echo -e "${White}Installing ${Blue}EBv3 system files${txtReset}"
 [ ! -d "${defaultInstallBaseDirectory}" ] && mkdir -p "${defaultInstallBaseDirectory}"
+spinner_pid=
+start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDirectory}$(config_get dirSeparator)"
+stop_spinner
 
 {
 	success "File installation completed"
