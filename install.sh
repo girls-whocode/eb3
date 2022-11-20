@@ -96,40 +96,70 @@ if [ -x "$(command -v apk)" ]; then
 	for package in "${packages_Required[@]}"; do
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo apk add --no-cache "${package}"
+		if [ $? -eq 0 ]; then
+			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		else
+			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		fi
 		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v apt-get)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v apt-get)" >> "${eb3_LogsPath}install.log"
-
-	# Start the installation of the packages_Required
-	# TODO: I would like to make this quite and put everything in the logs, turn this into a progress bar for a cleaner look
 	for package in "${packages_Required[@]}"; do
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
 			start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 			sudo apt-get -yqqq install "${package}"
+			if [ $? -eq 0 ]; then
+				success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+			else
+				error "Installing ${package}" >> "${eb3_LogsPath}install.log"
+			fi
 			stop_spinner
 		else
 			info "Package ${package} already installed" >> "${eb3_LogsPath}install.log"
 		fi
 	done
 elif [ -x "$(command -v dnf)" ]; then
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo dnf install "${package}" -y
+		if [ $? -eq 0 ]; then
+			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		else
+			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		fi
 		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v zypper)" ]; then
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk")
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "unrar" "gzip" "python3" "python3-tk")
 	success "Installing with $(command -v zypper)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo zypper -qn install "${package}"
+		if [ $? -eq 0 ]; then
+			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		else
+			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		fi
+		stop_spinner
+	done
+elif [ -x "$(command -v yum)" ]; then
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
+	success "Installing with $(command -v yum)" >> "${eb3_LogsPath}install.log"
+	for package in "${packages_Required[@]}"; do
+		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
+		sudo yum install "${package}" -y
+		if [ $? -eq 0 ]; then
+			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		else
+			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		fi
 		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
@@ -137,8 +167,14 @@ elif [ -x "$(command -v pkg)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v pkg)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
+		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo pkg install "${package}"
-		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		if [ $? -eq 0 ]; then
+			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		else
+			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
+		fi
+		stop_spinner
 	done
 else
 	# TODO: I saw somewhere a manual installer, will look into adding that later
@@ -175,7 +211,7 @@ stop_spinner
 	success "File installation completed"
 	info "------------------------------ File Differences ------------------------------"
 	info "$(diff -qr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDirectory}$(config_get dirSeparator)")"
-	info "------------------------------------------------------------------------------"
+	info "-------------[2022-11-20 07:16:09]:[SUCCESS]:[Installing p7zip-plugins]-----------------------------------------------------------------"
 }  >> "${eb3_LogsPath}install.log"
 
 # Remove files unneeded in the installation folder
