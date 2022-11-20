@@ -94,7 +94,6 @@ if [ -x "$(command -v apk)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v apk)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		spinner_pid=
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo apk add --no-cache "${package}"
 		stop_spinner
@@ -109,7 +108,6 @@ elif [ -x "$(command -v apt-get)" ]; then
 	for package in "${packages_Required[@]}"; do
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
-			spinner_pid=
 			start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 			sudo apt-get -yqqq install "${package}"
 			stop_spinner
@@ -121,7 +119,6 @@ elif [ -x "$(command -v dnf)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		spinner_pid=
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo dnf install "${package}" -y
 		stop_spinner
@@ -131,7 +128,6 @@ elif [ -x "$(command -v zypper)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk")
 	success "Installing with $(command -v zypper)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		spinner_pid=
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo zypper -qn install "${package}"
 		stop_spinner
@@ -153,17 +149,15 @@ fi
 # Install Python packages
 echo -e "${White}Installing ${Blue}Python packages${txtReset}"
 
-spinner_pid=
 start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 python3 -m pip install pyautogui >> "${eb3_LogsPath}install.log"
 python3 -m pip install rich >> "${eb3_LogsPath}install.log"
 stop_spinner
 
-# Create the installation directory and backup the original .bashrc file
-[ -f "${HOME}$(config_get dirSeparator).bashrc" ] && cp "${HOME}$(config_get dirSeparator).bashrc" "${eb3_ConfPath}"
+# Backup the original .bashrc file
 backup "${HOME}$(config_get dirSeparator).bashrc"
 echo -e "${White}Backed up ${Blue}bashrc${White} file to ${Green}${eb3_BackupPath}.bashrc-${baktimestamp}.backup${txtReset}"
-success "Backup of .bashrc completed" >> "${eb3_LogsPath}install.log"
+success "Backup of .bashrc file to ${eb3_BackupPath}.bashrc-${baktimestamp}.backup" >> "${eb3_LogsPath}install.log"
 
 # Create the new .bashrc file
 echo -e "${White}Creating new ${Blue}bashrc${White} file${txtReset}"
@@ -173,7 +167,6 @@ success "New .bashrc creation completed" >> "${eb3_LogsPath}install.log"
 # Sync this directory with the new installation directory
 echo -e "${White}Installing ${Blue}EBv3 system files${txtReset}"
 [ ! -d "${defaultInstallBaseDirectory}" ] && mkdir -p "${defaultInstallBaseDirectory}"
-spinner_pid=
 start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDirectory}$(config_get dirSeparator)"
 stop_spinner
