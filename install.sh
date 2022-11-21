@@ -96,11 +96,7 @@ if [ -x "$(command -v apk)" ]; then
 	for package in "${packages_Required[@]}"; do
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo apk add --no-cache "${package}"
-		if [ $? -eq 0 ]; then
-			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		else
-			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		fi
+		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
@@ -112,11 +108,7 @@ elif [ -x "$(command -v apt-get)" ]; then
 		if [ "" = "${pkg_test}" ]; then
 			start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 			sudo apt-get -yqqq install "${package}"
-			if [ $? -eq 0 ]; then
-				success "Installing ${package}" >> "${eb3_LogsPath}install.log"
-			else
-				error "Installing ${package}" >> "${eb3_LogsPath}install.log"
-			fi
+			[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 			stop_spinner
 		else
 			info "Package ${package} already installed" >> "${eb3_LogsPath}install.log"
@@ -128,11 +120,7 @@ elif [ -x "$(command -v dnf)" ]; then
 	for package in "${packages_Required[@]}"; do
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo dnf install "${package}" -y
-		if [ $? -eq 0 ]; then
-			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		else
-			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		fi
+		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
@@ -142,11 +130,7 @@ elif [ -x "$(command -v zypper)" ]; then
 	for package in "${packages_Required[@]}"; do
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo zypper -qn install "${package}"
-		if [ $? -eq 0 ]; then
-			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		else
-			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		fi
+		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 		stop_spinner
 	done
 elif [ -x "$(command -v yum)" ]; then
@@ -155,11 +139,7 @@ elif [ -x "$(command -v yum)" ]; then
 	for package in "${packages_Required[@]}"; do
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo yum install "${package}" -y
-		if [ $? -eq 0 ]; then
-			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		else
-			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		fi
+		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
@@ -169,11 +149,7 @@ elif [ -x "$(command -v pkg)" ]; then
 	for package in "${packages_Required[@]}"; do
 		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo pkg install "${package}"
-		if [ $? -eq 0 ]; then
-			success "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		else
-			error "Installing ${package}" >> "${eb3_LogsPath}install.log"
-		fi
+		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 		stop_spinner
 	done
 else
