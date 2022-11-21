@@ -22,12 +22,12 @@ function extract() {
     [[ -f $ARC ]] || err $"'$ARC' does not exist"
     ARC="$(readlink -f "$ARC")"
 
-    read -p "Extract to [default: $DEFAULT_TARGET]: " TARGET
+    read -pr "Extract to [default: $DEFAULT_TARGET]: " TARGET
     [[ -z $TARGET ]] && TARGET="$DEFAULT_TARGET"
     [[ -d $TARGET ]] || err $"Directory '$TARGET' does not exist"
     [[ -w $TARGET ]] || err $"Permission denied: '$TARGET' is not writable"
 
-    cd "$TARGET"
+    cd "${TARGET}"
     case "$ARC" in
         *.tar.bz2)   tar xjf "$ARC"     ;;
         *.tar.gz)    tar xzf "$ARC"     ;;

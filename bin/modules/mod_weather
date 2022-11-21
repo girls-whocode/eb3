@@ -37,3 +37,5 @@ function weather_update() {
     info "Updated weather bar" >> "${eb3_LogsPath}startup.log"
   fi
 }
+
+success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"
