@@ -90,14 +90,14 @@ for folder in "${eb3_systemFolders[@]}"; do
 	fi
 done
 
+start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
+
 if [ -x "$(command -v apk)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v apk)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo apk add --no-cache "${package}"
 		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
-		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v apt-get)" ]; then
@@ -106,10 +106,8 @@ elif [ -x "$(command -v apt-get)" ]; then
 	for package in "${packages_Required[@]}"; do
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
 		if [ "" = "${pkg_test}" ]; then
-			start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 			sudo apt-get -yqqq install "${package}"
 			[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
-			stop_spinner
 		else
 			info "Package ${package} already installed" >> "${eb3_LogsPath}install.log"
 		fi
@@ -118,45 +116,38 @@ elif [ -x "$(command -v dnf)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo dnf install "${package}" -y
 		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
-		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v zypper)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "unrar" "gzip" "python3" "python3-tk")
 	success "Installing with $(command -v zypper)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo zypper -qn install "${package}"
 		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
-		stop_spinner
 	done
 elif [ -x "$(command -v yum)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v yum)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo yum install "${package}" -y
 		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
-		stop_spinner
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v pkg)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v pkg)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 		sudo pkg install "${package}"
 		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
-		stop_spinner
 	done
 else
 	# TODO: I saw somewhere a manual installer, will look into adding that later
 	error "No package manager was found" >> "${eb3_LogsPath}install.log"
 	echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: ${packages_Required[*]}">&2; 
 fi
+stop_spinner
 
 # Install Python packages
 echo -e "${White}Installing ${Blue}Python packages${txtReset}"
