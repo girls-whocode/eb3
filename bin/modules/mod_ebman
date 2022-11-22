@@ -1,0 +1,11 @@
+#!/bin/bash
+# title					    :Enhanced BASH v3
+# description		    :EBv3 Manuals
+# author				    :Jessica Brown
+# date					    :2022-11-19
+# version				    :1.0.0
+# usage					    :ebman [manual]
+# notes					    :Typing ebman by itself will generate a menu of all available
+#						        :commands, you can just directly to a command with ebman command
+# bash_version		  :5.1.16(1)-release
+# ==============================================================================
