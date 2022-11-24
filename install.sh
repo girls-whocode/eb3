@@ -208,6 +208,6 @@ success "EBv3 system installation has completed in ${eb3_elapsed} seconds" >> "$
 echo -e "${Red}EBv3${txtReset} system installation has completed in ${Cyan}${eb3_elapsed}${txtReset} seconds"
 echo -e "Installation is located at ${Cyan}${defaultInstallBaseDirectory}${txtReset}"
 echo -e ""
-systeminfo
+sh "${eb3_BinPath}sysfetch.sh"
 echo -e ""
 echo -e "You ${Red}MUST${txtReset} close and reopen the terminal. The installation log located at: ${eb3_LogsPath}install.log"
