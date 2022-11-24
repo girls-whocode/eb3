@@ -27,6 +27,11 @@ cd eb3
 # close and reopen terminal
 ```
 
+## Really cool stuff being added
+
+I know I said that most of the scripts have been created by me, but now I have found one of my favorite BASH script developers. His name is Dylan and he has created
+a large amount of scripts I will start adding into my EBv3 system. Check out his [GitHub page](https://github.com/dylanaraps).
+
 > ## References
 >
 > - This document leveraged heavily from the [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
