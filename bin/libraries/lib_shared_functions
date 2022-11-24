@@ -15,7 +15,16 @@ function _preload() {
     export PAGER="/usr/bin/less"
     export HISTIGNORE="&:ls:[bf]g:exit"
     export EDITOR
-    
+
+    bash_version="${BASH_VERSION/.*}"
+    sys_locale="${LANG:-C}"
+    # XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+    XDG_CONFIG_HOME="${eb3_ConfPath}"
+    PATH="${PATH}:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec"
+    export bash_version
+    export sys_locale
+    export XDG_CONFIG_HOME
+
     # enable color support of ls and also add handy aliases
     if [ -x /usr/bin/dircolors ]; then
         # if [ "$(test -r "${HOME}$(config_get dirSeparator).dircolors")" ]; then

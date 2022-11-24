@@ -34,7 +34,7 @@ bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 PATH="${PATH}:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec"
-reset='\e[0m'
+
 shopt -s nocasematch
 
 # Speed up script by not using unicode.
