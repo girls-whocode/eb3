@@ -4,6 +4,19 @@
 
 The entire documentation can be found in the [Wiki](../../wiki/Home) (Currently under construction)
 
+Current Modules:
+* extract - Extracts automagically (*almost) any compression type
+* bkup - Easily creates backups of files or folders
+* d - quickly jumps around to the last 15 directories you have visited
+* empty - quickly empty a file without losing permissions
+* inpath - checks for a file quickly through out the path
+* logviewer - automagically colors and displays log files
+* systeminfo - quick way of finding system information
+* systemfetch - a more detailed way of finding system information
+* userlist - An advanced userlist on the system
+* weather - A quick weather forecast for your terminal and prompt
+* plus much, much more!
+
 ## What is this?
 
 **ebv3** (Enhanced BASH v3), started in theory and became several mini scripts cluttered throughout my directory structure for easy quick commands to run routine tasks as a system administrator; whereas now **eb3** has evolved over a long period of time for ease of use, manipulation, and portability. Although this particular version is still fairly new, over the past decade I have been collecting, building, customizing and designing scripts to make the terminal experience easier to use by reducing mundane commands with long arguments as well as make it universal between different distributions of Linux as possible.
