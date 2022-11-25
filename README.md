@@ -36,7 +36,7 @@ a large amount of scripts I will start adding into my EBv3 system. Check out his
 
 ## What can you do
 
-**Be a tester!** EBv3 is a noninvasive system that only installs in ${HOME}/.local/bin/eb3/ folder, and a backup of your previous .bashrc file is saved to ${HOME}/.local/bin/eb3/var/backup/ folder with the date and time added to the filename. The additional packages that are installed are "bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev". Removing eb3 is very simple.
+**Be a tester!** EBv3 is a noninvasive system that only installs in ```${HOME}/.local/bin/eb3/``` folder, and a backup of your previous .bashrc file is saved to ```${HOME}/.local/bin/eb3/var/backup/``` folder with the date and time added to the filename. The additional packages that are installed are "bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev". Removing eb3 is very simple.
 
 **Develop!** System Administrators from various distributions use functions everyday. Build more modules, libraries, and other BASH version 4+ scripts to add. Credit will be made to any that is added.
 
