@@ -19,7 +19,7 @@ Overrides Path: ```${HOME}/.local/bin/eb3/usr/overrides```
 Share Path: ```${HOME}/.local/bin/eb3/usr/share```
 Themes Path: ```${HOME}/.local/bin/eb3/usr/themes```
 Variables Path: ```${HOME}/.local/bin/eb3/var```
-Backup Path: ```${HOME}/.local/bin/eb3/var/backup``
+Backup Path: ```${HOME}/.local/bin/eb3/var/backup```
 Directory Jump Path: ```${HOME}/.local/bin/eb3/var/dirjump```
 Logs Path: ```${HOME}/.local/bin/eb3/var/logs```
 
