@@ -5,6 +5,7 @@
 The entire documentation can be found in the [Wiki](../../wiki/Home) (Currently under construction)
 
 Current Modules:
+
 * extract - Extracts automagically (*almost) any compression type
 * bkup - Easily creates backups of files or folders
 * d - quickly jumps around to the last 15 directories you have visited
@@ -13,8 +14,13 @@ Current Modules:
 * logviewer - automagically colors and displays log files
 * systeminfo - quick way of finding system information
 * systemfetch - a more detailed way of finding system information
-* userlist - An advanced userlist on the system
+* userlist - An advanced user list on the system
 * weather - A quick weather forecast for your terminal and prompt
+* prettytable - Turn arrays into a table
+* full 256 color support with names
+* easy menu system
+* add a spinner to commands with start and stop
+* Many text and array functions
 * plus much, much more!
 
 ## What is this?
@@ -38,7 +44,7 @@ I have been borrowing other peoples scripts, building my own script, using diffe
 ```sh
 git clone https://github.com/girls-whocode/eb3.git
 cd eb3
-./install.sh # sudo will be required to install the dependancy files and update the package lists
+./install.sh # sudo will be required to install the dependency files and update the package lists
 # close and reopen terminal
 ```
 
@@ -61,4 +67,3 @@ a large amount of scripts I will start adding into my EBv3 system. Check out his
 > - The original [Markdown Syntax Guide](https://daringfireball.net/projects/markdown/syntax) at Daring Fireball is an excellent resource for a detailed explanation of standard Markdown.
 > - The detailed specification for CommonMark can be found in the [CommonMark Spec](https://spec.commonmark.org/current/)
 > - The [CommonMark Dingus](https://try.commonmark.org) is a handy tool for testing CommonMark syntax.
->
