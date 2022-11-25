@@ -199,6 +199,9 @@ fi
 # Create the basic eb3.conf file
 mv "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf.default" "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf"
 
+fc-cache -vf "${eb3_fontPath}"
+pip install --user powerline-status
+
 # Get the timer end time
 eb3_install_end_time=$(date +%s.%3N)
 eb3_elapsed=$(echo "scale=3; $eb3_install_end_time - $eb3_install_start_time" | bc)
