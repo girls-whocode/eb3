@@ -1,0 +1,120 @@
+# trim_string Usage:
+# $ trim_string "    Hello,  World    "
+# Hello,  World
+# $ name="   John Black  "
+# $ trim_string "$name"
+# John Black
+
+# trim_all Usage:
+# $ trim_all "    Hello,    World    "
+# Hello, World
+# $ name="   John   Black  is     my    name.    "
+# $ trim_all "$name"
+# John Black is my name.
+# shellcheck disable=SC2086,SC2048
+
+# regex Usage:
+# Trim leading white-space.
+# $ regex '    hello' '^\s*(.*)'
+# hello
+# $ # Validate a hex color.
+# $ regex "#FFFFFF" '^(#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3}))$'
+# #FFFFFF
+# Validate a hex color (invalid).
+# $ regex "red" '^(#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3}))$'
+# no output (invalid)
+# is_hex_color() {
+#    if [[ $1 =~ ^(#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3}))$ ]]; then
+#        printf '%s\n' "${BASH_REMATCH[1]}"
+#    else
+#        printf '%s\n' "error: $1 is an invalid color."
+#        return 1
+#    fi
+# }
+# read -r color
+# is_hex_color "$color" || color="#FFFFFF"
+# Do stuff.
+
+## Split a string on a delimiter
+# CAVEAT: Requires `bash` 4+
+# This is an alternative to `cut`, `awk` and other tools.
+# **Example Usage:**
+# $ split "apples,oranges,pears,grapes" ","
+# apples
+# oranges
+# pears
+# grapes
+# $ split "1, 2, 3, 4, 5" ", "
+# 1
+# 2
+# 3
+# 4
+# 5
+# Multi char delimiters work too!
+# $ split "hello---world---my---name---is---john" "---"
+# hello
+# world
+# my
+# name
+# is
+# john
+
+#**Example Usage:**
+# $ lower "HELLO"
+# hello
+# $ lower "HeLlO"
+# hello
+# $ lower "hello"
+# hello
+
+#**Example Usage:**
+# $ upper "hello"
+# HELLO
+# $ upper "HeLlO"
+# HELLO
+# $ upper "HELLO"
+# HELLO
+
+#**Example Usage:**
+# $ reverse_case "hello"
+# HELLO
+# $ reverse_case "HeLlO"
+# hElLo
+# $ reverse_case "HELLO"
+# hello
+
+# **Example Usage:**
+# $ var="'Hello', \"World\""
+# $ trim_quotes "$var"
+# Hello, World
+
+# **Example Usage:**
+# $ strip "The Quick Brown Fox" "[aeiou]"
+# Th Quick Brown Fox
+# $ strip "The Quick Brown Fox" "[[:space:]]"
+# TheQuick Brown Fox
+
+# **Example Usage:**
+# $ strip_all "The Quick Brown Fox" "[aeiou]"
+# Th Qck Brwn Fx
+# $ strip_all "The Quick Brown Fox" "[[:space:]]"
+# TheQuickBrownFox
+# $ strip_all "The Quick Brown Fox" "Quick "
+# The Brown Fox
+
+# **Example Usage:**
+# $ lstrip "The Quick Brown Fox" "The "
+# Quick Brown Fox
+
+# **Example Usage:**
+# $ rstrip "The Quick Brown Fox" " Fox"
+# The Quick Brown
+
+# **Example Usage:**
+# $ urlencode "https://github.com/dylanaraps/pure-bash-bible"
+# https%3A%2F%2Fgithub.com%2Fdylanaraps%2Fpure-bash-bible
+
+# **Example Usage:**
+# $ urldecode "https%3A%2F%2Fgithub.com%2Fdylanaraps%2Fpure-bash-bible"
+# https://github.com/dylanaraps/pure-bash-bible
+
