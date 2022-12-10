@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# title					:Enhanced BASH v3
+# description		:EBv3 Help System
+# author				:Jessica Brown
+# date					:2022-Dec-10
+# version				:1.0.0
+# usage					:ebhHelp
+# notes					:by typing eb3help will display all of the modules, aliases,
+#               :and functions eb3 has to offer
+# bash_version  :5.1.16(1)-release
+# ==============================================================================
+
+eb3help() {
+  echo -e "# +--------] EBv3 Help System [--------------------------------------------------------------------------------------------+"
+  echo -e "# |   Modules                                   Up Time Settings                    Memory Settings                        |"
+  echo -e "# |       backup                                    Uptime Shorhand: Small              Memory Percetage: Off              |"
+  echo -e "# |       dirjump                                                                                                          |"
+  echo -e "# |       eb3log                                                                                                           |"
+  echo -e "# |       empty                                                                                                            |"
+  echo -e "# |       extract                                   Shell Path: Off                     Public IP Host: http://ident.me    |"
+  echo -e "# |       inpath                                    Shell Version: On                   Public IP Timeout: 2               |"
+  echo -e "# |       taillog                                                                                                          |"
+  echo -e "# |       viewlog                               GPU Settings                        GTK Settings                           |"
+  echo -e "# |       userlist                                  GPU Brand: On                       GTK Shorthand: Off                 |"
+  echo -e "# |       weather                                   GPU Type: All                       GTK2: On                           |"
+  echo -e "# |                               Refresh Rate: Off                   GTK 3: On                          |"
+  echo -e "# |                                                                                                           |"
+  echo -e "# |                         Package Manager Settings            MPC Settings                           |"
+  echo -e "# |                                 Package Manager Names: Small        MPC Arguments: ()                  |"
+  echo -e "# |                                                                                                                        |"
+  echo -e "# |   Disk Settings                             Format Settings                     Color Settings                         |"
+  echo -e "# |       Disk Root: /                              Bold: On                            Color Blocks Color: (0 7)          |"
+  echo -e "# |       Disk Subtitle: mount                      Underline: On                       Color Blocks: On                   |"
+  echo -e "# |                                                 Underline Character: -              Block Width: 3                     |"
+  echo -e "# |   Miscellanious Settings                        Separator: :                        Block Height: 1                    |                                                                       |"
+  echo -e "# |       STDOut: Off                                                                   Image Backend: ascii               |"
+  echo -e "# |                                                                                     Image Source: auto                 |"
+  echo -e "# |   Audio Player Settings                                                             Ascii Distro: auto                 |"
+  echo -e "# |       Audio Player: auto                                                            Ascii Colors: distro               |"
+  echo -e "# |       Song Shorthand: Off                                                                                              |"
+  echo -e "# |       Song Format: "%artist% - %album% - %title%"                                                                      |"
+  echo -e "# +------------------------------------------------------------------------------------------------------------------------+"
+}
