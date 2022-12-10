@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # title					:Enhanced BASH v3
 # description		    :Installation system for EBv3
 # author				:Jessica Brown
@@ -72,6 +72,44 @@ defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get 
 success "Installation startup" > "${eb3_LogsPath}install.log"
 
 echo -e "${Green}Installation startup successful${txtReset}"
+
+# Run Configuration script
+# Configuration Questions to ask
+# 1. What is your default editor? [Give list of installed editors]
+# 2. What theme would you like to start off with? [Give list of installed themes]
+# 3. How many history items to save? [default 10,000]
+# 4. How many directories to save in history [default 15]
+# 5. Screen Fetch Defaults: (Use arrow keys to navigate, enter to toggle, switch, or edit)
+# +--------] Screen Fetch [------------------------------------------------------------------------------------------------+
+# |   Kernel Settings                           Up Time Settings                    Memory Settings                        |
+# |       Kernel Shorthand: On                      Uptime Shorhand: Small              Memory Percetage: Off              |
+# |                                                                                                                        |
+# |   Distrobution Settings                     Shell Settings                      Public IP Settings                     |
+# |       Distrobution Shorthand: Off               Shell Path: Off                     Public IP Host: http://ident.me    |
+# |       OS Architechture: Off                     Shell Version: On                   Public IP Timeout: 2               |
+# |                                                                                                                        |
+# |   CPU Settings                              GPU Settings                        GTK Settings                           |
+# |       CPU Brand: On                             GPU Brand: On                       GTK Shorthand: Off                 |
+# |       CPU Speed: On                             GPU Type: All                       GTK2: On                           |
+# |       CPU Cores: Logical                        Refresh Rate: Off                   GTK 3: On                          |
+# |       CPU Temp: Off                                                                                                    |
+# |       Speed Shorthand: Off                  Package Manager Settings            MPC Settings                           |
+# |       Speed Type: BIOS                          Package Manager Names: Small        MPC Arguments: ()                  |
+# |                                                                                                                        |
+# |   Disk Settings                             Format Settings                     Color Settings                         |
+# |       Disk Root: /                              Bold: On                            Color Blocks Color: (0 7)          |
+# |       Disk Subtitle: mount                      Underline: On                       Color Blocks: On                   |
+# |                                                 Underline Character: -              Block Width: 3                     |
+# |   Miscellanious Settings                        Separator: :                        Block Height: 1                    |                                                                       |
+# |       STDOut: Off                                                                   Image Backend: ascii               |
+# |                                                                                     Image Source: auto                 |
+# |   Audio Player Settings                                                             Ascii Distro: auto                 |
+# |       Audio Player: auto                                                            Ascii Colors: distro               |
+# |       Song Shorthand: Off                                                                                              |
+# |       Song Format: "%artist% - %album% - %title%"                                                                      |
+# +------------------------------------------------------------------------------------------------------------------------+
+# Help: {Basic description of the item currently on}
+
 # Source load each file for testing with in the current environment being installed
 echo -e "${White}Loading system files${txtReset}"
 
@@ -199,7 +237,7 @@ fi
 # Create the basic eb3.conf file
 mv "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf.default" "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf"
 
-fc-cache -vf "${eb3_fontPath}"
+sudo fc-cache -vf "${eb3_fontPath}"
 pip install --user powerline-status
 
 # Get the timer end time

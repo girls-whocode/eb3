@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# title					:Enhanced BASH v3
+# description		:Mod Choices Help Menu
+# author				:Unknown (Heavily modified by Jessica Brown)
+# date					:2022-Dec-10
+# version				:1.0.0
+# usage					:
+# notes					:
+#               :
+# bash_version  :5.1.16(1)-release
+# ==============================================================================
+
+function renderHelp {
+  echo
+  echo -e "${Red}Usage: ${Yellow}getChoice ${SteelBlue}[OPTION]...${txtReset}"
+  echo -e "Renders a keyboard navigable menu with a visual indicator of what's selected."
+  echo
+  echo -e "  ${SteelBlue}-h, ${SlateBlue1}--help               ${txtReset}Displays this message"
+  echo -e "  ${SteelBlue}-i, ${SlateBlue1}--index              ${txtReset}The initially selected index for the options"
+  echo -e "  ${SteelBlue}-m, ${SlateBlue1}--max                ${txtReset}Limit how many options are displayed"
+  echo -e "  ${SteelBlue}-o, ${SlateBlue1}--options            ${txtReset}An Array of options for a user to choose from"
+  echo -e "  ${SteelBlue}-q, ${SlateBlue1}--query              ${txtReset}Question or statement presented to the user"
+  echo -e "  ${SteelBlue}-v, ${SlateBlue1}--selectionVariable  ${txtReset}Variable the selected choice will be saved to. Defaults to the 'selectedChoice' variable."
+  echo
+  echo -e "${Red}Example:${txtReset}"
+  echo -e "  ${SteelBlue}foodOptions${txtReset}=${Orange}(${Green}\"pizza\" \"burgers\" \"chinese\" \"sushi\" \"thai\" \"italian\" \"shit\"${Orange})${txtReset}"
+  echo
+  echo -e "  ${SteelBlue}getChoice ${txtReset}-q ${Green}\"What do you feel like eating?\" ${txtReset}-o foodOptions ${txtReset}-i ${SlateBlue3}6 ${txtReset}-m ${SlateBlue3}4 ${txtReset}-v ${Green}\"firstChoice\"${txtReset}"
+  echo -e "  printf \"First choice is %S\" \"\${firstChoice}\"${txtReset}"
+  echo
+  echo -e "  ${Orange}getChoice ${txtReset}-q ${Green}\"Select another option in case the first isn't available\" ${txtReset}-o ${SteelBlue}foodOptions${txtReset}"
+  echo -e "  printf \"First choice is %s\" ${SlateBlue2}\"\${firstChoice}\"${txtReset}"
+  echo -e "  printf \"Second choice is %s\" ${SlateBlue2}\"\${selectedChoice}\"${txtReset}"
+  echo
+}

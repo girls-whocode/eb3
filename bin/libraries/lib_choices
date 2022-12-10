@@ -1,8 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# title					:Enhanced BASH v3
+# description		:Give the ability to select from a list of choices
+# author				:Unknown (Heavily modified by Jessica Brown)
+# date					:2022-Dec-10
+# version				:1.0.0
+# usage					:
+# notes					:
+#               :
+# bash_version  :5.1.16(1)-release
+# ==============================================================================
 
-CHAR__GREEN='\033[0;32m'
-CHAR__RED='\033[0;31m'
-CHAR__RESET='\033[0m'
 menuStr=""
 returnOrExit=""
 
@@ -10,7 +17,7 @@ function hideCursor {
   printf "\033[?25l"
   
   # capture CTRL+C so cursor can be reset
-  trap 'showCursor && echo '' && "${returnOrExit} 0"' SIGINT
+  trap "showCursor && echo '' && ${returnOrExit} 0" SIGINT
 }
 
 function showCursor {
@@ -21,38 +28,47 @@ function showCursor {
 function clearLastMenu {
   local msgLineCount
   msgLineCount=$(printf "$menuStr" | wc -l)
+
   # moves the cursor up N lines so the output overwrites it
   echo -en "\033[${msgLineCount}A"
 
   # clear to end of screen to ensure there's no text left behind from previous input
-  [ "$1" ] && tput ed
+  [ $1 ] && tput ed
 }
 
 function renderMenu {
-  local start=0
-  local selector=""
-  local instruction="$1"
-  local selectedIndex=$2
-  local listLength=$itemsLength
-  local longest=0
-  local spaces=""
+  local start
+  local selector
+  local instruction
+  local selectedIndex
+  local listLength
+  local longest
+  local spaces
+
+  start=0
+  selector=""
+  instruction="$1"
+  selectedIndex=$2
+  listLength=$itemsLength
+  longest=0
+  spaces=""
   menuStr="\n $instruction\n"
 
   # Get the longest item from the list so that we know how many spaces to add
   # to ensure there's no overlap from longer items when a list is scrolling up or down.
-  for (( i=0; i<itemsLength; i++ )); do
+  for (( i=0; i<$itemsLength; i++ )); do
     if (( ${#menuItems[i]} > longest )); then
       longest=${#menuItems[i]}
     fi
   done
-  spaces=$(printf ' %.0s' "$(eval "echo {1.."$((longest))"}")")
+  spaces=$(printf ' %.0s' $(eval "echo {1.."$(($longest))"}"))
 
   if [ $3 -ne 0 ]; then
     listLength=$3
 
-    if [ "$selectedIndex" -ge "$listLength" ]; then
-      start=$((selectedIndex+1-listLength))
-      listLength=$((selectedIndex+1))
+    if [ $selectedIndex -ge $listLength ]; then
+      start=$(($selectedIndex+1-$listLength))
+      listLength=$(($selectedIndex+1))
     fi
   fi
 
@@ -60,63 +76,45 @@ function renderMenu {
     local currItem="${menuItems[i]}"
     currItemLength=${#currItem}
 
-    if [[ $i = "$selectedIndex" ]]; then
+    if [[ $i = $selectedIndex ]]; then
       currentSelection="${currItem}"
-      selector="${CHAR__GREEN}ᐅ${CHAR__RESET}"
-      currItem="${CHAR__GREEN}${currItem}${CHAR__RESET}"
+      selector="${Green}ᐅ${txtReset}"
+      currItem="${Green}${currItem}${txtReset}"
     else
       selector=" "
     fi
 
     currItem="${spaces:0:0}${currItem}${spaces:currItemLength}"
-
     menuStr="${menuStr}\n ${selector} ${currItem}"
   done
 
   menuStr="${menuStr}\n"
 
   # whether or not to overwrite the previous menu output
-  [ $4 ] && clearLastMenu
+  [ ${4} ] && clearLastMenu
 
-  printf "${menuStr}"
-}
-
-function renderHelp {
-  echo;
-  echo "Usage: getChoice [OPTION]..."
-  echo "Renders a keyboard navigable menu with a visual indicator of what's selected."
-  echo;
-  echo "  -h, --help               Displays this message"
-  echo "  -i, --index              The initially selected index for the options"
-  echo "  -m, --max                Limit how many options are displayed"
-  echo "  -o, --options            An Array of options for a user to choose from"
-  echo "  -q, --query              Question or statement presented to the user"
-  echo "  -v, --selectionVariable  Variable the selected choice will be saved to. Defaults to the 'selectedChoice' variable."
-  echo;
-  echo "Example:"
-  echo "  foodOptions=(\"pizza\" \"burgers\" \"chinese\" \"sushi\" \"thai\" \"italian\" \"shit\")"
-  echo;
-  echo "  getChoice -q \"What do you feel like eating?\" -o foodOptions -i 6 -m 4 -v \"firstChoice\""
-  echo "  printf \"\\n First choice is '\${firstChoice}'\\n\""
-  echo;
-  echo "  getChoice -q \"Select another option in case the first isn't available\" -o foodOptions"
-  echo "  printf \"\\n Second choice is '\${selectedChoice}'\\n\""
-  echo;
+  printf "%s" "${menuStr}"
 }
 
 function getChoice {
   local KEY__ARROW_UP
-  KEY__ARROW_UP=$(echo -e "\033[A")
   local KEY__ARROW_DOWN
-  KEY__ARROW_DOWN=$(echo -e "\033[B")
   local KEY__ENTER
+  local captureInput
+  local displayHelp
+  local maxViewable
+  local instruction
+  local selectedIndex
+
+  KEY__ARROW_UP=$(echo -e "\033[A")
+  KEY__ARROW_DOWN=$(echo -e "\033[B")
   KEY__ENTER=$(echo -e "\n")
-  local captureInput=true
-  local displayHelp=false
-  local maxViewable=0
-  local instruction="Select an item from the list:"
-  local selectedIndex=0
-  
+  captureInput=true
+  displayHelp=false
+  maxViewable=0
+  instruction="Select an item from the list:"
+  selectedIndex=0
+
   unset selectedChoice
   unset selectionVariable
   
@@ -129,10 +127,10 @@ function getChoice {
   fi
   
   if [[ "${BASH}" == "" ]]; then
-    printf "\n %s[ERROR] This function utilizes Bash expansion, but your current shell is \"${SHELL}\"${CHAR__RESET}\n" "${CHAR__RED}"
+    printf "\n ${Red}[ERROR] This function utilizes Bash expansion, but your current shell is \"${SHELL}\"${txtReset}\n"
     $returnOrExit 1
   elif [[ $# == 0 ]]; then
-    printf "\n %s[ERROR] No arguments provided${CHAR__RESET}\n" "${CHAR__RED}"
+    printf "\n ${Red}[ERROR] No arguments provided${txtReset}\n"
     renderHelp
     $returnOrExit 1
   fi
@@ -185,12 +183,12 @@ function getChoice {
   
   # no menu items, at least 1 required
   if [[ $itemsLength -lt 1 ]]; then
-    printf "\n %s[ERROR] No menu items provided${CHAR__RESET}\n" "${CHAR__RED}"
+    printf "\n ${Red}[ERROR] No menu items provided${txtReset}\n"
     renderHelp
     $returnOrExit 1
   fi
 
-  renderMenu "$instruction" "$selectedIndex" "$maxViewable"
+  renderMenu "$instruction" $selectedIndex $maxViewable
   hideCursor
 
   while $captureInput; do
@@ -199,16 +197,16 @@ function getChoice {
     case "$key" in
       "$KEY__ARROW_UP")
         selectedIndex=$((selectedIndex-1))
-        (( selectedIndex < 0 )) && selectedIndex=$((itemsLength-1))
+        (( $selectedIndex < 0 )) && selectedIndex=$((itemsLength-1))
 
-        renderMenu "$instruction" $selectedIndex "$maxViewable" true
+        renderMenu "$instruction" $selectedIndex $maxViewable true
         ;;
 
       "$KEY__ARROW_DOWN")
         selectedIndex=$((selectedIndex+1))
-        (( selectedIndex == itemsLength )) && selectedIndex=0
+        (( $selectedIndex == $itemsLength )) && selectedIndex=0
 
-        renderMenu "$instruction" $selectedIndex "$maxViewable" true
+        renderMenu "$instruction" $selectedIndex $maxViewable true
         ;;
 
       "$KEY__ENTER")
