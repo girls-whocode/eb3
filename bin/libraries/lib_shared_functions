@@ -9,6 +9,14 @@
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
 
+pre_prompt_command() {
+    version="1.0.0"
+    entity=$(echo $(fc -ln -0) | cut -d ' ' -f1)
+    [ -z "$entity" ] && return # $entity is empty or only whitespace
+    $(git rev-parse --is-inside-work-tree 2> /dev/null) && local project="$(basename $(git rev-parse --show-toplevel))" || local project="Terminal"
+    (~/.wakatime/wakatime-cli --write --plugin "bash-wakatime/$version" --entity-type app --project "$project" --entity "$entity" 2>&1 > /dev/null &)
+}
+
 function _preload() {
     EDITOR="$(config_get editor)"
     export LESS="-iMFXR"
@@ -62,6 +70,8 @@ function _preload() {
     alias sysstatus="systemctl status"
     alias viewcode="highlight -O ansi --force "
     alias please='sudo $(history 2| head -n1 | sed "s/^ [0-9]\+ //")'
+
+    PROMPT_COMMAND="pre_prompt_command; $PROMPT_COMMAND"
 }
 
 success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"

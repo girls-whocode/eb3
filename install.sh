@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # title					:Enhanced BASH v3
-# description		    :Installation system for EBv3
+# description   :Installation system for EBv3
 # author				:Jessica Brown
 # date					:2022-11-19
 # version				:3.0.1
 # usage					:./install.sh
 # notes					:Run with the user who will be using EBv3, install will 
-#						:prompt for sudo when needed.
-# bash_version		    :5.1.16(1)-release
+#               :prompt for sudo when needed.
+# bash_version  :5.1.16(1)-release
 # ==============================================================================
 
 # Start a timer to evaluate for total time to install
@@ -79,7 +79,13 @@ echo -e "${Green}Installation startup successful${txtReset}"
 # 2. What theme would you like to start off with? [Give list of installed themes]
 # 3. How many history items to save? [default 10,000]
 # 4. How many directories to save in history [default 15]
-# 5. Screen Fetch Defaults: (Use arrow keys to navigate, enter to toggle, switch, or edit)
+# 5. Are you a wakatime user [default no].
+# 5A. API Key
+# 5B. 
+# 5C. 
+# 5D.
+# 5E.
+# 6. Screen Fetch Defaults: (Use arrow keys to navigate, enter to toggle, switch, or edit)
 # +--------] Screen Fetch [------------------------------------------------------------------------------------------------+
 # |   Kernel Settings                           Up Time Settings                    Memory Settings                        |
 # |       Kernel Shorthand: On                      Uptime Shorhand: Small              Memory Percetage: Off              |
@@ -188,13 +194,12 @@ fi
 stop_spinner
 
 # Install Python packages
-echo -e "${White}Installing ${Blue}Python packages${txtReset}"
-
-start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
+start_spinner "${White}Installing ${Blue}Python packages${txtReset} "
 python3 -m pip install pyautogui >> "${eb3_LogsPath}install.log"
 python3 -m pip install rich >> "${eb3_LogsPath}install.log"
 stop_spinner
 
+start_spinner "${White}Building ${Blue}Enhanced BASH System${txtReset}"
 # Backup the original .bashrc file
 backup "${HOME}$(config_get dirSeparator).bashrc"
 echo -e "${White}Backed up ${Blue}bashrc${White} file to ${Green}${eb3_BackupPath}.bashrc-${baktimestamp}.backup${txtReset}"
@@ -204,12 +209,65 @@ success "Backup of .bashrc file to ${eb3_BackupPath}.bashrc-${baktimestamp}.back
 echo -e "${White}Creating new ${Blue}bashrc${White} file${txtReset}"
 printf "# Created by Enhanced BASH Installer on %s\n# Original .bashrc file is located in %s\n\ncase \"\$TERM\" in\n\txterm-color|screen|*-256color)\n\t\t. %s;;\nesac\n" "$(LC_ALL=C date +'%Y-%m-%d %H:%M:%S')" "${defaultInstallBaseDirectory}$(config_get eb3VarPath)$(config_get dirSeparator)$(config_get eb3BackupPath)" "${defaultInstallBaseDirectory}eb3.sh" > ~/.bashrc
 success "New .bashrc creation completed" >> "${eb3_LogsPath}install.log"
+stop_spinner
 
 # Sync this directory with the new installation directory
 echo -e "${White}Installing ${Blue}EBv3 system files${txtReset}"
 [ ! -d "${defaultInstallBaseDirectory}" ] && mkdir -p "${defaultInstallBaseDirectory}"
 start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDirectory}$(config_get dirSeparator)"
+stop_spinner
+
+start_spinner "${White}Installing ${Blue}WakaTime System${txtReset}"
+python3 -c "$(wget -q -O - https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py)"
+
+arch="amd64"
+extract_to="$HOME/.wakatime"
+
+if [[ $(uname -m) == "aarch64" ]]; then
+  arch="arm64"
+fi
+
+os="unknown"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  os="linux"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  os="darwin"
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+  os="windows"
+elif [[ "$OSTYPE" == "msys" ]]; then
+  os="windows"
+elif [[ "$OSTYPE" == "win32" ]]; then
+  os="windows"
+elif [[ "$OSTYPE" == "freebsd"* ]]; then
+  os="freebsd"
+elif [[ "$OSTYPE" == "openbsd"* ]]; then
+  os="openbsd"
+elif [[ "$OSTYPE" == "netbsd"* ]]; then
+  os="netbsd"
+fi
+
+zip_file="$extract_to/wakatime-cli-${os}-${arch}.zip"
+symlink="$extract_to/wakatime-cli"
+extracted_binary="$extract_to/wakatime-cli-${os}-${arch}"
+
+if [[ "$os" == "windows" ]]; then
+  extracted_binary="$extracted_binary.exe"
+fi
+
+url="https://github.com/wakatime/wakatime-cli/releases/latest/download/wakatime-cli-${os}-${arch}.zip"
+
+# make dir if not exists
+mkdir -p "$extract_to"
+cd "$extract_to" || exit
+
+curl -L "$url" -o "$zip_file"
+unzip -q -o "$zip_file" || true
+
+ln -fs "$extracted_binary" "$symlink"
+chmod a+x "$extracted_binary"
+
+rm "$zip_file"
 stop_spinner
 
 {
@@ -235,10 +293,10 @@ else
 fi
 
 # Create the basic eb3.conf file
-mv "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf.default" "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf"
+cp "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf.default" "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf"
 
 sudo fc-cache -vf "${eb3_fontPath}"
-pip install --user powerline-status
+python3 -m pip install --user powerline-status
 
 # Get the timer end time
 eb3_install_end_time=$(date +%s.%3N)
