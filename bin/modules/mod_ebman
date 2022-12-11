@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # title					    :Enhanced BASH v3
 # description		    :EBv3 Manuals
 # author				    :Jessica Brown
@@ -12,5 +12,5 @@
 
 function ebman() {
   getChoice -o ebmanindex -m 4 -v ebindex
-  printf "You chose %s\n" "${ebindex}"
+  printf "You chose %s" "${ebindex}"
 }

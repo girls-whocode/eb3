@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# title					:Enhanced BASH v3
+# description		:EBv3 Help System
+# author				:Jessica Brown
+# date					:2022-Dec-10
+# version				:1.0.0
+# usage					:ebhHelp
+# notes					:by typing eb3help will display all of the modules, aliases,
+#               :and functions eb3 has to offer
+# bash_version  :5.1.16(1)-release
+# ==============================================================================
+
+eb3_dirsize() {
+  echo -e "${White}Directory Size (version 1.0)"
+  echo -e "${Aqua}dirsize ${White}- ${Silver}Locates and calculates the size of each directory in"
+  echo -e "${Silver}your current directory sorted from smallest to largest."
+  echo -e "${Maroon}NOTICE: ${White}This does create a /tmp/list file that is removed after each"
+  echo -e "${White}successful execution. If a BREAK or EXIT other then 0, this file my not be"
+  echo -e "${White}automatically removed."
+  echo -e "${White}EXAMPLE"
+  echo -e "${Silver}$ ${White}dirsize"
+  echo -e "${Red}1.3M  ${Silver}PowerShell_Repo"
+  echo -e "${Red}1.7M	${Silver}.vs"
+  echo -e "${Red}7.0M	${Silver}WebBooks"
+  echo -e "${Red}8.2M	${Silver}HTML_Repo"
+  echo -e "${Red}45M   	${Silver}Ruby_Repo"
+  echo -e "${Red}165M	${Silver}VueJS_Repo"
+  echo -e "${Red}303M	${Silver}Joomla"
+  echo -e "${Red}329M	${Silver}Software_Development_Process"
+  echo -e "${Red}410M	${Silver}open-log-viewer"
+  echo -e "${Red}517M	${Silver}CSharp_Repo"
+}

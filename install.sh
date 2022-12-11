@@ -219,55 +219,54 @@ rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDi
 stop_spinner
 
 start_spinner "${White}Installing ${Blue}WakaTime System${txtReset}"
-python3 -c "$(wget -q -O - https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py)"
+# python3 -c "$(wget -q -O - https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py)"
+# arch="amd64"
+# extract_to="$HOME/.wakatime"
 
-arch="amd64"
-extract_to="$HOME/.wakatime"
+# if [[ $(uname -m) == "aarch64" ]]; then
+#   arch="arm64"
+# fi
 
-if [[ $(uname -m) == "aarch64" ]]; then
-  arch="arm64"
-fi
+# os="unknown"
+# if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+#   os="linux"
+# elif [[ "$OSTYPE" == "darwin"* ]]; then
+#   os="darwin"
+# elif [[ "$OSTYPE" == "cygwin" ]]; then
+#   os="windows"
+# elif [[ "$OSTYPE" == "msys" ]]; then
+#   os="windows"
+# elif [[ "$OSTYPE" == "win32" ]]; then
+#   os="windows"
+# elif [[ "$OSTYPE" == "freebsd"* ]]; then
+#   os="freebsd"
+# elif [[ "$OSTYPE" == "openbsd"* ]]; then
+#   os="openbsd"
+# elif [[ "$OSTYPE" == "netbsd"* ]]; then
+#   os="netbsd"
+# fi
 
-os="unknown"
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  os="linux"
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  os="darwin"
-elif [[ "$OSTYPE" == "cygwin" ]]; then
-  os="windows"
-elif [[ "$OSTYPE" == "msys" ]]; then
-  os="windows"
-elif [[ "$OSTYPE" == "win32" ]]; then
-  os="windows"
-elif [[ "$OSTYPE" == "freebsd"* ]]; then
-  os="freebsd"
-elif [[ "$OSTYPE" == "openbsd"* ]]; then
-  os="openbsd"
-elif [[ "$OSTYPE" == "netbsd"* ]]; then
-  os="netbsd"
-fi
+# zip_file="$extract_to/wakatime-cli-${os}-${arch}.zip"
+# symlink="$extract_to/wakatime-cli"
+# extracted_binary="$extract_to/wakatime-cli-${os}-${arch}"
 
-zip_file="$extract_to/wakatime-cli-${os}-${arch}.zip"
-symlink="$extract_to/wakatime-cli"
-extracted_binary="$extract_to/wakatime-cli-${os}-${arch}"
+# if [[ "$os" == "windows" ]]; then
+#   extracted_binary="$extracted_binary.exe"
+# fi
 
-if [[ "$os" == "windows" ]]; then
-  extracted_binary="$extracted_binary.exe"
-fi
+# url="https://github.com/wakatime/wakatime-cli/releases/latest/download/wakatime-cli-${os}-${arch}.zip"
 
-url="https://github.com/wakatime/wakatime-cli/releases/latest/download/wakatime-cli-${os}-${arch}.zip"
+# # make dir if not exists
+# mkdir -p "$extract_to"
+# cd "$extract_to" || exit
 
-# make dir if not exists
-mkdir -p "$extract_to"
-cd "$extract_to" || exit
+# curl -L "$url" -o "$zip_file"
+# unzip -q -o "$zip_file" || true
 
-curl -L "$url" -o "$zip_file"
-unzip -q -o "$zip_file" || true
+# ln -fs "$extracted_binary" "$symlink"
+# chmod a+x "$extracted_binary"
 
-ln -fs "$extracted_binary" "$symlink"
-chmod a+x "$extracted_binary"
-
-rm "$zip_file"
+# rm "$zip_file"
 stop_spinner
 
 {

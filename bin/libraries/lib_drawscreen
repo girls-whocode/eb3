@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+# title					:Enhanced BASH v3
+# description		:Library Draw Screen
+# author				:Jessica Brown
+# date					:2022-Dec-10
+# version				:1.0.0
+# usage					:drawscreen 7 80
+# notes					:
+#               :
+# bash_version  :5.1.16(1)-release
+# ==============================================================================
+
+civis() {
+  echo -en "\033[?25l";
+}
+
+draw() {
+  echo -en "\033%@";echo -en "\033(0";
+}
+
+cnorm() {
+  echo -en "\033[?12l\033[?25h";
+}
+
+tputs() {
+  echo -en "\033[${1};${2}H";
+}
+
+write() {
+  echo -en "\033(B";
+}
+
+drawscreen() {
+  # j k l m n o p q r s t u v w x
+  # ┘ ┐ ┌ └ ┼ ⎺ ⎻ ─ ⎼ ⎽ ├ ┤ ┴ ┬ │
+  # Help cols 80
+
+  [ -z $1 ] && rows=7 || rows=$1
+  [ -z $3 ] && cols=80 || cols=$3
+
+  civis
+  draw
+  echo -en "${Grey}  l"
+
+  for ((c=0; c <= $3; c++));do
+    echo -en "q"
+  done
+
+  echo -e "${Grey}k"
+  echo -en "${Grey}  x"
+
+  for ((c=0; c <= $3; c++));do
+    echo -en " "
+  done
+
+  echo -e "x"
+  echo -en "${Grey}  t"
+
+  for ((c=0; c <= $3; c++));do
+    echo -en "q"
+  done
+
+  echo -e "u"
+
+  for ((i=0; i <= rows; i++)); do
+    echo -en "${Grey}  x"
+    for ((c=0; c <= $3; c++));do
+      echo -en " "
+    done
+    echo -e "x"
+  done
+
+  if [ -z $2 ] || [ $2 == 0 ]; then
+    echo -en "${Grey}  m"
+    for ((c=0; c <= $3; c++));do
+      echo -en "q"
+    done
+    echo -e "j"
+  elif [ $2 == 1 ]; then
+    echo -en "${Grey}  t"
+    for ((c=0; c <= $3; c++));do
+      echo -en "q"
+    done
+    echo -e "u"
+    echo -en "${Grey}  x"
+    for ((c=0; c <= $3; c++));do
+      echo -en " "
+    done
+    echo -e "x"
+    echo -en "${Grey}  m"
+    for ((c=0; c <= $3; c++));do
+      echo -en "q"
+    done
+    echo -e "j"
+  else
+    echo -en "${Grey}  t"
+    for ((c=0; c <= $3; c++));do
+      echo -en "q"
+    done
+    echo -e "u"
+    echo -en "${Grey}  x"
+    for ((c=0; c <= $3; c++));do
+      echo -en " "
+    done
+    echo -e "x"
+    echo -en "${Grey}  t"
+    for ((c=0; c <= $3; c++));do
+      echo -en "q"
+    done
+    echo -e "u"
+    for ((i=0; i <= $2; i++)); do
+      echo -en "${Grey}  x"
+      for ((c=0; c <= $3; c++));do
+        echo -en " "
+      done
+      echo -e "x"
+    done
+    echo -en "${Grey}  m"
+    for ((c=0; c <= $3; c++));do
+      echo -en "q"
+    done
+    echo -e "j"
+  fi
+  
+  write
+  cnorm
+}
+

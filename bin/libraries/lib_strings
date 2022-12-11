@@ -99,3 +99,14 @@ eb_urldecode() {
     : "${1//+/ }"
     printf '%b\n' "${_//%/\\x}"
 }
+
+eb_squeeze() {
+  # Removes leading/trailing whitespace and condenses all other consecutive
+  # whitespace into a single space.
+  #
+  # Usage examples:
+  #     echo "  foo  bar   baz  " | squeeze  #==> "foo bar baz"
+
+  local char=${1:-[[:space:]]}
+  sed "s%\(${char//%/\\%}\)\+%\1%g" | trim "$char"
+}
