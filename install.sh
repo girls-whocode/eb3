@@ -156,14 +156,31 @@ elif [ -x "$(command -v dnf)" ]; then
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo dnf install "${package}" -y
-		[ $? -eq 0 ] && 
-		success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
+		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v zypper)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "unrar" "gzip" "python3" "python3-tk")
 	success "Installing with $(command -v zypper)" >> "${eb3_LogsPath}install.log"
-	for package in "${packa
+	for package in "${packages_Required[@]}"; do
+		sudo zypper -qn --non-interactive install "${package}"
+		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
+	done
+elif [ -x "$(command -v yum)" ]; then
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
+	success "Installing with $(command -v yum)" >> "${eb3_LogsPath}install.log"
+	for package in "${packages_Required[@]}"; do
+		sudo yum install "${package}" -y
+		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
+		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
+	done
+elif [ -x "$(command -v pkg)" ]; then
+	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
+	success "Installing with $(command -v pkg)" >> "${eb3_LogsPath}install.log"
+	for package in "${packages_Required[@]}"; do
+		sudo pkg install "${package}"
+		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
+	done
 else
 	# TODO: I saw somewhere a manual installer, will look into adding that later
 	error "No package manager was found" >> "${eb3_LogsPath}install.log"
