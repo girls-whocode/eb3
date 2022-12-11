@@ -215,6 +215,12 @@ stop_spinner
 echo -e "${White}Installing ${Blue}EBv3 system files${txtReset}"
 [ ! -d "${defaultInstallBaseDirectory}" ] && mkdir -p "${defaultInstallBaseDirectory}"
 start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
+
+# Need to remove old files keep custom files
+if [ -d "${defaultInstallBaseDirectory}" ]; then
+	rm -rf "${defaultInstallBaseDirectory}${eb3_BinPath}" "${defaultInstallBaseDirectory}${eb3_EtcPath}"
+fi
+
 rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDirectory}$(config_get dirSeparator)"
 stop_spinner
 

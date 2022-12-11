@@ -15,7 +15,7 @@
 
 function dirsize () { # Finds directory sizes and lists them for the current directory
     if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-      eb3_dirsize
+      man_dirsize
     else
         du -shx * .[a-zA-Z0-9_]* 2> /dev/null | \
         grep -E '^ *[0-9.]*[PTGMKB]' | sort -n > /tmp/list
