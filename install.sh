@@ -13,22 +13,7 @@
 # Start a timer to evaluate for total time to install
 eb3_install_start_time=$(date +%s.%3N)
 
-# Get the currently location of this script
-scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export scriptLocation
-
-# Make folders, test and load files each step listed below in order
-# Check for logs folder to place the installation log, if not create folder
-# Check for a user font folder, if not create folder
-# if the install.log file does not exist, create it
 # load the collector shlib file to source all conf files
-# set all configured directories
-# load the log process function
-
-[ ! -d "${scriptLocation}/var/logs" ] && mkdir -p "${scriptLocation}/var/logs"
-[ ! -d "${eb3_fontPath}" ] && mkdir -p "${eb3_fontPath}"
-[ ! -f "${eb3_LogsPath}install.log" ] && touch "${eb3_LogsPath}install.log"
-
 if [ -f "${scriptLocation}/etc/conf/collector.shlib" ]; then 
 	source "${scriptLocation}/etc/conf/collector.shlib"
 else 
@@ -36,6 +21,7 @@ else
 	exit 128
 fi
 
+# set all configured directories
 if [ -f "${scriptLocation}/etc/setdirectories" ]; then
 	source "${scriptLocation}/etc/setdirectories" 
 else 
@@ -43,6 +29,22 @@ else
 	exit 128
 fi
 
+# Get the currently location of this script
+scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Currently this is a fixed location to install the system
+# TODO: Allow user to decide where to install the eb3 system
+defaultInstallBaseDirectory=${HOME}/.local/bin/$(config_get eb3InstallationPath)/
+
+# Check for logs folder to place the installation log, if not create folder
+# Check for a user font folder, if not create folder
+# Make folders, test and load files each step listed below in order
+# if the install.log file does not exist, create it
+[ ! -d "${defaultInstallBaseDirectory}var/logs" ] && mkdir -p "${defaultInstallBaseDirectory}var/logs"
+[ ! -d "${defaultInstallBaseDirectory}${eb3_fontPath}" ] && mkdir -p "${eb3_fontPath}"
+[ ! -f "${defaultInstallBaseDirectory}var/logs/install.log" ] && touch "${defaultInstallBaseDirectory}var/logs/install.log"
+
+# load the log process function
 if [ -f "${eb3_BinPath}logprocess" ]; then
 	source "${eb3_BinPath}logprocess"
 else 
@@ -65,13 +67,7 @@ else
     fi
 fi
 
-# Currently this is a fixed location to install the system
-# TODO: Allow user to decide where to install the eb3 system
-defaultInstallBaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)bin$(config_get dirSeparator)$(config_get eb3InstallationPath)$(config_get dirSeparator)
-
 success "Installation startup" > "${eb3_LogsPath}install.log"
-
-echo -e "${Green}Installation startup successful${txtReset}"
 
 # Run Configuration script
 # Configuration Questions to ask
@@ -117,8 +113,7 @@ echo -e "${Green}Installation startup successful${txtReset}"
 # Help: {Basic description of the item currently on}
 
 # Source load each file for testing with in the current environment being installed
-echo -e "${White}Loading system files${txtReset}"
-
+start_spinner "${White}Loading system files${txtReset}"
 for folder in "${eb3_systemFolders[@]}"; do
 	if [[ -d ${folder} ]]; then
 		for filename in "${folder}"???_*; do
@@ -133,9 +128,9 @@ for folder in "${eb3_systemFolders[@]}"; do
 		mkdir -p "${folder}"
 	fi
 done
+stop_spinner
 
 start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
-
 if [ -x "$(command -v apk)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v apk)" >> "${eb3_LogsPath}install.log"
@@ -161,31 +156,14 @@ elif [ -x "$(command -v dnf)" ]; then
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo dnf install "${package}" -y
-		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
+		[ $? -eq 0 ] && 
+		success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v zypper)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "unrar" "gzip" "python3" "python3-tk")
 	success "Installing with $(command -v zypper)" >> "${eb3_LogsPath}install.log"
-	for package in "${packages_Required[@]}"; do
-		sudo zypper -qn --non-interactive install "${package}"
-		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
-	done
-elif [ -x "$(command -v yum)" ]; then
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
-	success "Installing with $(command -v yum)" >> "${eb3_LogsPath}install.log"
-	for package in "${packages_Required[@]}"; do
-		sudo yum install "${package}" -y
-		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
-		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
-	done
-elif [ -x "$(command -v pkg)" ]; then
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
-	success "Installing with $(command -v pkg)" >> "${eb3_LogsPath}install.log"
-	for package in "${packages_Required[@]}"; do
-		sudo pkg install "${package}"
-		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
-	done
+	for package in "${packa
 else
 	# TODO: I saw somewhere a manual installer, will look into adding that later
 	error "No package manager was found" >> "${eb3_LogsPath}install.log"
