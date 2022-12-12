@@ -27,7 +27,7 @@ eb3help() {
   printf "%b|     %bempty                %bweather                    %beb_regex                    %bsysstop          %b|%b\n" "${Grey1}" "${Red}" "${Red}" "${DeepSkyBlue1}" "${Chartreuse1}" "${Grey1}" "${txtReset}"
   printf "%b|     %bextract              %bviewcode                   %beb_split                    %bsysstatus        %b|%b\n" "${Grey1}" "${Red}" "${Red}" "${DeepSkyBlue1}" "${Chartreuse1}" "${Grey1}" "${txtReset}"
   printf "%b|     %binpath                                          %beb_lower                    %bplease           %b|%b\n" "${Grey1}" "${Red}" "${DeepSkyBlue1}" "${Chartreuse1}" "${txtReset}" "${Grey1}"
-  printf "%b|     %bhome               %bLogging System               %beb_upper                    %bsysfetch         %b|%b\n" "${Grey1}" "${Chartreuse1}" "${White}" "${DeepSkyBlue1}" "${Red}" "${Grey1}" "${txtReset}"
+  printf "%b|     %bhome               %bLogging System               %beb_upper                    %bsysteminfo       %b|%b\n" "${Grey1}" "${Chartreuse1}" "${White}" "${DeepSkyBlue1}" "${Chartreuse1}" "${Grey1}" "${txtReset}"
   printf "%b|     %broot                 %beb3log                     %beb_reverse_case                              %b|%b\n" "${Grey1}" "${Chartreuse1}" "${Red}" "${DeepSkyBlue1}" "${txtReset}" "${Grey1}"
   printf "%b|     %bresetperms           %btaillog                    %beb_trim_quotes            %bInterface System   %b|%b\n" "${Grey1}" "${Chartreuse1}" "${Red}" "${DeepSkyBlue1}" "${White}" "${Grey1}" "${txtReset}"
   printf "%b|                          %bviewlog                    %beb_strip                    %bchoices          %b|%b\n" "${Grey1}" "${Red}" "${DeepSkyBlue1}" "${DeepSkyBlue1}" "${Grey1}" "${txtReset}"

@@ -13,6 +13,9 @@
 # Start a timer to evaluate for total time to install
 eb3_install_start_time=$(date +%s.%3N)
 
+# Get the currently location of this script
+scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # load the collector shlib file to source all conf files
 if [ -f "${scriptLocation}/etc/conf/collector.shlib" ]; then 
 	source "${scriptLocation}/etc/conf/collector.shlib"
@@ -28,9 +31,6 @@ else
 	echo "Error loading ${scriptLocation}/etc/setdirectories"
 	exit 128
 fi
-
-# Get the currently location of this script
-scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Currently this is a fixed location to install the system
 # TODO: Allow user to decide where to install the eb3 system
@@ -113,7 +113,6 @@ success "Installation startup" > "${eb3_LogsPath}install.log"
 # Help: {Basic description of the item currently on}
 
 # Source load each file for testing with in the current environment being installed
-start_spinner "${White}Loading system files${txtReset}"
 for folder in "${eb3_systemFolders[@]}"; do
 	if [[ -d ${folder} ]]; then
 		for filename in "${folder}"???_*; do
@@ -128,7 +127,6 @@ for folder in "${eb3_systemFolders[@]}"; do
 		mkdir -p "${folder}"
 	fi
 done
-stop_spinner
 
 start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 if [ -x "$(command -v apk)" ]; then
