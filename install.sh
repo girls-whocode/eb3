@@ -14,10 +14,10 @@
 # Start a timer to evaluate for total time to install
 eb3_install_start_time=$(date +%s.%3N)
 
-# Get the currently location of this script
+# Get the current location of this script
 scriptLocation="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# load the collector shlib file to source all conf files
+# Load the collector shlib file to source all conf files
 if [ -f "${scriptLocation}/etc/conf/collector.shlib" ]; then 
 	source "${scriptLocation}/etc/conf/collector.shlib"
 else 
@@ -53,23 +53,23 @@ else
 	exit 128
 fi
 
-# Because we are installing 3rd party applications, we need to ask for sudo
-# TODO: if sudo isn't available, we do not install and remove functionality from 3rd party apps
-echo -en "${White}To install ${Blue}EBv3${White} files ${Red}sudo${White} is required please enter ${txtReset}"
-if [[ "$EUID" = 0 ]]; then
-    success "Running as {root}" > "${eb3_LogsPath}install.log"
-else
-    sudo -k # make sure to ask for password on next sudo
-    if sudo true; then
-        success "Sudo password accepted" > "${eb3_LogsPath}install.log"
-    else
-        error "Sudo password failed" > "${eb3_LogsPath}install.log"
-        exit 1
-    fi
-fi
+# Source load each file for testing with in the current environment being installed
+for folder in "${eb3_systemFolders[@]}"; do
+	if [[ -d ${folder} ]]; then
+		for filename in "${folder}"???_*; do
+			if [[ -f ${filename} ]]; then
+				source "${filename}"
+				# Check for any errors and tattle on it
+				[ $? -eq 0 ] && success "Loading ${filename}" >> "${eb3_LogsPath}install.log" || error "Loading ${filename}" >> "${eb3_LogsPath}install.log"
+			fi
+		done
+	else
+		echo -e "${White}Creating folder ${Green}${folder}${txtReset}"
+		mkdir -p "${folder}"
+	fi
+done
 
-success "Installation startup" > "${eb3_LogsPath}install.log"
-
+# TODO:Build Configuration script
 # Run Configuration script
 # Configuration Questions to ask
 # 1. What is your default editor? [Give list of installed editors]
@@ -111,21 +111,22 @@ success "Installation startup" > "${eb3_LogsPath}install.log"
 # +------------------------------------------------------------------------------------------------------------------------+
 # Help: {Basic description of the item currently on}
 
-# Source load each file for testing with in the current environment being installed
-for folder in "${eb3_systemFolders[@]}"; do
-	if [[ -d ${folder} ]]; then
-		for filename in "${folder}"???_*; do
-			if [[ -f ${filename} ]]; then
-				source "${filename}"
-				# Check for any errors and tattle on it
-				[ $? -eq 0 ] && success "Loading ${filename}" >> "${eb3_LogsPath}install.log" || error "Loading ${filename}" >> "${eb3_LogsPath}install.log"
-			fi
-		done
+# Because we are installing 3rd party applications, we need to ask for sudo
+# TODO: if sudo isn't available, we do not install and remove functionality from 3rd party apps
+if [[ "$EUID" = 0 ]]; then
+	success "Running as {root}" > "${eb3_LogsPath}install.log"
+else
+	echo -en "${White}To install ${Blue}EBv3${White} files ${Red}sudo${White} is required please enter ${txtReset}"
+	sudo -k # make sure to ask for password on next sudo
+	if sudo true; then
+		success "Sudo password accepted" > "${eb3_LogsPath}install.log"
 	else
-		echo -e "${White}Creating folder ${Green}${folder}${txtReset}"
-		mkdir -p "${folder}"
+		error "Sudo password failed" > "${eb3_LogsPath}install.log"
+		exit 1
 	fi
-done
+fi
+
+success "Installation startup" > "${eb3_LogsPath}install.log"
 
 start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 if [ -x "$(command -v apk)" ]; then
@@ -276,7 +277,7 @@ stop_spinner
 	success "File installation completed"
 	info "------------------------------ File Differences ------------------------------"
 	info "$(diff -qr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDirectory}$(config_get dirSeparator)")"
-	info "-------------[2022-11-20 07:16:09]:[SUCCESS]:[Installing p7zip-plugins]-----------------------------------------------------------------"
+	info "------------------------------------------------------------------------------"
 }  >> "${eb3_LogsPath}install.log"
 
 # Remove files unneeded in the installation folder
