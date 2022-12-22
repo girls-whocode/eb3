@@ -9,6 +9,7 @@
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
 
+eb3_BaseDirectory=${HOME}$(config_get dirSeparator).local$(config_get dirSeparator)bin$(config_get dirSeparator)eb3$(config_get dirSeparator)
 eb3_BinPath=${scriptLocation}$(config_get dirSeparator)$(config_get eb3BinPath)$(config_get dirSeparator)
 eb3_CachePath=${eb3_BinPath}$(config_get eb3CachePath)$(config_get dirSeparator)
 eb3_TempPath=${eb3_CachePath}$(config_get eb3TempPath)$(config_get dirSeparator)
@@ -31,6 +32,7 @@ eb3_ManPath=${eb3_BinPath}$(config_get eb3ManPath)$(config_get dirSeparator)
 eb3_systemFolders=("${eb3_LogsPath}" "${eb3_BinPath}" "${eb3_CachePath}" "${eb3_TempPath}" "${eb3_LibPath}" "${eb3_ModPath}" "${eb3_EtcPath}" "${eb3_ConfPath}" "${eb3_OptPath}" "${eb3_UsrPath}" "${eb3_ThemesPath}" "${eb3_VarPath}" "${eb3_OverRidesPath}" "${eb3_DirJumpPath}" "${eb3_BackupPath}" "${eb3_LogsPath}" "${eb3_ManPath}")
 
 export eb3_systemFolders
+export eb3_BaseDirectory
 export eb3_BinPath 
 export eb3_CachePath 
 export eb3_TempPath 

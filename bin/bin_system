@@ -28,6 +28,15 @@ function trap_add() {
 function eb3() {
     if [[ ${eb_loaded} == on ]]; then
         [ "${1}" == "shutdown" ] && eb3_exit
+        
+        if [ "${1}" == "remove" ]; then
+            cp "${eb3_ConfPath}.bashrc" ~/
+            ebName=$(config_get eb_name)
+            rm -rf "${eb3_BaseDirectory}"
+            export PS1="[\u@\h \W]\$ "
+            printf "%s has been successfully removed" "${ebName}"
+            exec "$SHELL"
+        fi
     fi
 }
 
