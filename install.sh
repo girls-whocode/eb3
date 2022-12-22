@@ -155,7 +155,7 @@ elif [ -x "$(command -v dnf)" ]; then
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
-		sudo dnf install "${package}" -y
+		sudo dnf install "${package}" -yq
 		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
