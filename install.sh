@@ -9,6 +9,7 @@
 #               :prompt for sudo when needed.
 # bash_version  :5.1.16(1)-release
 # ==============================================================================
+# shellcheck disable=SC2046
 
 # Start a timer to evaluate for total time to install
 eb3_install_start_time=$(date +%s.%3N)
@@ -75,14 +76,12 @@ success "Installation startup" > "${eb3_LogsPath}install.log"
 # 2. What theme would you like to start off with? [Give list of installed themes]
 # 3. How many history items to save? [default 10,000]
 # 4. How many directories to save in history [default 15]
-# 5. Are you a wakatime user [default no].
+# 5. Are you a wakatime user [default no]
 # 5A. API Key
-# 5B. 
-# 5C. 
-# 5D.
-# 5E.
+# 5B. Would you like to enable WakaTime in the Terminal
+# 6. ** RHEL Only ** Do you wish to enable the EPEL repo? (Some packages require EPEL) [default yes]
 # 6. Screen Fetch Defaults: (Use arrow keys to navigate, enter to toggle, switch, or edit)
-# +--------] Screen Fetch [------------------------------------------------------------------------------------------------+
+# +--------] Neo Screen Fetch [--------------------------------------------------------------------------------------------+
 # |   Kernel Settings                           Up Time Settings                    Memory Settings                        |
 # |       Kernel Shorthand: On                      Uptime Shorhand: Small              Memory Percetage: Off              |
 # |                                                                                                                        |
@@ -150,6 +149,8 @@ elif [ -x "$(command -v apt-get)" ]; then
 		fi
 	done
 elif [ -x "$(command -v dnf)" ]; then
+	sudo subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
+	dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -yq
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
@@ -218,54 +219,57 @@ rsync -aqr "${scriptLocation}$(config_get dirSeparator)" "${defaultInstallBaseDi
 stop_spinner
 
 start_spinner "${White}Installing ${Blue}WakaTime System${txtReset}"
-# python3 -c "$(wget -q -O - https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py)"
-# arch="amd64"
-# extract_to="$HOME/.wakatime"
 
-# if [[ $(uname -m) == "aarch64" ]]; then
-#   arch="arm64"
-# fi
+python3 -c "$(wget -q -O - https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py)" > /dev/null
+arch="amd64"
+extract_to="$HOME/.wakatime"
 
-# os="unknown"
-# if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-#   os="linux"
-# elif [[ "$OSTYPE" == "darwin"* ]]; then
-#   os="darwin"
-# elif [[ "$OSTYPE" == "cygwin" ]]; then
-#   os="windows"
-# elif [[ "$OSTYPE" == "msys" ]]; then
-#   os="windows"
-# elif [[ "$OSTYPE" == "win32" ]]; then
-#   os="windows"
-# elif [[ "$OSTYPE" == "freebsd"* ]]; then
-#   os="freebsd"
-# elif [[ "$OSTYPE" == "openbsd"* ]]; then
-#   os="openbsd"
-# elif [[ "$OSTYPE" == "netbsd"* ]]; then
-#   os="netbsd"
-# fi
+if [[ $(uname -m) == "aarch64" ]]; then
+   arch="arm64"
+fi
 
-# zip_file="$extract_to/wakatime-cli-${os}-${arch}.zip"
-# symlink="$extract_to/wakatime-cli"
-# extracted_binary="$extract_to/wakatime-cli-${os}-${arch}"
+os="unknown"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+   os="linux"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+   os="darwin"
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+   os="windows"
+elif [[ "$OSTYPE" == "msys" ]]; then
+   os="windows"
+elif [[ "$OSTYPE" == "win32" ]]; then
+   os="windows"
+elif [[ "$OSTYPE" == "freebsd"* ]]; then
+   os="freebsd"
+elif [[ "$OSTYPE" == "openbsd"* ]]; then
+   os="openbsd"
+elif [[ "$OSTYPE" == "netbsd"* ]]; then
+   os="netbsd"
+fi
 
-# if [[ "$os" == "windows" ]]; then
-#   extracted_binary="$extracted_binary.exe"
-# fi
+zip_file="$extract_to/wakatime-cli-${os}-${arch}.zip"
 
-# url="https://github.com/wakatime/wakatime-cli/releases/latest/download/wakatime-cli-${os}-${arch}.zip"
+symlink="$extract_to/wakatime-cli"
+extracted_binary="$extract_to/wakatime-cli-${os}-${arch}"
+url="https://github.com/wakatime/wakatime-cli/releases/latest/download/wakatime-cli-${os}-${arch}.zip"
 
-# # make dir if not exists
-# mkdir -p "$extract_to"
-# cd "$extract_to" || exit
+# make dir if not exists
+if [[ ! -d "${extract_to}" ]]; then
+	mkdir -p "${extract_to}"
+fi
 
-# curl -L "$url" -o "$zip_file"
-# unzip -q -o "$zip_file" || true
+cd "$extract_to" || exit
+curl -L "${url}" -o "${zip_file}"
+[[ -f "${zip_file}" ]] || unzip -q -o "${zip_file}"
 
-# ln -fs "$extracted_binary" "$symlink"
-# chmod a+x "$extracted_binary"
+if [[ -f "${extracted_binary}" ]]; then
+	ln -fs "${extracted_binary}" "${symlink}"
+	chmod a+x "${extracted_binary}"
+else
+	printf "%s" "The ${extracted_binary} was not found. Failed to install WakaTime"
+fi
 
-# rm "$zip_file"
+[[ -f "${zip_file}" ]] || rm "${zip_file}"
 stop_spinner
 
 {
@@ -277,6 +281,7 @@ stop_spinner
 
 # Remove files unneeded in the installation folder
 rm_files=(".git" ".gitignore" ".shellcheckrc" "install.sh" ".github" ".dist" "${defaultInstallBaseDirectory}bin/cache/.gitkeep" "${defaultInstallBaseDirectory}var/logs/.gitkeep" "${defaultInstallBaseDirectory}usr/overrides/.gitkeep" "${defaultInstallBaseDirectory}var/backup/.gitkeep" "${defaultInstallBaseDirectory}var/dirjump/.gitkeep")
+
 for rm_file in "${rm_files[@]}"; do
 	success "Cleanup file ${rm_file}" >> "${eb3_LogsPath}install.log"
 	rm -rf "${defaultInstallBaseDirectory}$(config_get dirSeparator)${rm_file}"
@@ -292,9 +297,11 @@ fi
 
 # Create the basic eb3.conf file
 cp "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf.default" "${defaultInstallBaseDirectory}$(config_get dirSeparator)etc$(config_get dirSeparator)conf$(config_get dirSeparator)eb3.conf"
+success "Creting the eb3 configuration file during installation" >> "${eb3_LogsPath}install.log"
 
-sudo fc-cache -vf "${eb3_fontPath}"
-python3 -m pip install --user powerline-status
+sudo fc-cache -vf "${eb3_fontPath}" > /dev/null
+python3 -m pip install --user powerline-status > /dev/null
+success "Installed powerline fonts during installation" >> "${eb3_LogsPath}install.log"
 
 # Get the timer end time
 eb3_install_end_time=$(date +%s.%3N)
@@ -302,9 +309,10 @@ eb3_elapsed=$(echo "scale=3; $eb3_install_end_time - $eb3_install_start_time" | 
 
 # Report the completion of the system install
 success "EBv3 system installation has completed in ${eb3_elapsed} seconds" >> "${eb3_LogsPath}install.log"
-echo -e "${Red}EBv3${txtReset} system installation has completed in ${Cyan}${eb3_elapsed}${txtReset} seconds"
-echo -e "Installation is located at ${Cyan}${defaultInstallBaseDirectory}${txtReset}"
-echo -e ""
+
 sh "${eb3_BinPath}sysfetch.sh"
 echo -e ""
+echo -e ""
+echo -e "${Red}EBv3${txtReset} system installation has completed in ${Cyan}${eb3_elapsed}${txtReset} seconds"
+echo -e "Installation is located at ${Cyan}${defaultInstallBaseDirectory}${txtReset}"
 echo -e "You ${Red}MUST${txtReset} close and reopen the terminal. The installation log located at: ${eb3_LogsPath}install.log"
