@@ -151,7 +151,7 @@ elif [ -x "$(command -v apt-get)" ]; then
 	done
 elif [ -x "$(command -v dnf)" ]; then
 	sudo subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
-	dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -yq
+	sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -yq
 	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tkinter" "python3-devel")
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
@@ -215,12 +215,9 @@ start_spinner "${White}Building ${Blue}Enhanced BASH System${txtReset}"
 # Backup the original .bashrc file
 backup "${HOME}$(config_get dirSeparator).bashrc"
 cp "${HOME}$(config_get dirSeparator).bashrc" "${eb3_BaseDirectory}$(config_get eb3EtcPath)$(config_get dirSeparator)$(config_get eb3ConfPath)$(config_get dirSeparator)"
-echo -e "${White}Backed up ${Blue}bashrc${White} file to ${Green}${eb3_BackupPath}.bashrc-${baktimestamp}.backup${txtReset}"
-echo -e "${White}Copied ${Blue}bashrc${White} file to ${Green}${eb3_BaseDirectory}$(config_get eb3EtcPath)$(config_get dirSeparator)$(config_get eb3ConfPath)$(config_get dirSeparator)${txtReset}"
 success "Backup of .bashrc file to ${eb3_BackupPath}.bashrc-${baktimestamp}.backup" >> "${eb3_LogsPath}install.log"
 
 # Create the new .bashrc file
-echo -e "${White}Creating new ${Blue}bashrc${White} file${txtReset}"
 printf "# Created by Enhanced BASH Installer on %s\n# Original .bashrc file is located in %s\n\ncase \"\$TERM\" in\n\txterm-color|screen|*-256color)\n\t\t. %s;;\nesac\n" "$(LC_ALL=C date +'%Y-%m-%d %H:%M:%S')" "${defaultInstallBaseDirectory}$(config_get eb3VarPath)$(config_get dirSeparator)$(config_get eb3BackupPath)" "${defaultInstallBaseDirectory}eb3.sh" > ~/.bashrc
 success "New .bashrc creation completed" >> "${eb3_LogsPath}install.log"
 stop_spinner
@@ -317,10 +314,7 @@ eb3_elapsed=$(echo "scale=3; $eb3_install_end_time - $eb3_install_start_time" | 
 # Report the completion of the system install
 success "EBv3 system installation has completed in ${eb3_elapsed} seconds" >> "${eb3_LogsPath}install.log"
 
-# sh "${eb3_BinPath}sysfetch.sh"
-# echo -e ""
-# echo -e ""
 echo -e "${Red}EBv3${txtReset} system installation has completed in ${Cyan}${eb3_elapsed}${txtReset} seconds"
+echo -e "${White}Backed up ${Blue}bashrc${White} file to ${Green}${eb3_BackupPath}.bashrc-${baktimestamp}.backup${txtReset}"
 echo -e "Installation is located at ${Cyan}${defaultInstallBaseDirectory}${txtReset}"
-# echo -e "You ${Red}MUST${txtReset} close and reopen the terminal. The installation log located at: ${eb3_LogsPath}install.log"
 exec $SHELL
