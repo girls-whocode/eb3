@@ -72,7 +72,7 @@ done
 # TODO:Build Configuration script
 # Run Configuration script
 # Configuration Questions to ask
-# 1. What is your default editor? [Give list of installed editors]
+# 1. Which editor do you like to use? [Give list of installed editors]
 # 2. What theme would you like to start off with? [Give list of installed themes]
 # 3. How many history items to save? [default 10,000]
 # 4. How many directories to save in history [default 15]

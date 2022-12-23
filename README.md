@@ -2,7 +2,7 @@
 
 ## Modular and Library enforced BASH Environment
 
-The entire documentation can be found in the [Wiki](../../wiki/Home) (Currently under construction)
+The entire documentation can be found in the [Wiki](../../wiki/Home) ⌚ (Currently under construction)
 
 ### EBv3 Help System
 
@@ -13,26 +13,27 @@ below are made of of modules, libraries, and aliases which are color coded the s
 Modules and aliases are ran from the cli just like a program. Libraries can be ran from the
 command line but are intended to help with building BASH scripts.
 
-* backup - Easily creates backups of files or folders
-* dirjump (d) - quickly jumps around to the last 15 directories you have visited
-* empty - quickly empty a file without losing permissions
-* extract - Extracts automagically (*almost) any compression type
-* inpath - checks for a file quickly through out the path
-* home - just like ${HOME}
-* root - same as cd ${dir_separator}
-* resetperms - resets the permissions of a folder to 755 and 644 for files
-* systeminfo - quick way of finding system information
-* userlist - An advanced user list on the system
-* weather - A quick weather forecast for your terminal and prompt
+* backup 💾 - Easily creates backups of files or folders
+* dirjump (d) 📁 - quickly jumps around to the last 15 directories you have visited
+* empty 📂 - quickly empty a file without losing permissions
+* extract 📦 - Extracts automagically (*almost) any compression type
+* inpath 📁 - checks for a file quickly through out the path
+* home 🏠 - just like ${HOME}
+* root 🏢 - same as cd ${dir_separator}
+* resetperms 📝 - resets the permissions of a folder to 755 and 644 for files
+* systeminfo 📑 - quick way of finding system information
+* userlist 👨 - An advanced user list on the system
+* weather ⛅ - A quick weather forecast for your terminal and prompt
 * viewcode - automagically colors many types of languages and displays them
-* viewlog - automagically colors and displays log files
-* taillog - automagically colors and tails log files
-* eb3log - automagically colors and displays EBv3 log files
-* please - takes the last command and adds sudo to it
-* prettytable - Turn arrays into a table
-* start and stop spinner - A graphical way of showing a loading or progress indicator
-* full 256 color support with names
-* easy menu system (currently under construction)
+* viewlog 📄 - automagically colors and displays log files
+* taillog 📄 - automagically colors and tails log files
+* eb3log 📄 - automagically colors and displays EBv3 log files
+* please 🔐 - takes the last command and adds sudo to it
+* prettytable 🔡 - Turn arrays into a table
+* Customizable themes 🔩
+* start and stop spinner 🔳 - A graphical way of showing a loading or progress indicator
+* full 256 color support with names 🎨
+* easy menu system ⌚ (currently under construction)
 * Many text and array functions
 * plus much, much more!
 

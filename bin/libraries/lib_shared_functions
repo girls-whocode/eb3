@@ -17,7 +17,18 @@ pre_prompt_command() {
     (~/.wakatime/wakatime-cli --write --plugin "bash-wakatime/$version" --entity-type app --project "$project" --entity "$entity" 2>&1 > /dev/null &)
 }
 
-function _preload() {
+hideCursor() {
+  printf "\033[?25l"
+  # capture CTRL+C so cursor can be reset
+  trap "showCursor && echo '' && ${returnOrExit} 0" SIGINT
+}
+
+showCursor() {
+  printf "\033[?25h"
+  trap - SIGINT
+}
+
+_preload() {
     EDITOR="$(config_get editor)"
     export LESS="-iMFXR"
     export PAGER="/usr/bin/less"

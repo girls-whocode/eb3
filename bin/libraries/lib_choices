@@ -13,30 +13,18 @@
 menuStr=""
 returnOrExit=""
 
-function hideCursor {
-  printf "\033[?25l"
-  
-  # capture CTRL+C so cursor can be reset
-  trap "showCursor && echo '' && ${returnOrExit} 0" SIGINT
-}
-
-function showCursor {
-  printf "\033[?25h"
-  trap - SIGINT
-}
-
-function clearLastMenu {
+clearLastMenu() {
   local msgLineCount
-  msgLineCount=$(printf "$menuStr" | wc -l)
+  msgLineCount=$(printf "%s" "$menuStr" | wc -l)
 
   # moves the cursor up N lines so the output overwrites it
   echo -en "\033[${msgLineCount}A"
 
   # clear to end of screen to ensure there's no text left behind from previous input
-  [ $1 ] && tput ed
+  [ "${1}" ] && tput ed
 }
 
-function renderMenu {
+renderMenu() {
   local start
   local selector
   local instruction
@@ -56,7 +44,7 @@ function renderMenu {
 
   # Get the longest item from the list so that we know how many spaces to add
   # to ensure there's no overlap from longer items when a list is scrolling up or down.
-  for (( i=0; i<$itemsLength; i++ )); do
+  for (( i=0; i<itemsLength; i++ )); do
     if (( ${#menuItems[i]} > longest )); then
       longest=${#menuItems[i]}
     fi
@@ -66,9 +54,9 @@ function renderMenu {
   if [ $3 -ne 0 ]; then
     listLength=$3
 
-    if [ $selectedIndex -ge $listLength ]; then
-      start=$(($selectedIndex+1-$listLength))
-      listLength=$(($selectedIndex+1))
+    if [ "${selectedIndex}" -ge "${listLength}" ]; then
+      start=$((${selectedIndex}+1-$listLength))
+      listLength=$((${selectedIndex}+1))
     fi
   fi
 
@@ -76,7 +64,7 @@ function renderMenu {
     local currItem="${menuItems[i]}"
     currItemLength=${#currItem}
 
-    if [[ $i = $selectedIndex ]]; then
+    if [[ $i = ${selectedIndex} ]]; then
       currentSelection="${currItem}"
       selector="${Green}ᐅ${txtReset}"
       currItem="${Green}${currItem}${txtReset}"
@@ -96,7 +84,7 @@ function renderMenu {
   printf "%s" "${menuStr}"
 }
 
-function getChoice {
+getChoice() {
   local KEY__ARROW_UP
   local KEY__ARROW_DOWN
   local KEY__ENTER
@@ -188,7 +176,7 @@ function getChoice {
     $returnOrExit 1
   fi
 
-  renderMenu "$instruction" $selectedIndex $maxViewable
+  renderMenu "$instruction" ${selectedIndex} $maxViewable
   hideCursor
 
   while $captureInput; do
@@ -197,16 +185,16 @@ function getChoice {
     case "$key" in
       "$KEY__ARROW_UP")
         selectedIndex=$((selectedIndex-1))
-        (( $selectedIndex < 0 )) && selectedIndex=$((itemsLength-1))
+        (( ${selectedIndex} < 0 )) && selectedIndex=$((itemsLength-1))
 
-        renderMenu "$instruction" $selectedIndex $maxViewable true
+        renderMenu "$instruction" ${selectedIndex} $maxViewable true
         ;;
 
       "$KEY__ARROW_DOWN")
         selectedIndex=$((selectedIndex+1))
-        (( $selectedIndex == $itemsLength )) && selectedIndex=0
+        (( ${selectedIndex} == $itemsLength )) && selectedIndex=0
 
-        renderMenu "$instruction" $selectedIndex $maxViewable true
+        renderMenu "$instruction" ${selectedIndex} $maxViewable true
         ;;
 
       "$KEY__ENTER")

@@ -9,7 +9,7 @@
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
 
-function system_folders() {
+system_folders() {
     echo "${eb3_BinPath}"
     echo "${eb3_CachePath}"
     echo "${eb3_TempPath}"

@@ -43,8 +43,8 @@ else
 	HISTCONTROL=${historyControl}
 fi
 
-function systemfetch() {
-	sh "${eb3_BinPath}sysfetch.sh"
+systemfetch() {
+	"${eb3_BinPath}sysfetch.sh"
 }
 
 # append to the history file, don't overwrite it
