@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Currently with the adaption to the latest kernel of Linux in modern distrobutions, this application uses BASH shell for its environment. No testing has been performed on ZSH or FSH, but will soon follow.
+Currently with the adaption to the latest kernel of Linux in modern distributions, this application uses BASH shell for its environment. No testing has been performed on ZSH or FSH, but will soon follow.
 
 | BASH Version | Supported          |
 | ------------ | ------------------ |
@@ -13,4 +13,4 @@ Currently with the adaption to the latest kernel of Linux in modern distrobution
 
 ## Reporting a Vulnerability
 
-Please use the issues tab to report any Vunerabilities, bugs, or features you find.
+Please use the issues tab to report any vulnerabilities, bugs, or features you find.

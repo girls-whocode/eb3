@@ -4,22 +4,53 @@
 
 The entire documentation can be found in the [Wiki](../../wiki/Home) (Currently under construction)
 
-Current Modules:
++--------] EBv3 Help System [----------------------------------------------------------------------+
+|                                                                                                  |
+|  EBv3 (Extended BASH version 3) is a modular approach for building easy to use scripts, aliases, |
+|  and prompts to allow users to quickly complete tasks from the command line. Each item listed    |
+|  below are made of of modules, libraries, and aliases which are color coded the same below.      |
+|                                                                                                  |
+|  Modules and aliases are ran from the cli just like a program. Libraries can be ran from the     |
+|  command line but are intended to help with building BASH scripts.                               |
+|                                                                                                  |
+|   File System          Data and Reference         String Manipulation         System             |
+|     backup               systeminfo                 eb_trim_string              sysstart         |
+|     dirjump (d)          userlist                   eb_trim_all                 sysrestart       |
+|     empty                weather                    eb_regex                    sysstop          |
+|     extract              viewcode                   eb_split                    sysstatus        |
+|     inpath                                          eb_lower                    please           |
+|     home               Logging System               eb_upper                    systeminfo       |
+|     root                 eb3log                     eb_reverse_case                              |
+|     resetperms           taillog                    eb_trim_quotes            Interface System   |
+|                          viewlog                    eb_strip                    choices          |
+|                                                     eb_strip_all                cls | c | clear  |
+|                                                     eb_lstrip                   prettytable      |
+|                                                     eb_rstrip                   start_spinner    |
+|                                                     eb_urlencode                stop_spinner     |
+|                                                     eb_urldecode                drawscreen       |
+|                                                     eb_sqeeze                                    |
++--------------------------------------------------------------------------------------------------+
 
-* extract - Extracts automagically (*almost) any compression type
-* bkup - Easily creates backups of files or folders
-* d - quickly jumps around to the last 15 directories you have visited
+* backup - Easily creates backups of files or folders
+* dirjump (d) - quickly jumps around to the last 15 directories you have visited
 * empty - quickly empty a file without losing permissions
+* extract - Extracts automagically (*almost) any compression type
 * inpath - checks for a file quickly through out the path
-* logviewer - automagically colors and displays log files
+* home - just like ${HOME}
+* root - same as cd ${dir_separator}
+* resetperms - resets the permissions of a folder to 755 and 644 for files
 * systeminfo - quick way of finding system information
-* systemfetch - a more detailed way of finding system information
 * userlist - An advanced user list on the system
 * weather - A quick weather forecast for your terminal and prompt
+* viewcode - automagically colors many types of languages and displays them
+* viewlog - automagically colors and displays log files
+* taillog - automagically colors and tails log files
+* eb3log - automagically colors and displays EBv3 log files
+* please - takes the last command and adds sudo to it
 * prettytable - Turn arrays into a table
+* start and stop spinner - A graphical way of showing a loading or progress indicator
 * full 256 color support with names
-* easy menu system
-* add a spinner to commands with start and stop
+* easy menu system (currently under construction)
 * Many text and array functions
 * plus much, much more!
 
@@ -46,6 +77,14 @@ git clone https://github.com/girls-whocode/eb3.git
 cd eb3
 ./install.sh # sudo will be required to install the dependency files and update the package lists
 # close and reopen terminal
+```
+
+## Uninstall or Remove EB3
+A backup of your original bashrc is located in the eb3/etc/conf/ folder. The backup file will replace the
+home bashrc before the installation was done. To remove eb3:
+
+```sh
+eb3 remove
 ```
 
 ## Really cool stuff being added

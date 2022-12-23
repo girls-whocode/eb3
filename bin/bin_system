@@ -9,7 +9,7 @@
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
 
-function trap_add() {
+trap_add() {
     trap_add_cmd=$1; shift || fatal "${FUNCNAME} usage error"
     for trap_add_name in "$@"; do
         trap -- "$(
@@ -25,7 +25,7 @@ function trap_add() {
     done
 }
 
-function eb3() {
+eb3() {
     if [[ ${eb_loaded} == on ]]; then
         [ "${1}" == "shutdown" ] && eb3_exit
         
@@ -37,8 +37,46 @@ function eb3() {
             printf "%s has been successfully removed" "${ebName}"
             exec "$SHELL"
         fi
+
+        if [ "${1}" == "aliases" ]; then
+            alias systeminfo="${eb3_BinPath}sysfetch.sh"
+            alias q='exit'
+            alias md='mkdir'
+            alias quit='exit'
+            alias cls='clear'
+            alias c='clear'
+            alias h='history'
+            alias k='kill'
+            alias home='cd ~'
+            alias root='cd $(config_get dirSeparator)'
+            alias resetperms='sudo chmod -R a=r,u+w,a+X'
+            alias nano="$(config_get editor)"
+            alias v="$(config_get editor)"
+            alias vi="$(config_get editor)"
+            alias vim="$(config_get editor)"
+            alias sysstart="systemctl start"
+            alias sysrestart="systemctl restart"
+            alias sysreload="systemctl reload"
+            alias sysstop="systemctl stop"
+            alias sysstatus="systemctl status"
+            alias viewcode="highlight -O ansi --force "
+            alias please='sudo $(history 2| head -n1 | sed "s/^ [0-9]\+ //")'
+
+            # enable color support of ls and also add handy aliases
+            if [ -x /usr/bin/dircolors ]; then
+                alias ls='ls --color=auto'
+                alias ll='ls -alFh --color=auto'
+                alias la='ls -A --color=auto'
+                alias l='ls -CF --color=auto'
+                alias dir='dir --color=auto'
+                alias grep='grep --color=auto'
+                alias lt='du -sh --color=auto * | sort -h'
+            fi
+        fi
     fi
 }
 
 eb_loaded=on
+eb3 aliases
+
 success "Loaded $(basename "${BASH_SOURCE}")" >> "${eb3_LogsPath}startup.log"
