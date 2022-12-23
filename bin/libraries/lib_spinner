@@ -8,7 +8,7 @@
 # notes					:
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
-function start_spinner {
+start_spinner() {
     tput civis
     set +m
     echo -ne "$1            "
@@ -21,7 +21,7 @@ function start_spinner {
     spinner_pid=$!
 }
 
-function stop_spinner {
+stop_spinner() {
     { kill -9 $spinner_pid && wait; } 2>/dev/null
     tput cnorm
     set -m

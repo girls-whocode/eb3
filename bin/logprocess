@@ -9,37 +9,37 @@
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
 
-function die () {
+die () {
   local _message="${*} ** Exiting **";
   echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[ALERT]:[${_message}]"
 }
 
-function error () {
+error () {
   local _message="${*}";
   echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[ERROR]:[${_message}]"
 }
 
-function warning () {
+warning () {
   local _message="${*}";
   echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[WARNING]:[${_message}]"
 }
 
-function notice () {
+notice () {
   local _message="${*}";
   echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[NOTICE]:[${_message}]"
 }
 
-function info () {
+info () {
   _message="${*}";
   echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[INFO]:[${_message}]"
 }
 
-function debug () {
+debug () {
   _message="${*}";
   echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[DEBUG]:[${_message}]"
 }
 
-function success () {
+success () {
   _message="${*}";
   echo "[$(LC_ALL=C date +"%Y-%m-%d %H:%M:%S")]:[SUCCESS]:[${_message}]"
 }

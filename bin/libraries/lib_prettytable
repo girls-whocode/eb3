@@ -61,15 +61,15 @@ _prettytable_color_black="0;30"
 _prettytable_color_white="1;37"
 _prettytable_color_none="0"
 
-function _prettytable_prettify_lines() {
+_prettytable_prettify_lines() {
     cat - | sed -e "s@^@${_prettytable_char_vertical}@;s@\$@	@;s@	@	${_prettytable_char_vertical}@g"
 }
 
-function _prettytable_fix_border_lines() {
+_prettytable_fix_border_lines() {
     cat - | sed -e "1s@ @${_prettytable_char_horizontal}@g;3s@ @${_prettytable_char_horizontal}@g;\$s@ @${_prettytable_char_horizontal}@g"
 }
 
-function _prettytable_colorize_lines() {
+_prettytable_colorize_lines() {
     local color="$1"
     local range="$2"
     local ansicolor="$(eval "echo \${_prettytable_color_${color}}")"
@@ -77,7 +77,7 @@ function _prettytable_colorize_lines() {
     cat - | sed -e "${range}s@\\([^${_prettytable_char_vertical}]\\{1,\\}\\)@"$'\E'"[${ansicolor}m\1"$'\E'"[${_prettytable_color_none}m@g"
 }
 
-function prettytable() {
+prettytable() {
     local cols="${1}"
     local color="${2:-none}"
     local input="$(cat -)"
