@@ -5,31 +5,57 @@
 The entire documentation can be found in the [Wiki](../../wiki/Home) (Currently under construction)
 
 +--------] EBv3 Help System [----------------------------------------------------------------------+
+
 |                                                                                                  |
+
 |  EBv3 (Extended BASH version 3) is a modular approach for building easy to use scripts, aliases, |
+
 |  and prompts to allow users to quickly complete tasks from the command line. Each item listed    |
+
 |  below are made of of modules, libraries, and aliases which are color coded the same below.      |
+
 |                                                                                                  |
+
 |  Modules and aliases are ran from the cli just like a program. Libraries can be ran from the     |
+
 |  command line but are intended to help with building BASH scripts.                               |
+
 |                                                                                                  |
+
 |   File System          Data and Reference         String Manipulation         System             |
+
 |     backup               systeminfo                 eb_trim_string              sysstart         |
+
 |     dirjump (d)          userlist                   eb_trim_all                 sysrestart       |
+
 |     empty                weather                    eb_regex                    sysstop          |
+
 |     extract              viewcode                   eb_split                    sysstatus        |
+
 |     inpath                                          eb_lower                    please           |
+
 |     home               Logging System               eb_upper                    systeminfo       |
+
 |     root                 eb3log                     eb_reverse_case                              |
+
 |     resetperms           taillog                    eb_trim_quotes            Interface System   |
+
 |                          viewlog                    eb_strip                    choices          |
+
 |                                                     eb_strip_all                cls | c | clear  |
+
 |                                                     eb_lstrip                   prettytable      |
+
 |                                                     eb_rstrip                   start_spinner    |
+
 |                                                     eb_urlencode                stop_spinner     |
+
 |                                                     eb_urldecode                drawscreen       |
+
 |                                                     eb_sqeeze                                    |
+
 +--------------------------------------------------------------------------------------------------+
+
 
 * backup - Easily creates backups of files or folders
 * dirjump (d) - quickly jumps around to the last 15 directories you have visited

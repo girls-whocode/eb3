@@ -130,7 +130,7 @@ success "Installation startup" > "${eb3_LogsPath}install.log"
 
 start_spinner "${White}Starting installation of ${Blue}EBv3${txtReset} "
 if [ -x "$(command -v apk)" ]; then
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
+	packages_Required=("bc" "jq" "highlight" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v apk)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo apk add --no-cache "${package}"
@@ -138,7 +138,7 @@ if [ -x "$(command -v apk)" ]; then
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v apt-get)" ]; then
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
+	packages_Required=("bc" "jq" "highlight" "git" "curl" "wget" "zip" "7zip" "rar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v apt-get)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		pkg_test=$(dpkg-query -W --showformat='${Status}\n' "${package}" | grep "install ok installed")
@@ -152,7 +152,7 @@ elif [ -x "$(command -v apt-get)" ]; then
 elif [ -x "$(command -v dnf)" ]; then
 	sudo subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
 	sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -yq
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tkinter" "python3-devel")
+	packages_Required=("bc" "jq" "highlight" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tkinter" "python3-devel")
 	success "Installing with $(command -v dnf)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo dnf install "${package}" -yq
@@ -163,22 +163,27 @@ elif [ -x "$(command -v dnf)" ]; then
   python3 ./get-pip.py
   rm get-pip.py
 elif [ -x "$(command -v zypper)" ]; then
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "unrar" "gzip" "python3" "python3-tk")
+	packages_Required=("bc" "jq" "highlight" "git" "curl" "wget" "zip" "p7zip" "unrar" "gzip" "python3" "python3-tk")
 	success "Installing with $(command -v zypper)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo zypper -qn --non-interactive install "${package}"
 		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 	done
 elif [ -x "$(command -v yum)" ]; then
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
+	sudo subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
+	sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -yq
+	packages_Required=("bc" "jq" "highlight" "git" "curl" "wget" "zip" "p7zip" "p7zip-plugins" "unrar" "gzip" "python3" "python3-tkinter" "python3-devel")
 	success "Installing with $(command -v yum)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo yum install "${package}" -y
 		[ $? -eq 0 ] && success "Installing ${filename}" >> "${eb3_LogsPath}install.log" || error "Installing ${filename}" >> "${eb3_LogsPath}install.log"
 		success "Installing ${package}" >> "${eb3_LogsPath}install.log"
 	done
+  wget https://bootstrap.pypa.io/get-pip.py
+  python3 ./get-pip.py
+  rm get-pip.py
 elif [ -x "$(command -v pkg)" ]; then
-	packages_Required=("bc" "jq" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
+	packages_Required=("bc" "jq" "highlight" "git" "curl" "wget" "zip" "7zip" "unrar" "gzip" "python3" "python3-tk" "python3-dev")
 	success "Installing with $(command -v pkg)" >> "${eb3_LogsPath}install.log"
 	for package in "${packages_Required[@]}"; do
 		sudo pkg install "${package}"
@@ -223,7 +228,6 @@ success "New .bashrc creation completed" >> "${eb3_LogsPath}install.log"
 stop_spinner
 
 start_spinner "${White}Installing ${Blue}WakaTime System${txtReset}"
-
 python3 -c "$(wget -q -O - https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py)" > /dev/null
 arch="amd64"
 extract_to="$HOME/.wakatime"
