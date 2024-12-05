@@ -3,6 +3,9 @@
 # Editor
 editor=/usr/bin/nano
 
+# Weather location
+weather_location=""
+
 # Themes
 prompt_theme=pureblack
 
