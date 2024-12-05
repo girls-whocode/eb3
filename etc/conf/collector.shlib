@@ -21,3 +21,15 @@ config_get() {
     fi
     printf -- "%s" "${val}";
 }
+
+config_set() {
+    key="${1}"
+    value="${2}"
+    if grep -qE "^${key}=" "${configFile}" 2>/dev/null; then
+        # Update existing key
+        sed -i "s|^${key}=.*|${key}=${value}|" "${configFile}"
+    else
+        # Add new key
+        echo "${key}=${value}" >> "${configFile}"
+    fi
+}

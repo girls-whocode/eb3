@@ -13,7 +13,7 @@
 
 function weather() {
     # Default location if none is provided
-    local location="${weather_location}"
+    local location="$(config_get weather_location)"
     # Options string for additional arguments
     local options=""
 
@@ -23,6 +23,12 @@ function weather() {
             --location=*) # Specify location
                 location="${1#--location=}"
                 shift
+                ;;
+            --default-location=*) # Set default location
+                default_location="${1#--default-location=}"
+                config_set "weather_location" "${default_location}"
+                echo "Default location set to: ${default_location}"
+                return 0
                 ;;
             --lang=*) # Specify language
                 options="${options}&lang=${1#--lang=}"
@@ -72,6 +78,7 @@ function weather() {
                 echo "Usage: weather [--location=<location>] [options]"
                 echo "Options:"
                 echo "  --location=<location>    Specify location (e.g., city, GPS, domain, airport code)"
+                echo "  --default-location=<location> Set a default location for weather queries"
                 echo "  --lang=<language>        Specify language for output (e.g., en, fr, ru)"
                 echo "  --unit=metric|uscs       Specify units (metric or USCS)"
                 echo "  --forecast=0|1|2         Specify forecast depth (0: current, 1: today, 2: today + tomorrow)"
