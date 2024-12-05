@@ -9,8 +9,95 @@
 # bash_version	:5.1.16(1)-release
 # ==============================================================================
 
+#!/bin/bash
+
 function weather() {
-  curl wttr.in
+    # Default location if none is provided
+    local location=""
+    # Options string for additional arguments
+    local options=""
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --location=*) # Specify location
+                location="${1#--location=}"
+                shift
+                ;;
+            --lang=*) # Specify language
+                options="${options}&lang=${1#--lang=}"
+                shift
+                ;;
+            --unit=metric) # Metric units
+                options="${options}&m"
+                shift
+                ;;
+            --unit=uscs) # USCS units
+                options="${options}&u"
+                shift
+                ;;
+            --forecast=*) # Specify forecast options
+                options="${options}&${1#--forecast=}"
+                shift
+                ;;
+            --ansi) # Force ANSI output
+                options="${options}&A"
+                shift
+                ;;
+            --quiet) # Quiet output
+                options="${options}&q"
+                shift
+                ;;
+            --superquiet) # Super quiet output
+                options="${options}&Q"
+                shift
+                ;;
+            --narrow) # Narrow view
+                options="${options}&n"
+                shift
+                ;;
+            --png) # Generate PNG output
+                options="${options}.png"
+                shift
+                ;;
+            --moon) # Moon phase
+                location="moon"
+                shift
+                ;;
+            --moon-date=*) # Moon phase for a specific date
+                location="moon@${1#--moon-date=}"
+                shift
+                ;;
+            --help) # Display help
+                echo "Usage: weather [--location=<location>] [options]"
+                echo "Options:"
+                echo "  --location=<location>    Specify location (e.g., city, GPS, domain, airport code)"
+                echo "  --lang=<language>        Specify language for output (e.g., en, fr, ru)"
+                echo "  --unit=metric|uscs       Specify units (metric or USCS)"
+                echo "  --forecast=0|1|2         Specify forecast depth (0: current, 1: today, 2: today + tomorrow)"
+                echo "  --ansi                   Force ANSI output for terminal"
+                echo "  --quiet                  Minimal output"
+                echo "  --superquiet             Minimal output without city name"
+                echo "  --narrow                 Narrow output format"
+                echo "  --png                    Generate PNG output"
+                echo "  --moon                   Display current moon phase"
+                echo "  --moon-date=<YYYY-MM-DD> Moon phase for a specific date"
+                echo "  --help                   Display this help message"
+                return 0
+                ;;
+            *) # Fallback for unknown arguments
+                echo "Unknown option: $1"
+                echo "Use --help for usage information"
+                return 1
+                ;;
+        esac
+    done
+
+    # Construct the URL
+    local url="https://wttr.in/${location}${options}"
+
+    # Fetch the weather
+    curl -s "${url}"
 }
 
 function weather_bar() {
